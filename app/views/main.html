@@ -2,16 +2,28 @@
 
 <html>
     <head>
-        <title>#{get 'title' /}</title>
-        <meta charset="${_response_encoding}">
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>XXOO健身俱乐部</title>
         <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
         #{get 'moreStyles' /}
         <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		#{get 'moreScripts' /}
     </head>
-    <body>
+    <body class="easyui-layout">
+    	<div data-options="region:'north',split:false" style="height:90px;">
+			XXOO健身俱乐部
+		</div>
+		
+	    <div data-options="region:'south',split:false" style="height:50px;">
+			©版权所有 2016，南京酷傲信息科技有限公司，保留一切权利	
+		</div>
+		
         #{doLayout /}
         
-        <script src="@{'/public/javascripts/jquery-1.6.4.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
-        #{get 'moreScripts' /}
     </body>
 </html>
