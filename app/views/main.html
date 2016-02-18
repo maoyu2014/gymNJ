@@ -7,22 +7,77 @@
         <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
         <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
 		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+		<!-- Iconos -->
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    	<link rel="stylesheet" href="@{'/public/css3-ver-accordion-menu/css/style.css'}" media="screen" type="text/css" />
         #{get 'moreStyles' /}
         <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
         
         <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
 		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script src="@{'/public/css3-ver-accordion-menu/js/index.js'}"></script>
 		#{get 'moreScripts' /}
     </head>
+    
     <body class="easyui-layout">
     	<div data-options="region:'north',split:false" style="height:90px;">
-			XXOO健身俱乐部
+			<h2 style="text-align:center;margin-top:30px;font-size:40px;"><a href="@{Application.index()}">XXOO健身俱乐部</a><span style="position:absolute;right:20px;font-size:15px;"><a href="#">登录</a> | <a href="#">注册</a></span></h2>
 		</div>
 		
 	    <div data-options="region:'south',split:false" style="height:50px;">
-			©版权所有 2016，南京酷傲信息科技有限公司，保留一切权利	
+			<h6 style="text-align:center;margin-top:10px;">©版权所有 2016，<a href="http://www.njcool.cn/">南京酷傲信息科技有限公司</a>，保留一切权利 | 联系我们：025-86660526</h6>	
 		</div>
 		
+		<div data-options="region:'west',split:false" style="width:20%;">
+			<ul class="accordion">
+				<li>
+					<a href="@{Application.memberManagement()}"><div class="link"><i class="fa fa-globe"></i>会员管理</div></a>
+				</li>
+				<li>
+					<div class="link"><i class="fa fa-globe"></i>预约签到<i class="fa fa-chevron-down"></i></div>
+					<ul class="submenu">
+						<li><a href="#">店内人数</a></li>
+						<li><a href="#">预约团操</a></li>
+					</ul>
+				</li>
+				<li>
+					<div class="link"><i class="fa fa-globe"></i>课程管理<i class="fa fa-chevron-down"></i></div>
+					<ul class="submenu">
+						<li><a href="#">团操课程</a></li>
+						<li><a href="#">特训班</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#"><div class="link"><i class="fa fa-globe"></i>健身计划</div></a>
+				</li>
+				<li>
+					<div class="link"><i class="fa fa-globe"></i>营销管理<i class="fa fa-chevron-down"></i></div>
+					<ul class="submenu">
+						<li><a href="#">门店公告</a></li>
+						<li><a href="#">团购活动</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#"><div class="link"><i class="fa fa-globe"></i>财务管理</div></a>
+				</li>
+				<li>
+					<a href="#"><div class="link"><i class="fa fa-globe"></i>员工设置</div></a>
+				</li>
+				<li>
+					<a href="#"><div class="link"><i class="fa fa-globe"></i>门店设置</div></a>
+				</li>
+				<li>
+					<div class="link"><i class="fa fa-globe"></i>统计报表<i class="fa fa-chevron-down"></i></div>
+					<ul class="submenu">
+						<li><a href="#">课程报表</a></li>
+						<li><a href="#">销售报表</a></li>
+						<li><a href="#">会员报表</a></li>
+						<li><a href="#">员工报表</a></li>	
+					</ul>
+				</li>
+			</ul>
+		</div>
+
         #{doLayout /}
         
     </body>

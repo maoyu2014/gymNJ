@@ -1,0 +1,31 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#FFFEE6;font-size:15px;font-weight:600;padding:15px;">会员信息</div>
+	
+	<div style="margin:20px">
+		<select class="easyui-combobox" name="state" style="width:100px;height:32px">
+			<option value="allcity" selected>全部城市</option>
+	        <option value="nanjing">南京</option>
+	        <option value="hangzhou">杭州</option>
+	    </select>
+	    <select class="easyui-combobox" name="state" style="width:100px;height:32px">
+			<option value="allstore" selected>全部门店</option>
+	        <option value="xinjiekou">新街口</option>
+	        <option value="pukou">浦口</option>
+	    </select>
+	    <select class="easyui-combobox" name="state" style="width:100px;height:32px">
+			<option value="memberkind" selected>会员种类</option>
+	        <option value="yizhong">一种</option>
+	        <option value="youyizhong">又一种</option>
+	    </select>
+	    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;position:absolute;right:20px;">增加会员</a>
+	</div>
+	
+	<div style="margin:20px">
+        <input class="easyui-textbox" data-options="prompt:'搜索姓名、手机号、微信号'" style="width:250px;height:32px">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px;height:32px">搜索</a>        
+    </div>
+	
+</div>
