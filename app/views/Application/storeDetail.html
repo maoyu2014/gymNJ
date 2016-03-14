@@ -1,0 +1,92 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">信息详情</div>
+	<br/>
+	<div style="background-color:#e5ffb3;font-size:14px;padding:5px">门店信息</div>
+	
+#{form @Application.updateStoreToDB(sc.id)}
+	<div style="margin-left:100px;">
+		
+		<div style="margin:5px;">
+		<span style="font-size:14px;display:inline-block;width:100px">门店城市：</span>
+		<input name="cityid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}'" value="${sc?.cityid}" style="height:32px">
+		</div>
+		
+		<div style="margin:5px;">
+		<span style="font-size:14px;display:inline-block;width:100px">门店名称：</span>
+		<input name="name" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" value="${sc?.name}" style="height:32px">
+		</div>
+		
+		<div style="margin:5px;">
+		<span style="font-size:14px;display:inline-block;width:100px">门店地址：</span>
+		<input name="address" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" value="${sc?.address}" style="height:32px">
+		</div>
+		
+		<div style="margin:5px">
+		<span style="font-size:14px;display:inline-block;width:100px">门店面积：</span>
+		<input name="area" class="easyui-numberbox validatebox" data-options="required:true,missingMessage:'必填项'" value="${sc?.area}" style="height:32px"> 平方米
+		</div>
+		
+		<div style="margin:5px">
+		<span style="font-size:14px;display:inline-block;width:100px">相册：</span>
+		<input name="photo" class="easyui-filebox" data-options="buttonText:'上传图片'" style="height:32px">
+		</div>
+		
+		<div style="margin:5px">
+		<span style="font-size:14px;display:inline-block;width:100px">联系人：</span>
+		<input name="manager" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" value="${sc?.manager}" style="height:32px">
+		</div>
+		
+		<div style="margin:5px">
+		<span style="font-size:14px;display:inline-block;width:100px">联系方式：</span>
+		<input name="phone" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" value="${sc?.phone}" style="height:32px">
+		</div>
+		
+		<div style="margin-left:100px;">
+		<input type="submit" style="width:80px;height:32px" value="确定更新">
+		</div>
+		
+	</div>
+#{/form}
+	
+	<br/>
+	<div style="background-color:#e5ffb3;font-size:14px;padding:5px">教室信息<a href="@{Application.addClassroom(sc.id)}" style="font-weight:600;position:absolute;right:20px;">增加教室</a></div>
+	
+	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'name',width:100">教室名称</th>
+	                <th data-options="field:'holdnumber',width:100">容纳人数</th>
+	                <th data-options="field:'usage',width:100">用途</th>
+	                <th data-options="field:'operation',width:100">操作</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        #{list items:listcr, as:'classroom'}
+	        	<tr>
+		            <td>${classroom.name}</td>
+		            <td>${classroom.holdnumber}</td>
+		            #{if classroom.usage==1}
+		            <td>团操</td>
+		            #{/if}
+		            #{if classroom.usage==2}
+		            <td>私教</td>
+		            #{/if}
+		            #{if classroom.usage!=1 && classroom.usage!=2}
+		            <td>未设置</td>
+		            #{/if}
+		            <td>
+		            	<a href="" class="easyui-linkbutton" data-options="" style="">修改</a>
+		            	<a href="@{Application.deleteClassroom(classroom.id, classroom.storeid)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            </td>
+		        </tr>
+	        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+	
+	
+</div>

@@ -1,0 +1,53 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加门店</div>
+	
+#{form @Application.addStoreToDB()}
+	<div style="margin-left:100px;">
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">门店城市：</span>
+		<input name="cityid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}'" style="height:32px">
+		</div>
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">门店名称：</span>
+		<input name="name" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">门店地址：</span>
+		<input name="address" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">门店面积：</span>
+		<input name="area" class="easyui-numberbox validatebox" data-options="required:true,missingMessage:'必填项'" style="height:32px"> 平方米
+		</div>
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">相册：</span>
+		<input name="photo" class="easyui-filebox" data-options="buttonText:'上传图片'" style="height:32px">
+		</div>
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">联系人：</span>
+		<input name="manager" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">联系方式：</span>
+		<input name="phone" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		<div style="margin-left:100px;">
+		<input type="submit" style="width:80px;height:32px">
+		</div>
+		
+	</div>
+#{/form}
+	
+	
+</div>

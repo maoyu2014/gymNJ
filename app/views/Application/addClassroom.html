@@ -1,0 +1,34 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加教室</div>
+	
+#{form @Application.addClassroomToDB(storeid)}
+	<div style="margin-left:100px;">
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">教室名称：</span>
+		<input name="name" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">容纳人数：</span>
+		<input name="holdnumber" class="easyui-numberbox validatebox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">用途：</span>
+		<input type="radio" name="usage" value="1">团操
+		<input type="radio" name="usage" value="2">私教
+		</div>
+		
+		<div style="margin-left:100px;">
+		<input type="submit" style="width:80px;height:32px">
+		</div>
+		
+	</div>
+#{/form}
+	
+	
+</div>
