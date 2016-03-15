@@ -4,6 +4,7 @@ import play.*;
 import play.mvc.*;
 import utils.CityMgr;
 import utils.ClassroomMgr;
+import utils.EmployeeMgr;
 import utils.StoreMgr;
 
 import java.util.*;
@@ -136,9 +137,9 @@ public class Application extends Controller {
      */
     //员工设置(展示)页面
     public static void employeeSetting() {
-//    	List<StoreCity> listsc = StoreMgr.getInstance().getAllStore();
-//    	int number = listsc.size();
-        render();
+    	List<Employee> liste = EmployeeMgr.getInstance().getAllEmployee();
+    	int number = liste.size();
+        render(liste, number);
     }
     
     //添加员工页面
@@ -185,10 +186,12 @@ public class Application extends Controller {
     			else if (authority[i]==9) dostatistics=1;
     		}
     	}
-    	Employee e = new Employee(name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
-    	
-//    	StoreMgr.getInstance().save(s);
-//    	storeSetting();
+    	//工作人员必须选择一个门店，否则默认为第一个门店
+    	if (storeid==0) storeid=1;
+    	StoreCity sc = StoreMgr.getInstance().findStoreById(storeid);
+    	Employee e = new Employee(name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, sc.name, introduce);
+    	EmployeeMgr.getInstance().save(e);
+    	employeeSetting();
     }
     
     //删除员工

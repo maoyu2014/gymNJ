@@ -23,13 +23,14 @@ public class Employee {
 	public int dostatistics;
 	
 	public int storeid;
+	public String storename;
 	public String introduce;
 	
 	public Employee(int id, String name, String headimage, int sex,
 			String phone, int ismanager, int isfinance, int iscoach,
 			int domember, int doappointment, int docourse, int doplan,
 			int domarkte, int dofinance, int doemployee, int dostore,
-			int dostatistics, int storeid, String introduce) {
+			int dostatistics, int storeid, String storename, String introduce) {
 		this.id = id;
 		this.name = name;
 		this.headimage = headimage;
@@ -48,6 +49,7 @@ public class Employee {
 		this.dostore = dostore;
 		this.dostatistics = dostatistics;
 		this.storeid = storeid;
+		this.storename  = storename;
 		this.introduce = introduce;
 	}
 	
@@ -55,7 +57,7 @@ public class Employee {
 			String phone, int ismanager, int isfinance, int iscoach,
 			int domember, int doappointment, int docourse, int doplan,
 			int domarkte, int dofinance, int doemployee, int dostore,
-			int dostatistics, int storeid, String introduce) {
+			int dostatistics, int storeid, String storename, String introduce) {
 		this.name = name;
 		this.headimage = headimage;
 		this.sex = sex;
@@ -73,6 +75,7 @@ public class Employee {
 		this.dostore = dostore;
 		this.dostatistics = dostatistics;
 		this.storeid = storeid;
+		this.storename  = storename;
 		this.introduce = introduce;
 	}
 	
