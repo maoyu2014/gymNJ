@@ -1,0 +1,99 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加工作人员</div>
+	
+#{form @Application.addEmployeeToDB()}
+	<div style="margin-left:100px;">
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">姓名：</span>
+		<input name="name" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		<div style="margin:10px">
+		<span style="font-size:14px;display:inline-block;width:100px">头像：</span>
+		<input name="headimage" class="easyui-filebox" data-options="buttonText:'上传图片'" style="height:32px">
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">性别：</span>
+		<input type="radio" name="sex" value="1">男
+		<input type="radio" name="sex" value="2">女
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">电话：</span>
+		<input name="phone" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">身份：</span>
+		<input type="checkbox" name="identity"  class="identityc" value="1">店长
+		<input type="checkbox" name="identity"  class="identityc" value="2">财务
+		<input type="checkbox" name="identity"  class="identityc" value="3">教练
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">登录权限：</span>
+		<input type="checkbox" name="authority" value="1">会员管理（限店长）
+		<input type="checkbox" name="authority" value="2">预约管理（限店长）
+		<input type="checkbox" name="authority" value="3">课程管理（限教练）<br><br>
+		<span style="font-size:14px;display:inline-block;width:100px"></span>
+		<input type="checkbox" name="authority" value="4">健身计划（限教练）
+		<input type="checkbox" name="authority" value="5">营销管理（限店长）
+		<input type="checkbox" name="authority" value="6">财务管理（限财务）<br><br>
+		<span style="font-size:14px;display:inline-block;width:100px"></span>
+		<input type="checkbox" name="authority" value="7">员工管理（限店长）
+		<input type="checkbox" name="authority" value="8">门店管理（限店长）
+		<input type="checkbox" name="authority" value="9">报表管理（限店长）
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">所属门店：</span>
+		<input name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}'" style="height:32px">
+		</div>
+		
+		<div style="margin:10px">
+		<span style="font-size:14px;display:inline-block;width:100px">个人简介：</span>
+		<textarea name="introduce" rows="8" cols="30"></textarea>
+		</div>
+		
+		<div style="margin-left:100px;">
+		<input type="submit" style="width:80px;height:32px">
+		</div>
+		
+	</div>
+#{/form}
+	
+	<script>
+	$("input[name='identity']").click(function(){
+		var identity = document.getElementsByName("identity"); 
+		var authority = document.getElementsByName("authority"); 
+		for (i=0; i<authority.length; i++){  
+			authority[i].checked=false;
+		}
+		var value;
+		for (i=0; i<identity.length; i++){  
+			if (identity[i].checked){  
+				value = identity[i].value;
+				if (value==1) {
+					authority[0].checked=true;
+					authority[1].checked=true;
+					authority[4].checked=true;
+					authority[6].checked=true;
+					authority[7].checked=true;
+					authority[8].checked=true;
+				} else if (value==2) {
+					authority[5].checked=true;
+				} else if (value==3) {
+					authority[2].checked=true;
+					authority[3].checked=true;
+				}
+			}
+		}
+	});
+	</script>
+	
+</div>

@@ -91,55 +91,43 @@ public class ClassroomMgr {
 		}
 		return flag;
 	}
-	/*
-	public StoreCity findStoreById(int storeid) {
+	
+	public Classroom findClassroomById(int classroomid) {
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
-		StoreCity sc = null;
+		Classroom cr = null;
 		try {
 			//加空格啊加空格，sql一定记得各种加空格
-			String sql = "select store.id as id, cityid, store.name as name, city.name as cityname, address, area, photo, manager, phone from store inner join city on store.cityid = city.id where store.id = " + storeid;
+			String sql = "select id, name, holdnumber, `usage`, storeid from classroom where id = " + classroomid;
 			rs = DB.executeQuery(stmt, sql);
 			if (rs.next()) {
 				int id = rs.getInt("id");
-				int cityid = rs.getInt("cityid");
 				String name = rs.getString("name");
-				String cityname = rs.getString("cityname");
-				String address = rs.getString("address");
-				double area = rs.getDouble("area");
-				String photo = rs.getString("photo");
-				String manager = rs.getString("manager");
-				String phone = rs.getString("phone");
-				sc = new StoreCity(id, cityid, name, cityname, address, area, photo, manager, phone);
+				int holdnumber = rs.getInt("holdnumber");
+				int usage = rs.getInt("usage");
+				int storeid = rs.getInt("storeid");
+				cr = new Classroom(id, name, holdnumber, usage, storeid);
 			}
 		} catch (SQLException e) {
-			System.out.println("cuocuocuco\n");
 			e.printStackTrace();
 		} finally {
 			DB.close(conn);
 			DB.close(stmt);
 			DB.close(rs);
 		}
-		return sc;
+		return cr;
 	}
 	
 	
-	
-	
-	
-	public void update(Store s) {
+	public void update(Classroom cr) {
 		Connection conn = DB.getConn();
-		String sql = "update store set cityid = ?, name = ?, address = ?, area = ?, photo = ?, manager = ?, phone = ? where id = " +s.id;
+		String sql = "update classroom set name = ?, holdnumber = ?, `usage` = ? where id = " +cr.id;
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
-			pstmt.setInt(1, s.cityid);
-			pstmt.setString(2, s.name);
-			pstmt.setString(3, s.address);
-			pstmt.setDouble(4, s.area);
-			pstmt.setString(5, s.photo);
-			pstmt.setString(6, s.manager);
-			pstmt.setString(7, s.phone);
+			pstmt.setString(1, cr.name);
+			pstmt.setInt(2, cr.holdnumber);
+			pstmt.setInt(3, cr.usage);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -148,6 +136,16 @@ public class ClassroomMgr {
 			DB.close(conn);
 		}
 	}
+	
+	
+	/*
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	public boolean hasMember(String pengid) {

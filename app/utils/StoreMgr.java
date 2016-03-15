@@ -73,7 +73,6 @@ public class StoreMgr {
 				sc = new StoreCity(id, cityid, name, cityname, address, area, photo, manager, phone);
 			}
 		} catch (SQLException e) {
-			System.out.println("cuocuocuco\n");
 			e.printStackTrace();
 		} finally {
 			DB.close(conn);

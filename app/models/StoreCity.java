@@ -12,6 +12,9 @@ public class StoreCity {
 	public String manager;
 	public String phone;
 	
+	public StoreCity() {
+	}
+	
 	
 	public StoreCity(int id, int cityid, String name, String cityname,
 			String address, double area, String photo, String manager,
