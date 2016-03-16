@@ -212,14 +212,16 @@ public class EmployeeMgr {
 		}
 	}
 	
-	/*
-	public boolean hasMember(String pengid) {
+	public boolean hasUser(String username) {
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
-		String sql = "select * from member where pengid = '" + pengid + "'";
-		rs = DB.executeQuery(stmt, sql);
 		try {
+			String sql = "select * from employee where username = '" + username + "'";
+			rs = DB.executeQuery(stmt, sql);
+			if (rs==null) {
+				return false;
+			}
 			if (rs.next()) {
 				return true;
 			} 
@@ -232,6 +234,56 @@ public class EmployeeMgr {
 		}
 		return false;
 	}
+	
+	public Employee findEmployeeByUsername(String ausername) {
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		Employee e = null;
+		try {
+			//加空格啊加空格，sql一定记得各种加空格
+			String sql = "select * from employee where username = '" + ausername + "'";
+			rs = DB.executeQuery(stmt, sql);
+			if (rs.next()) {
+				int id = rs.getInt("id");
+				String username = rs.getString("username");
+				String password = rs.getString("password");
+				String name = rs.getString("name");
+				String headimage = rs.getString("headimage");
+				int sex = rs.getInt("sex");			
+				String phone = rs.getString("phone");
+				
+				int ismanager = rs.getInt("ismanager");
+				int isfinance = rs.getInt("isfinance");
+				int iscoach = rs.getInt("iscoach");
+				
+				int domember = rs.getInt("domember");
+				int doappointment = rs.getInt("doappointment");
+				int docourse = rs.getInt("docourse");
+				int doplan = rs.getInt("doplan");
+				int domarkte = rs.getInt("domarkte");
+				int dofinance = rs.getInt("dofinance");
+				int doemployee = rs.getInt("doemployee");
+				int dostore = rs.getInt("dostore");
+				int dostatistics = rs.getInt("dostatistics");
+				
+				int storeid = rs.getInt("storeid");
+				String storename = rs.getString("storename");
+				String introduce = rs.getString("introduce");
+				e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, storename, introduce);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return e;
+	}
+	
+	/*
+	
 	
 	public boolean hasOtherMember(String pengid, int id) {
 		Connection conn = DB.getConn();

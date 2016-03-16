@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+    
+    </head>
+    
+    <body>
+    #{form @Application.check()}
+    	<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">用户名：</span>
+		<input name="username" class="easyui-textbox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">密码：</span>
+		<input name="password" class="easyui-textbox" type="password" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		<div style="margin-left:100px;">
+		<input type="submit" style="width:80px;height:32px" value="登录">
+		</div>
+    #{/form}
+    </body>
+</html>

@@ -19,6 +19,26 @@ public class Application extends Controller {
         render();
     }
 
+    //登录页面
+    public static void login() {
+        render();
+    }
+    
+    //判断能否登录，能登录的话保存session
+    public static void check(String username, String password) {
+    	if (EmployeeMgr.getInstance().hasUser(username)) {
+    		Employee e = EmployeeMgr.getInstance().findEmployeeByUsername(username);
+    		if (e.password.equals(password)) {
+    			//TODO 加入session
+    			index();
+    		} else {
+    			renderJSON("用户名或者密码错误！");
+    		}
+    	} else {
+    		renderJSON("用户不存在！");
+    	}
+    }
+    
     /*
      * ·························城市city
      */
@@ -152,6 +172,13 @@ public class Application extends Controller {
     //添加员工
     public static void addEmployeeToDB(String username, String password, String name, String headimage, int sex, String phone, 
     		int[] identity, int[] authority, int storeid, String introduce) {
+    	if (EmployeeMgr.getInstance().hasUser(username)) {
+    		renderJSON("登录账号名已经存在，请换一个！");
+    	}
+    	//工作人员必须选择一个门店
+    	if (storeid==0) {
+    		renderJSON("请选择一个门店!!!");
+    	}
     	int ismanager = 0;
     	int isfinance = 0;
     	int iscoach = 0;
@@ -187,10 +214,6 @@ public class Application extends Controller {
     			else if (authority[i]==8) dostore=1;
     			else if (authority[i]==9) dostatistics=1;
     		}
-    	}
-    	//工作人员必须选择一个门店
-    	if (storeid==0) {
-    		renderJSON("请选择一个门店!!!");
     	}
     	StoreCity sc = StoreMgr.getInstance().findStoreById(storeid);
     	Employee e = new Employee(username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, sc.name, introduce);
@@ -216,6 +239,13 @@ public class Application extends Controller {
     //修改员工
     public static void updateEmployeeToDB(int id, String username, String password, String name, String headimage, int sex, String phone, 
     		int[] identity, int[] authority, int storeid, String introduce) {
+    	if (EmployeeMgr.getInstance().hasUser(username)) {
+    		renderJSON("登录账号名已经存在，请换一个！");
+    	}
+    	//工作人员必须选择一个门店
+    	if (storeid==0) {
+    		renderJSON("请选择一个门店!!!");
+    	}
     	int ismanager = 0;
     	int isfinance = 0;
     	int iscoach = 0;
@@ -251,10 +281,6 @@ public class Application extends Controller {
     			else if (authority[i]==8) dostore=1;
     			else if (authority[i]==9) dostatistics=1;
     		}
-    	}
-    	//工作人员必须选择一个门店
-    	if (storeid==0) {
-    		renderJSON("请选择一个门店!!!");
     	}
     	StoreCity sc = StoreMgr.getInstance().findStoreById(storeid);
     	Employee e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, sc.name, introduce);
