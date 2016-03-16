@@ -108,45 +108,12 @@ public class EmployeeMgr {
 		}
 		return list;
 	}
-	/*
-	public StoreCity findStoreById(int storeid) {
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		StoreCity sc = null;
-		try {
-			//加空格啊加空格，sql一定记得各种加空格
-			String sql = "select store.id as id, cityid, store.name as name, city.name as cityname, address, area, photo, manager, phone from store inner join city on store.cityid = city.id where store.id = " + storeid;
-			rs = DB.executeQuery(stmt, sql);
-			if (rs.next()) {
-				int id = rs.getInt("id");
-				int cityid = rs.getInt("cityid");
-				String name = rs.getString("name");
-				String cityname = rs.getString("cityname");
-				String address = rs.getString("address");
-				double area = rs.getDouble("area");
-				String photo = rs.getString("photo");
-				String manager = rs.getString("manager");
-				String phone = rs.getString("phone");
-				sc = new StoreCity(id, cityid, name, cityname, address, area, photo, manager, phone);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(conn);
-			DB.close(stmt);
-			DB.close(rs);
-		}
-		return sc;
-	}
 	
-	
-	
-	public boolean deleteStore(int id) {
+	public boolean deleteEmployee(int id) {
 		boolean flag = false;
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
-		String sql = "delete from store where id = " + id;
+		String sql = "delete from employee where id = " + id;
 		try {
 			stmt.executeUpdate(sql);
 			flag=true;
@@ -159,28 +126,85 @@ public class EmployeeMgr {
 		return flag;
 	}
 	
-	public void update(Store s) {
+	public Employee findEmployeeById(int employeeid) {
 		Connection conn = DB.getConn();
-		String sql = "update store set cityid = ?, name = ?, address = ?, area = ?, photo = ?, manager = ?, phone = ? where id = " +s.id;
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		Employee e = null;
+		try {
+			//加空格啊加空格，sql一定记得各种加空格
+			String sql = "select * from employee where id = " + employeeid;
+			rs = DB.executeQuery(stmt, sql);
+			if (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				String headimage = rs.getString("headimage");
+				int sex = rs.getInt("sex");			
+				String phone = rs.getString("phone");
+				
+				int ismanager = rs.getInt("ismanager");
+				int isfinance = rs.getInt("isfinance");
+				int iscoach = rs.getInt("iscoach");
+				
+				int domember = rs.getInt("domember");
+				int doappointment = rs.getInt("doappointment");
+				int docourse = rs.getInt("docourse");
+				int doplan = rs.getInt("doplan");
+				int domarkte = rs.getInt("domarkte");
+				int dofinance = rs.getInt("dofinance");
+				int doemployee = rs.getInt("doemployee");
+				int dostore = rs.getInt("dostore");
+				int dostatistics = rs.getInt("dostatistics");
+				
+				int storeid = rs.getInt("storeid");
+				String storename = rs.getString("storename");
+				String introduce = rs.getString("introduce");
+				e = new Employee(id, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, storename, introduce);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return e;
+	}
+	
+	public void update(Employee e) {
+		Connection conn = DB.getConn();
+		String sql = "update employee set name = ?, headimage = ?, sex = ?, phone = ?, ismanager = ?, isfinance = ?, iscoach = ?, domember = ?, doappointment = ?, docourse = ?, doplan = ?, domarkte = ?, dofinance = ?, doemployee = ?, dostore = ?, dostatistics = ?, storeid = ?, storename = ?, introduce = ? where id = " +e.id;
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
-			pstmt.setInt(1, s.cityid);
-			pstmt.setString(2, s.name);
-			pstmt.setString(3, s.address);
-			pstmt.setDouble(4, s.area);
-			pstmt.setString(5, s.photo);
-			pstmt.setString(6, s.manager);
-			pstmt.setString(7, s.phone);
+			pstmt.setString(1, e.name);
+			pstmt.setString(2, e.headimage);
+			pstmt.setInt(3, e.sex);
+			pstmt.setString(4, e.phone);
+			pstmt.setInt(5, e.ismanager);
+			pstmt.setInt(6, e.isfinance);
+			pstmt.setInt(7, e.iscoach);
+			pstmt.setInt(8, e.domember);
+			pstmt.setInt(9, e.doappointment);
+			pstmt.setInt(10, e.docourse);
+			pstmt.setInt(11, e.doplan);
+			pstmt.setInt(12, e.domarkte);
+			pstmt.setInt(13, e.dofinance);
+			pstmt.setInt(14, e.doemployee);
+			pstmt.setInt(15, e.dostore);
+			pstmt.setInt(16, e.dostatistics);
+			pstmt.setInt(17, e.storeid);
+			pstmt.setString(18, e.storename);
+			pstmt.setString(19, e.introduce);
 			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException eee) {
+			eee.printStackTrace();
 		} finally {
 			DB.close(pstmt);
 			DB.close(conn);
 		}
 	}
 	
-	
+	/*
 	public boolean hasMember(String pengid) {
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);

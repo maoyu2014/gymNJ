@@ -2,6 +2,7 @@ package controllers;
 
 import play.*;
 import play.mvc.*;
+import play.mvc.results.RenderJson;
 import utils.CityMgr;
 import utils.ClassroomMgr;
 import utils.EmployeeMgr;
@@ -88,7 +89,7 @@ public class Application extends Controller {
     		double area, String photo, String manager, String phone) {
     	Store s = new Store(id, cityid, name, address, area, photo, manager, phone);
     	StoreMgr.getInstance().update(s);
-    	storeDetail(id);
+    	storeSetting();
     }
     
     /*
@@ -196,27 +197,82 @@ public class Application extends Controller {
     
     //删除员工
     public static void deleteEmployee(int id) {
-    	boolean flag = StoreMgr.getInstance().deleteStore(id);
+    	boolean flag = EmployeeMgr.getInstance().deleteEmployee(id);
     	if (flag) 
-    		storeSetting();
+    		employeeSetting();
     	else 
     		renderText("删除失败");
     }
     
     //员工详情(修改)页面
     public static void employeeDetail(int id) {
-    	StoreCity sc = StoreMgr.getInstance().findStoreById(id);
-    	List<Classroom> listcr = ClassroomMgr.getInstance().getAllClassroomByStoreId(id);
-    	render(sc, listcr);
+    	Employee e = EmployeeMgr.getInstance().findEmployeeById(id);
+    	render(e);
     }
     
     //修改员工
-    public static void updateEmployeeToDB(int id, int cityid, String name, String address,
-    		double area, String photo, String manager, String phone) {
-    	Store s = new Store(id, cityid, name, address, area, photo, manager, phone);
-    	StoreMgr.getInstance().update(s);
-    	storeDetail(id);
+    public static void updateEmployeeToDB(int id, String name, String headimage, int sex, String phone, 
+    		int[] identity, int[] authority, int storeid, String introduce) {
+    	int ismanager = 0;
+    	int isfinance = 0;
+    	int iscoach = 0;
+    	
+    	int domember=0;
+    	int doappointment=0;
+    	int docourse=0;
+    	int doplan=0;
+    	int domarkte=0;
+    	int dofinance=0;
+    	int doemployee=0;
+    	int dostore=0;
+    	int dostatistics=0;
+    	
+    	if (identity!=null) {
+    		int length = identity.length;
+    		for (int i=0; i<length; i++) {
+    			if (identity[i]==1) ismanager=1;
+    			else if (identity[i]==2) isfinance=1;
+    			else if (identity[i]==3) iscoach=1;
+    		}
+    	}
+    	if (authority!=null) {
+    		int length = authority.length;
+    		for (int i=0; i<length; i++) {
+    			if (authority[i]==1) domember=1;
+    			else if (authority[i]==2) doappointment=1;
+    			else if (authority[i]==3) docourse=1;
+    			else if (authority[i]==4) doplan=1;
+    			else if (authority[i]==5) domarkte=1;
+    			else if (authority[i]==6) dofinance=1;
+    			else if (authority[i]==7) doemployee=1;
+    			else if (authority[i]==8) dostore=1;
+    			else if (authority[i]==9) dostatistics=1;
+    		}
+    	}
+    	//工作人员必须选择一个门店，否则默认为第一个门店
+    	if (storeid==0) storeid=1;
+    	StoreCity sc = StoreMgr.getInstance().findStoreById(storeid);
+    	Employee e = new Employee(id, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, sc.name, introduce);
+    	EmployeeMgr.getInstance().update(e);
+    	employeeSetting();
     }
+    
+    //返回给员工设置中的第一个combobox使用
+    public static void getThreeKindsEmployee() {
+    	int id;
+    	String name;
+    	String result="[";
+    	id=0; name="全部工作人员";
+    	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"},";
+    	id=1; name="店长";
+    	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"},";
+    	id=2; name="财务";
+    	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"},";
+    	id=3; name="教练";
+    	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"}]";
+    	renderJSON(result);
+    }
+    
     
     
     
