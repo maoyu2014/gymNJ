@@ -1,0 +1,43 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加门店公告</div>
+	
+#{form @Application.addAnnouncementToDB()}
+	<div style="margin-left:100px;">
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">公告名称：</span>
+		<input name="name" class="easyui-textbox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		<div style="margin:10px">
+		<span style="font-size:14px;display:inline-block;width:100px">所属门店：</span>
+		<input name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}'" style="height:32px">
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">开始时间：</span>
+		<input name="starttime" class="easyui-datetimebox" data-options="required:true,missingMessage:'必填项',showSeconds:false" style="height:32px">
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">结束时间：</span>
+		<input name="endtime" class="easyui-datetimebox" data-options="required:true,missingMessage:'必填项',showSeconds:false" style="height:32px">
+		</div>
+		
+		<div style="margin:10px">
+		<span style="font-size:14px;display:inline-block;width:100px">公告详情：</span>
+		<textarea name="content" rows="8" cols="30"></textarea>
+		</div>
+		
+		<div style="margin-left:100px;">
+		<input type="submit" style="width:80px;height:32px">
+		</div>
+		
+	</div>
+#{/form}
+	
+	
+</div>

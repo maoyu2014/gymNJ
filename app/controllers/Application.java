@@ -3,6 +3,7 @@ package controllers;
 import play.*;
 import play.mvc.*;
 import play.mvc.results.RenderJson;
+import utils.AnnouncementMgr;
 import utils.CityMgr;
 import utils.ClassroomMgr;
 import utils.EmployeeMgr;
@@ -38,7 +39,7 @@ public class Application extends Controller {
      * ························门店设置Store
      */
     
-    //查询所有门店
+    //查询所有门店 + 全部门店
     public static void getAllStore() {
     	List<StoreCity> listsc = StoreMgr.getInstance().getAllStore();
     	StoreCity sc = new StoreCity();
@@ -134,7 +135,7 @@ public class Application extends Controller {
     
     
     /*
-     * ----------------------员工设置
+     * ----------------------员工设置Employee
      */
     //员工设置(展示)页面
     public static void employeeSetting() {
@@ -149,7 +150,7 @@ public class Application extends Controller {
     }
     
     //添加员工
-    public static void addEmployeeToDB(String name, String headimage, int sex, String phone, 
+    public static void addEmployeeToDB(String username, String password, String name, String headimage, int sex, String phone, 
     		int[] identity, int[] authority, int storeid, String introduce) {
     	int ismanager = 0;
     	int isfinance = 0;
@@ -187,10 +188,12 @@ public class Application extends Controller {
     			else if (authority[i]==9) dostatistics=1;
     		}
     	}
-    	//工作人员必须选择一个门店，否则默认为第一个门店
-    	if (storeid==0) storeid=1;
+    	//工作人员必须选择一个门店
+    	if (storeid==0) {
+    		renderJSON("请选择一个门店!!!");
+    	}
     	StoreCity sc = StoreMgr.getInstance().findStoreById(storeid);
-    	Employee e = new Employee(name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, sc.name, introduce);
+    	Employee e = new Employee(username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, sc.name, introduce);
     	EmployeeMgr.getInstance().save(e);
     	employeeSetting();
     }
@@ -211,7 +214,7 @@ public class Application extends Controller {
     }
     
     //修改员工
-    public static void updateEmployeeToDB(int id, String name, String headimage, int sex, String phone, 
+    public static void updateEmployeeToDB(int id, String username, String password, String name, String headimage, int sex, String phone, 
     		int[] identity, int[] authority, int storeid, String introduce) {
     	int ismanager = 0;
     	int isfinance = 0;
@@ -249,10 +252,12 @@ public class Application extends Controller {
     			else if (authority[i]==9) dostatistics=1;
     		}
     	}
-    	//工作人员必须选择一个门店，否则默认为第一个门店
-    	if (storeid==0) storeid=1;
+    	//工作人员必须选择一个门店
+    	if (storeid==0) {
+    		renderJSON("请选择一个门店!!!");
+    	}
     	StoreCity sc = StoreMgr.getInstance().findStoreById(storeid);
-    	Employee e = new Employee(id, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, sc.name, introduce);
+    	Employee e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, sc.name, introduce);
     	EmployeeMgr.getInstance().update(e);
     	employeeSetting();
     }
@@ -273,6 +278,59 @@ public class Application extends Controller {
     	renderJSON(result);
     }
     
+    /*
+     * ···············--------营销管理······---------·门店公告Announcement
+     */
+    
+    //门店公告设置(展示)页面
+    public static void announcementSetting() {
+    	List<Announcement> lista = AnnouncementMgr.getInstance().getAllAnnouncement();
+    	int number = lista.size();
+        render(lista,number);
+    }
+    
+    //添加门店公告页面
+    public static void addAnnouncement() {
+        render();
+    }
+    
+    //添加门店公告
+    public static void addAnnouncementToDB(String name, int storeid,
+			String starttime, String endtime, String content, int employeeid,
+			String employeename) {
+    	if (storeid==0) {
+    		renderJSON("请选择一个门店!!!");
+    	}
+    	StoreCity sc = StoreMgr.getInstance().findStoreById(storeid);
+    	String storename = sc.name;
+//    	Announcement a = new Announcement(name, storeid, storename, starttime, endtime, content, employeeid, employeename);
+//    	AnnouncementMgr.getInstance().save(a);
+//    	announcementSetting();
+    }
+    
+    //删除门店公告
+    public static void deleteAnnouncement(int id) {
+    	boolean flag = AnnouncementMgr.getInstance().deleteAnnouncement(id);
+    	if (flag) 
+    		announcementSetting();
+    	else 
+    		renderText("删除失败");
+    }
+    
+    //门店公告详情(修改)页面
+    public static void announcementDetail(int id) {
+    	Announcement sc = AnnouncementMgr.getInstance().findAnnouncementById(id);
+    	render(sc);
+    }
+    
+    //修改门店公告
+    public static void updateAnnouncementToDB(int id, String name, int storeid, String storename,
+			String starttime, String endtime, String content, int employeeid,
+			String employeename) {
+    	Announcement a = new Announcement(id, name, storeid, storename, starttime, endtime, content, employeeid, employeename);
+    	AnnouncementMgr.getInstance().update(a);
+    	announcementSetting();
+    }
     
     
     

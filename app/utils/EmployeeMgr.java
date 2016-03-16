@@ -33,28 +33,30 @@ public class EmployeeMgr {
 	
 	public void save(Employee e) {
 		Connection conn = DB.getConn();
-		String sql = "insert into employee values (null, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into employee values (null, ?,?,?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
-			pstmt.setString(1, e.name);
-			pstmt.setString(2, e.headimage);
-			pstmt.setInt(3, e.sex);
-			pstmt.setString(4, e.phone);
-			pstmt.setInt(5, e.ismanager);
-			pstmt.setInt(6, e.isfinance);
-			pstmt.setInt(7, e.iscoach);
-			pstmt.setInt(8, e.domember);
-			pstmt.setInt(9, e.doappointment);
-			pstmt.setInt(10, e.docourse);
-			pstmt.setInt(11, e.doplan);
-			pstmt.setInt(12, e.domarkte);
-			pstmt.setInt(13, e.dofinance);
-			pstmt.setInt(14, e.doemployee);
-			pstmt.setInt(15, e.dostore);
-			pstmt.setInt(16, e.dostatistics);
-			pstmt.setInt(17, e.storeid);
-			pstmt.setString(18, e.storename);
-			pstmt.setString(19, e.introduce);
+			pstmt.setString(1, e.username);
+			pstmt.setString(2, e.password);
+			pstmt.setString(3, e.name);
+			pstmt.setString(4, e.headimage);
+			pstmt.setInt(5, e.sex);
+			pstmt.setString(6, e.phone);
+			pstmt.setInt(7, e.ismanager);
+			pstmt.setInt(8, e.isfinance);
+			pstmt.setInt(9, e.iscoach);
+			pstmt.setInt(10, e.domember);
+			pstmt.setInt(11, e.doappointment);
+			pstmt.setInt(12, e.docourse);
+			pstmt.setInt(13, e.doplan);
+			pstmt.setInt(14, e.domarkte);
+			pstmt.setInt(15, e.dofinance);
+			pstmt.setInt(16, e.doemployee);
+			pstmt.setInt(17, e.dostore);
+			pstmt.setInt(18, e.dostatistics);
+			pstmt.setInt(19, e.storeid);
+			pstmt.setString(20, e.storename);
+			pstmt.setString(21, e.introduce);
 			pstmt.executeUpdate();
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -74,6 +76,8 @@ public class EmployeeMgr {
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
+				String username = rs.getString("username");
+				String password = rs.getString("password");
 				String name = rs.getString("name");
 				String headimage = rs.getString("headimage");
 				int sex = rs.getInt("sex");			
@@ -96,7 +100,7 @@ public class EmployeeMgr {
 				int storeid = rs.getInt("storeid");
 				String storename = rs.getString("storename");
 				String introduce = rs.getString("introduce");
-				Employee e = new Employee(id, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, storename, introduce);
+				Employee e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, storename, introduce);
 				list.add(e);
 			}
 		} catch (SQLException eee) {
@@ -137,6 +141,8 @@ public class EmployeeMgr {
 			rs = DB.executeQuery(stmt, sql);
 			if (rs.next()) {
 				int id = rs.getInt("id");
+				String username = rs.getString("username");
+				String password = rs.getString("password");
 				String name = rs.getString("name");
 				String headimage = rs.getString("headimage");
 				int sex = rs.getInt("sex");			
@@ -159,7 +165,7 @@ public class EmployeeMgr {
 				int storeid = rs.getInt("storeid");
 				String storename = rs.getString("storename");
 				String introduce = rs.getString("introduce");
-				e = new Employee(id, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, storename, introduce);
+				e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, storename, introduce);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -173,28 +179,30 @@ public class EmployeeMgr {
 	
 	public void update(Employee e) {
 		Connection conn = DB.getConn();
-		String sql = "update employee set name = ?, headimage = ?, sex = ?, phone = ?, ismanager = ?, isfinance = ?, iscoach = ?, domember = ?, doappointment = ?, docourse = ?, doplan = ?, domarkte = ?, dofinance = ?, doemployee = ?, dostore = ?, dostatistics = ?, storeid = ?, storename = ?, introduce = ? where id = " +e.id;
+		String sql = "update employee set username=?, password=?, name = ?, headimage = ?, sex = ?, phone = ?, ismanager = ?, isfinance = ?, iscoach = ?, domember = ?, doappointment = ?, docourse = ?, doplan = ?, domarkte = ?, dofinance = ?, doemployee = ?, dostore = ?, dostatistics = ?, storeid = ?, storename = ?, introduce = ? where id = " +e.id;
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
-			pstmt.setString(1, e.name);
-			pstmt.setString(2, e.headimage);
-			pstmt.setInt(3, e.sex);
-			pstmt.setString(4, e.phone);
-			pstmt.setInt(5, e.ismanager);
-			pstmt.setInt(6, e.isfinance);
-			pstmt.setInt(7, e.iscoach);
-			pstmt.setInt(8, e.domember);
-			pstmt.setInt(9, e.doappointment);
-			pstmt.setInt(10, e.docourse);
-			pstmt.setInt(11, e.doplan);
-			pstmt.setInt(12, e.domarkte);
-			pstmt.setInt(13, e.dofinance);
-			pstmt.setInt(14, e.doemployee);
-			pstmt.setInt(15, e.dostore);
-			pstmt.setInt(16, e.dostatistics);
-			pstmt.setInt(17, e.storeid);
-			pstmt.setString(18, e.storename);
-			pstmt.setString(19, e.introduce);
+			pstmt.setString(1, e.username);
+			pstmt.setString(2, e.password);
+			pstmt.setString(3, e.name);
+			pstmt.setString(4, e.headimage);
+			pstmt.setInt(5, e.sex);
+			pstmt.setString(6, e.phone);
+			pstmt.setInt(7, e.ismanager);
+			pstmt.setInt(8, e.isfinance);
+			pstmt.setInt(9, e.iscoach);
+			pstmt.setInt(10, e.domember);
+			pstmt.setInt(11, e.doappointment);
+			pstmt.setInt(12, e.docourse);
+			pstmt.setInt(13, e.doplan);
+			pstmt.setInt(14, e.domarkte);
+			pstmt.setInt(15, e.dofinance);
+			pstmt.setInt(16, e.doemployee);
+			pstmt.setInt(17, e.dostore);
+			pstmt.setInt(18, e.dostatistics);
+			pstmt.setInt(19, e.storeid);
+			pstmt.setString(20, e.storename);
+			pstmt.setString(21, e.introduce);
 			pstmt.executeUpdate();
 		} catch (SQLException eee) {
 			eee.printStackTrace();

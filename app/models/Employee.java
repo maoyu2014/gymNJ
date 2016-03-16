@@ -3,6 +3,10 @@ package models;
 public class Employee {
 	
 	public int id;
+	
+	public String username;
+	public String password;
+	
 	public String name;
 	public String headimage;
 	public int sex;				//1表示男，2表示女
@@ -26,12 +30,16 @@ public class Employee {
 	public String storename;
 	public String introduce;
 	
-	public Employee(int id, String name, String headimage, int sex,
-			String phone, int ismanager, int isfinance, int iscoach,
-			int domember, int doappointment, int docourse, int doplan,
-			int domarkte, int dofinance, int doemployee, int dostore,
-			int dostatistics, int storeid, String storename, String introduce) {
+	
+	public Employee(int id, String username, String password, String name,
+			String headimage, int sex, String phone, int ismanager,
+			int isfinance, int iscoach, int domember, int doappointment,
+			int docourse, int doplan, int domarkte, int dofinance,
+			int doemployee, int dostore, int dostatistics, int storeid,
+			String storename, String introduce) {
 		this.id = id;
+		this.username = username;
+		this.password = password;
 		this.name = name;
 		this.headimage = headimage;
 		this.sex = sex;
@@ -49,15 +57,18 @@ public class Employee {
 		this.dostore = dostore;
 		this.dostatistics = dostatistics;
 		this.storeid = storeid;
-		this.storename  = storename;
+		this.storename = storename;
 		this.introduce = introduce;
 	}
 	
-	public Employee(String name, String headimage, int sex,
-			String phone, int ismanager, int isfinance, int iscoach,
-			int domember, int doappointment, int docourse, int doplan,
-			int domarkte, int dofinance, int doemployee, int dostore,
-			int dostatistics, int storeid, String storename, String introduce) {
+	public Employee(String username, String password, String name,
+			String headimage, int sex, String phone, int ismanager,
+			int isfinance, int iscoach, int domember, int doappointment,
+			int docourse, int doplan, int domarkte, int dofinance,
+			int doemployee, int dostore, int dostatistics, int storeid,
+			String storename, String introduce) {
+		this.username = username;
+		this.password = password;
 		this.name = name;
 		this.headimage = headimage;
 		this.sex = sex;
@@ -75,10 +86,9 @@ public class Employee {
 		this.dostore = dostore;
 		this.dostatistics = dostatistics;
 		this.storeid = storeid;
-		this.storename  = storename;
+		this.storename = storename;
 		this.introduce = introduce;
 	}
-	
-	
+		
 	
 }
