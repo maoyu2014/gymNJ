@@ -2,60 +2,40 @@
 
 <div data-options="region:'center',split:false">
 
-	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">工作人员信息</div>
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">门店公告设置</div>
 	
 	<div style="margin:20px">
-		<input name="employeetype" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getThreeKindsEmployee()}'" style="height:32px">
-		<input name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}'" style="height:32px">
-	    <input name="employeename" class="easyui-textbox" data-options="prompt:'搜索工作人员名称关键字'" style="height:32px">
+		<input name="employeetype" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}'" style="height:32px">
+		<input name="starttime" class="easyui-datetimebox" data-options="required:true,missingMessage:'必填项',showSeconds:false" style="height:32px">
 		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px;height:32px">搜索</a>        
-	    <a href="@{Application.addEmployee()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;position:absolute;right:20px;">增加人员</a>
+	    <a href="@{Application.addAnnouncement()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;position:absolute;right:20px;">增加公告</a>
 	</div>
 	
 	<div style="margin:20px">
         <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
 	        <thead>
 	            <tr>
-	                <th data-options="field:'headimage',width:80">头像</th>
-	                <th data-options="field:'name',width:80">姓名</th>
-	                <th data-options="field:'sex',width:80">性别</th>
-	                <th data-options="field:'phone',width:100">电话</th>
-	                <th data-options="field:'identity',width:80">身份</th>
-	                <th data-options="field:'storename',width:100">所属门店</th>
-	                <th data-options="field:'authority',width:100">登录权限</th>
-	                <th data-options="field:'operation',width:80">操作</th>
+	                <th data-options="field:'name',width:80">公告名称</th>
+	                <th data-options="field:'storename',width:100">门店</th>
+	                <th data-options="field:'starttime',width:100">开始时间</th>
+	                <th data-options="field:'endtime',width:100">结束时间</th>
+	                <th data-options="field:'status',width:100">状态</th>
+	                <th data-options="field:'employeename',width:100">发布者</th>
+	                <th data-options="field:'operation',width:100">操作</th>
 	            </tr>
 	        </thead>
 	        <tbody>
-	        #{list items:liste, as:'employee'}
+	        #{list items:listad, as:'announcementdisplay'}
 	        	<tr>
-		            <td>${employee.headimage}</td>
-		            <td>${employee.name}</td>
+		            <td>${announcementdisplay.name}</td>
+		            <td>${announcementdisplay.storename}</td>
+		            <td>${announcementdisplay.starttime}</td>          
+		            <td>${announcementdisplay.endtime}</td>
+		            <td>${announcementdisplay.status}</td>
+		            <td>${announcementdisplay.employeename}</td>
 		            <td>
-		            #{if employee.sex==1}
-		            	男
-		            #{/if}
-		            #{if employee.sex==2}
-		            	女
-		            #{/if}
-		            </td>
-		            <td>${employee.phone}</td>
-		            <td>
-		            #{if employee.ismanager==1}
-		            	店长
-		            #{/if}
-		            #{if employee.isfinance==1}
-		            	财务
-		            #{/if}
-		            #{if employee.iscoach==1}
-		            	教练
-		            #{/if}
-		            </td>
-		            <td>${employee.storename}</td>
-		            <td>权限保密</td>
-		            <td>
-		            	<a href="@{Application.employeeDetail(employee.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-		            	<a href="@{Application.deleteEmployee(employee.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            	<a href="@{Application.announcementDetail(announcementdisplay.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{Application.deleteAnnouncement(announcementdisplay.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
 		            </td>
 		        </tr>
 	        #{/list}

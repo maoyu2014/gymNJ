@@ -34,17 +34,15 @@ public class AnnouncementMgr {
 	
 	public void save(Announcement e) {
 		Connection conn = DB.getConn();
-		String sql = "insert into announcement values (null, ?, ?, ?, ?, ?, ?, ?,?)";
+		String sql = "insert into announcement values (null, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
 			pstmt.setString(1, e.name);
 			pstmt.setInt(2, e.storeid);
-			pstmt.setString(3, e.storename);
-			pstmt.setString(4, e.starttime);
-			pstmt.setString(5, e.endtime);
-			pstmt.setString(6, e.content);
-			pstmt.setInt(7, e.employeeid);
-			pstmt.setString(8, e.employeename);
+			pstmt.setString(3, e.starttime);
+			pstmt.setString(4, e.endtime);
+			pstmt.setString(5, e.content);
+			pstmt.setInt(6, e.employeeid);
 			pstmt.executeUpdate();
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -66,13 +64,11 @@ public class AnnouncementMgr {
 				int id=rs.getInt("id");
 				String name=rs.getString("name");
 				int storeid=rs.getInt("storeid");
-				String storename=rs.getString("storename");
 				String starttime=rs.getString("starttime");
 				String endtime=rs.getString("endtime");
 				String content=rs.getString("content");
 				int employeeid=rs.getInt("employeeid");
-				String employeename=rs.getString("employeename");
-				Announcement an = new Announcement(id, employeename, storeid, storename, starttime, endtime, content, employeeid, employeename);
+				Announcement an = new Announcement(id, name, storeid, starttime, endtime, content, employeeid);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -115,13 +111,11 @@ public class AnnouncementMgr {
 				int id=rs.getInt("id");
 				String name=rs.getString("name");
 				int storeid=rs.getInt("storeid");
-				String storename=rs.getString("storename");
 				String starttime=rs.getString("starttime");
 				String endtime=rs.getString("endtime");
 				String content=rs.getString("content");
 				int employeeid=rs.getInt("employeeid");
-				String employeename=rs.getString("employeename");
-				an = new Announcement(id, employeename, storeid, storename, starttime, endtime, content, employeeid, employeename);
+				an = new Announcement(id, name, storeid, starttime, endtime, content, employeeid);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -135,17 +129,15 @@ public class AnnouncementMgr {
 	
 	public void update(Announcement e) {
 		Connection conn = DB.getConn();
-		String sql = "update announcement set name = ?, storeid = ?, storename = ?, starttime = ?, endtime = ?, content = ?, employeeid = ?, employeename = ? where id = " +e.id;
+		String sql = "update announcement set name = ?, storeid = ?, starttime = ?, endtime = ?, content = ?, employeeid = ?  where id = " +e.id;
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
 			pstmt.setString(1, e.name);
 			pstmt.setInt(2, e.storeid);
-			pstmt.setString(3, e.storename);
-			pstmt.setString(4, e.starttime);
-			pstmt.setString(5, e.endtime);
-			pstmt.setString(6, e.content);
-			pstmt.setInt(7, e.employeeid);
-			pstmt.setString(8, e.employeename);
+			pstmt.setString(3, e.starttime);
+			pstmt.setString(4, e.endtime);
+			pstmt.setString(5, e.content);
+			pstmt.setInt(6, e.employeeid);
 			pstmt.executeUpdate();
 		} catch (SQLException eee) {
 			eee.printStackTrace();

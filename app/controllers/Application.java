@@ -1,7 +1,9 @@
 package controllers;
 
 import play.*;
+import play.data.validation.Required;
 import play.mvc.*;
+import play.mvc.Scope.Session;
 import play.mvc.results.RenderJson;
 import utils.AnnouncementMgr;
 import utils.CityMgr;
@@ -15,10 +17,21 @@ import models.*;
 
 public class Application extends Controller {
 
+	//首页
     public static void index() {
         render();
     }
-
+    
+	/*
+	 * 权限管理
+	 */
+	
+    //在所有功能前检查是否是已经登录的
+    @Before(unless={"login","check"})
+    public static void checkAuthentification() {
+    	if (session.get("user") == null) login();
+    }
+    
     //登录页面
     public static void login() {
         render();
@@ -29,7 +42,7 @@ public class Application extends Controller {
     	if (EmployeeMgr.getInstance().hasUser(username)) {
     		Employee e = EmployeeMgr.getInstance().findEmployeeByUsername(username);
     		if (e.password.equals(password)) {
-    			//TODO 加入session
+    			session.put("user", e.toString());
     			index();
     		} else {
     			renderJSON("用户名或者密码错误！");
@@ -39,6 +52,40 @@ public class Application extends Controller {
     	}
     }
     
+    //登出
+    public static void logout() {
+    	session.remove("user");
+    	index();
+    }
+    
+    //解析session
+    private static HashMap<String, Object> parseSession() {
+    	HashSet<Integer> sets = new HashSet<>();
+    	sets.add(2);
+    	sets.add(3);
+    	sets.add(4);
+    	sets.add(6);
+    	HashMap<String, Object> maps = new HashMap<>();
+    	String user = session.get("user");
+    	String[] temp3 = user.split(", ");
+    	for (int i=0; i<temp3.length; i++) {
+    		String[] str = temp3[i].split("=");
+    		if (sets.contains(i+1)) {
+    			if (str.length==2)
+    				maps.put(str[0], str[1]);
+    			else 
+    				maps.put(str[0], null);
+    		}
+    		else {
+    			int value = Integer.parseInt(str[1]);
+    			maps.put(str[0], value);
+    		}
+    	}
+//    	System.out.println(maps);
+    	return maps;
+	}
+    
+    	
     /*
      * ·························城市city
      */
@@ -159,7 +206,14 @@ public class Application extends Controller {
      */
     //员工设置(展示)页面
     public static void employeeSetting() {
-    	List<Employee> liste = EmployeeMgr.getInstance().getAllEmployee();
+    	List<Employee> list = EmployeeMgr.getInstance().getAllEmployee();
+    	List<EmployeeShow> liste = new ArrayList<>();
+    	for (Employee em : list) {
+    		EmployeeShow es = new EmployeeShow(em);
+    		StoreCity s = StoreMgr.getInstance().findStoreById(em.storeid);
+    		es.storename = s.name;
+    		liste.add(es);
+    	}
     	int number = liste.size();
         render(liste, number);
     }
@@ -215,8 +269,7 @@ public class Application extends Controller {
     			else if (authority[i]==9) dostatistics=1;
     		}
     	}
-    	StoreCity sc = StoreMgr.getInstance().findStoreById(storeid);
-    	Employee e = new Employee(username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, sc.name, introduce);
+    	Employee e = new Employee(username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
     	EmployeeMgr.getInstance().save(e);
     	employeeSetting();
     }
@@ -239,9 +292,6 @@ public class Application extends Controller {
     //修改员工
     public static void updateEmployeeToDB(int id, String username, String password, String name, String headimage, int sex, String phone, 
     		int[] identity, int[] authority, int storeid, String introduce) {
-    	if (EmployeeMgr.getInstance().hasUser(username)) {
-    		renderJSON("登录账号名已经存在，请换一个！");
-    	}
     	//工作人员必须选择一个门店
     	if (storeid==0) {
     		renderJSON("请选择一个门店!!!");
@@ -282,8 +332,7 @@ public class Application extends Controller {
     			else if (authority[i]==9) dostatistics=1;
     		}
     	}
-    	StoreCity sc = StoreMgr.getInstance().findStoreById(storeid);
-    	Employee e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, sc.name, introduce);
+    	Employee e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
     	EmployeeMgr.getInstance().update(e);
     	employeeSetting();
     }
@@ -308,11 +357,45 @@ public class Application extends Controller {
      * ···············--------营销管理······---------·门店公告Announcement
      */
     
+    
     //门店公告设置(展示)页面
     public static void announcementSetting() {
     	List<Announcement> lista = AnnouncementMgr.getInstance().getAllAnnouncement();
-    	int number = lista.size();
-        render(lista,number);
+    	List<AnnouncementShow> listad = new ArrayList<>();
+    	for (Announcement aa : lista) {
+    		String starttime = aa.starttime;
+    		starttime = starttime.substring(6, 10)+starttime.substring(0, 2)+starttime.substring(3, 5)+
+    				starttime.substring(11, 13)+starttime.substring(14, 16);
+    		String endtime = aa.endtime;
+    		endtime = endtime.substring(6, 10)+endtime.substring(0, 2)+endtime.substring(3, 5)+
+    				endtime.substring(11, 13)+endtime.substring(14, 16);
+    		Calendar calendar = new GregorianCalendar();
+    		String nowtime = ""+calendar.get(Calendar.YEAR);
+    		int month = calendar.get(Calendar.MONTH)+1; 
+    		if (month<10) nowtime+="0"+month;
+    		else nowtime += month;
+    		int day = calendar.get(Calendar.DAY_OF_MONTH);
+    		if (day<10) nowtime+="0"+day;
+    		else nowtime+=day;
+    		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+    		if (hour<10) nowtime+="0"+hour;
+    		else nowtime+=hour;
+    		int minutes = calendar.get(Calendar.MINUTE);
+    		if (minutes<10) nowtime+="0"+minutes;
+    		else nowtime+=minutes;
+    		String status = "已发布";
+    		if (nowtime.compareTo(starttime)>0 && nowtime.compareTo(endtime)<0) 
+    			status="进行中";
+    		if (nowtime.compareTo(endtime)>0)
+    			status="已结束";
+    		AnnouncementShow as = new AnnouncementShow(aa);
+    		as.status = status;
+    		as.storename = StoreMgr.getInstance().findStoreById(aa.storeid).name;
+    		as.employeename = EmployeeMgr.getInstance().findEmployeeById(aa.employeeid).name;
+    		listad.add(as);
+    	}
+    	int number = listad.size();
+        render(listad,number);
     }
     
     //添加门店公告页面
@@ -322,19 +405,17 @@ public class Application extends Controller {
     
     //添加门店公告
     public static void addAnnouncementToDB(String name, int storeid,
-			String starttime, String endtime, String content, int employeeid,
-			String employeename) {
+			String starttime, String endtime, String content, int employeeid) {
     	if (storeid==0) {
     		renderJSON("请选择一个门店!!!");
     	}
-    	StoreCity sc = StoreMgr.getInstance().findStoreById(storeid);
-    	String storename = sc.name;
-//    	Announcement a = new Announcement(name, storeid, storename, starttime, endtime, content, employeeid, employeename);
-//    	AnnouncementMgr.getInstance().save(a);
-//    	announcementSetting();
+    	employeeid = (int) parseSession().get("id");
+    	Announcement a = new Announcement(name, storeid, starttime, endtime, content, employeeid);
+    	AnnouncementMgr.getInstance().save(a);
+    	announcementSetting();
     }
-    
-    //删除门店公告
+
+	//删除门店公告
     public static void deleteAnnouncement(int id) {
     	boolean flag = AnnouncementMgr.getInstance().deleteAnnouncement(id);
     	if (flag) 
@@ -350,10 +431,13 @@ public class Application extends Controller {
     }
     
     //修改门店公告
-    public static void updateAnnouncementToDB(int id, String name, int storeid, String storename,
-			String starttime, String endtime, String content, int employeeid,
-			String employeename) {
-    	Announcement a = new Announcement(id, name, storeid, storename, starttime, endtime, content, employeeid, employeename);
+    public static void updateAnnouncementToDB(int id, String name, int storeid,
+			String starttime, String endtime, String content, int employeeid) {
+    	if (storeid==0) {
+    		renderJSON("请选择一个门店!!!");
+    	}
+    	employeeid = (int) parseSession().get("id");
+    	Announcement a = new Announcement(id, name, storeid, starttime, endtime, content, employeeid);
     	AnnouncementMgr.getInstance().update(a);
     	announcementSetting();
     }

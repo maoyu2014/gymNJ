@@ -6,7 +6,6 @@ public class Announcement {
 	public String name;
 	
 	public int storeid;
-	public String storename;
 	
 	public String starttime;
 	public String endtime;
@@ -14,33 +13,27 @@ public class Announcement {
 	public String content;
 	
 	public int employeeid;
-	public String employeename;
 	
-	public Announcement(int id, String name, int storeid, String storename,
-			String starttime, String endtime, String content, int employeeid,
-			String employeename) {
+	
+	public Announcement(int id, String name, int storeid, 
+			String starttime, String endtime, String content, int employeeid) {
 		this.id = id;
 		this.name = name;
 		this.storeid = storeid;
-		this.storename = storename;
 		this.starttime = starttime;
 		this.endtime = endtime;
 		this.content = content;
 		this.employeeid = employeeid;
-		this.employeename = employeename;
 	}
 	
-	public Announcement(String name, int storeid, String storename,
-			String starttime, String endtime, String content, int employeeid,
-			String employeename) {
+	public Announcement(String name, int storeid,
+			String starttime, String endtime, String content, int employeeid) {
 		this.name = name;
 		this.storeid = storeid;
-		this.storename = storename;
 		this.starttime = starttime;
 		this.endtime = endtime;
 		this.content = content;
 		this.employeeid = employeeid;
-		this.employeename = employeename;
 	}
 	
 }

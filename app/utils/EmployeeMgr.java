@@ -33,7 +33,7 @@ public class EmployeeMgr {
 	
 	public void save(Employee e) {
 		Connection conn = DB.getConn();
-		String sql = "insert into employee values (null, ?,?,?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into employee values (null, ?,?,?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
 			pstmt.setString(1, e.username);
@@ -55,8 +55,7 @@ public class EmployeeMgr {
 			pstmt.setInt(17, e.dostore);
 			pstmt.setInt(18, e.dostatistics);
 			pstmt.setInt(19, e.storeid);
-			pstmt.setString(20, e.storename);
-			pstmt.setString(21, e.introduce);
+			pstmt.setString(20, e.introduce);
 			pstmt.executeUpdate();
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -98,9 +97,8 @@ public class EmployeeMgr {
 				int dostatistics = rs.getInt("dostatistics");
 				
 				int storeid = rs.getInt("storeid");
-				String storename = rs.getString("storename");
 				String introduce = rs.getString("introduce");
-				Employee e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, storename, introduce);
+				Employee e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
 				list.add(e);
 			}
 		} catch (SQLException eee) {
@@ -163,9 +161,8 @@ public class EmployeeMgr {
 				int dostatistics = rs.getInt("dostatistics");
 				
 				int storeid = rs.getInt("storeid");
-				String storename = rs.getString("storename");
 				String introduce = rs.getString("introduce");
-				e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, storename, introduce);
+				e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -179,7 +176,7 @@ public class EmployeeMgr {
 	
 	public void update(Employee e) {
 		Connection conn = DB.getConn();
-		String sql = "update employee set username=?, password=?, name = ?, headimage = ?, sex = ?, phone = ?, ismanager = ?, isfinance = ?, iscoach = ?, domember = ?, doappointment = ?, docourse = ?, doplan = ?, domarkte = ?, dofinance = ?, doemployee = ?, dostore = ?, dostatistics = ?, storeid = ?, storename = ?, introduce = ? where id = " +e.id;
+		String sql = "update employee set username=?, password=?, name = ?, headimage = ?, sex = ?, phone = ?, ismanager = ?, isfinance = ?, iscoach = ?, domember = ?, doappointment = ?, docourse = ?, doplan = ?, domarkte = ?, dofinance = ?, doemployee = ?, dostore = ?, dostatistics = ?, storeid = ?, introduce = ? where id = " +e.id;
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
 			pstmt.setString(1, e.username);
@@ -201,8 +198,7 @@ public class EmployeeMgr {
 			pstmt.setInt(17, e.dostore);
 			pstmt.setInt(18, e.dostatistics);
 			pstmt.setInt(19, e.storeid);
-			pstmt.setString(20, e.storename);
-			pstmt.setString(21, e.introduce);
+			pstmt.setString(20, e.introduce);
 			pstmt.executeUpdate();
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -268,9 +264,8 @@ public class EmployeeMgr {
 				int dostatistics = rs.getInt("dostatistics");
 				
 				int storeid = rs.getInt("storeid");
-				String storename = rs.getString("storename");
 				String introduce = rs.getString("introduce");
-				e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, storename, introduce);
+				e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();

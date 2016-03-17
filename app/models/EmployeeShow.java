@@ -1,6 +1,6 @@
 package models;
 
-public class Employee {
+public class EmployeeShow {
 	
 	public int id;
 	
@@ -27,15 +27,16 @@ public class Employee {
 	public int dostatistics;
 	
 	public int storeid;
+	public String storename;
 	public String introduce;
 	
 	
-	public Employee(int id, String username, String password, String name,
+	public EmployeeShow(int id, String username, String password, String name,
 			String headimage, int sex, String phone, int ismanager,
 			int isfinance, int iscoach, int domember, int doappointment,
 			int docourse, int doplan, int domarkte, int dofinance,
 			int doemployee, int dostore, int dostatistics, int storeid,
-			 String introduce) {
+			String storename, String introduce) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -56,15 +57,16 @@ public class Employee {
 		this.dostore = dostore;
 		this.dostatistics = dostatistics;
 		this.storeid = storeid;
+		this.storename = storename;
 		this.introduce = introduce;
 	}
 	
-	public Employee(String username, String password, String name,
+	public EmployeeShow(String username, String password, String name,
 			String headimage, int sex, String phone, int ismanager,
 			int isfinance, int iscoach, int domember, int doappointment,
 			int docourse, int doplan, int domarkte, int dofinance,
 			int doemployee, int dostore, int dostatistics, int storeid,
-			String introduce) {
+			String storename, String introduce) {
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -84,20 +86,32 @@ public class Employee {
 		this.dostore = dostore;
 		this.dostatistics = dostatistics;
 		this.storeid = storeid;
+		this.storename = storename;
 		this.introduce = introduce;
 	}
 
-	@Override
-	public String toString() {
-		return "id=" + id + ", username=" + username + ", name=" + name + ", headimage=" + headimage
-				+ ", sex=" + sex + ", phone=" + phone + ", ismanager="
-				+ ismanager + ", isfinance=" + isfinance + ", iscoach="
-				+ iscoach + ", domember=" + domember + ", doappointment="
-				+ doappointment + ", docourse=" + docourse + ", doplan="
-				+ doplan + ", domarkte=" + domarkte + ", dofinance="
-				+ dofinance + ", doemployee=" + doemployee + ", dostore="
-				+ dostore + ", dostatistics=" + dostatistics + ", storeid="
-				+ storeid;
+	public EmployeeShow(Employee em) {
+		this.id = em.id;
+		this.username = em.username;
+		this.password = em.password;
+		this.name = em.name;
+		this.headimage = em.headimage;
+		this.sex = em.sex;
+		this.phone = em.phone;
+		this.ismanager = em.ismanager;
+		this.isfinance = em.isfinance;
+		this.iscoach = em.iscoach;
+		this.domember = em.domember;
+		this.doappointment = em.doappointment;
+		this.docourse = em.docourse;
+		this.doplan = em.doplan;
+		this.domarkte = em.domarkte;
+		this.dofinance = em.dofinance;
+		this.doemployee = em.doemployee;
+		this.dostore = em.dostore;
+		this.dostatistics = em.dostatistics;
+		this.storeid = em.storeid;
+		this.introduce = em.introduce;
 	}
 		
 	
