@@ -9,6 +9,7 @@ import utils.AnnouncementMgr;
 import utils.CityMgr;
 import utils.ClassroomMgr;
 import utils.EmployeeMgr;
+import utils.GroupWebsiteMgr;
 import utils.StoreMgr;
 
 import java.util.*;
@@ -93,6 +94,15 @@ public class Application extends Controller {
     	List<City> cities = CityMgr.getInstance().getAllCity();
         renderJSON(cities);
     }
+    
+    /*
+     * ·························团购网站groupwebsite
+     */
+    public static void getAllGroupWebsite() {
+    	List<GroupWebsite> lists = GroupWebsiteMgr.getInstance().getAllGroupWebsite();
+        renderJSON(lists);
+    }
+    
     
     /*
      * ··························会员管理
