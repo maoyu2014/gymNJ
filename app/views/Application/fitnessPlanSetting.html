@@ -1,0 +1,84 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">健身计划设置</div>
+	
+	
+	<div style="margin:20px">
+	    <a href="@{Application.addFitnessPlan()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:120px;height:32px;">增加健身计划</a>
+	</div>
+	
+	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'style',width:100">热身健身</th>
+	                <th data-options="field:'operation',width:20">操作</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        #{list items:lists, as:'FitnessPlan'}
+	        	#{if FitnessPlan.style==1}
+	        	<tr>
+		            <td>${FitnessPlan.name}</td>
+		            <td>
+		            	<a href="@{Application.fitnessPlanDetail(FitnessPlan.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{Application.deleteFitnessPlan(FitnessPlan.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            </td>
+		        </tr>
+		        #{/if}
+	        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+  
+  	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'style',width:100">器械健身</th>
+	                <th data-options="field:'operation',width:20">操作</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        #{list items:lists, as:'FitnessPlan'}
+	        	#{if FitnessPlan.style==2}
+	        	<tr>
+		            <td>${FitnessPlan.name}</td>
+		            <td>
+		            	<a href="@{Application.fitnessPlanDetail(FitnessPlan.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{Application.deleteFitnessPlan(FitnessPlan.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            </td>
+		        </tr>
+		        #{/if}
+	        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+    
+    <div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'style',width:100">团操健身</th>
+	                <th data-options="field:'operation',width:20">操作</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        #{list items:lists, as:'FitnessPlan'}
+	        	#{if FitnessPlan.style==3}
+	        	<tr>
+		            <td>${FitnessPlan.name}</td>
+		            <td>
+		            	<a href="@{Application.fitnessPlanDetail(FitnessPlan.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{Application.deleteFitnessPlan(FitnessPlan.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            </td>
+		        </tr>
+		        #{/if}
+	        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+	
+</div>

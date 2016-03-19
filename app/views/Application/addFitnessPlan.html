@@ -1,0 +1,76 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加健身计划</div>
+	
+#{form @Application.addFitnessPlanToDB()}
+	<div style="margin-left:100px;">
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">计划类别：</span>
+		<select name="style" class="easyui-combobox" style="height:32px;width:100px;">
+			<option value="1">热身健身</option>
+		    <option value="2">器械健身</option>
+		    <option value="3">团操健身</option>
+		</select>
+		</div>
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">健身名字：</span>
+		<input name="name" class="easyui-textbox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">适合人群：</span>
+		<input type="radio" name="fitsex" value="1">男
+		<input type="radio" name="fitsex" value="2">女
+		</div>
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">锻炼部位：</span>
+		<input type="checkbox" name="parts"  value="1">全身 
+		<input type="checkbox" name="parts"  value="2">臂力 
+		<input type="checkbox" name="parts"  value="3">胸部 
+		<input type="checkbox" name="parts"  value="4">腹部 
+		<input type="checkbox" name="parts"  value="5">腿部 
+		</div> 
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">数量：</span>
+		<span>男生体重（kg）</span> <span style="margin-left:70px">女生体重（kg）</span> <span style="margin-left:70px">数量</span><br/><br/>
+		<div style="margin-left:100px">
+		<input name="geshu1" class="easyui-numberbox" data-options="precision:2,required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px">-
+		<input name="geshu2" class="easyui-numberbox" data-options="precision:2,required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px"><span style="display:inline-block;width:20px"></span>
+		<input name="geshu3" class="easyui-numberbox" data-options="precision:2,required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px">-
+		<input name="geshu4" class="easyui-numberbox" data-options="precision:2,required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px"><span style="display:inline-block;width:20px"></span>
+		<input name="geshu5" class="easyui-numberbox" data-options="required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px">个
+		</div>
+		<br/>
+		<div style="margin-left:100px">
+		<input name="fenzhong1" class="easyui-numberbox" data-options="precision:2,required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px">-
+		<input name="fenzhong2" class="easyui-numberbox" data-options="precision:2,required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px"><span style="display:inline-block;width:20px"></span>
+		<input name="fenzhong3" class="easyui-numberbox" data-options="precision:2,required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px">-
+		<input name="fenzhong4" class="easyui-numberbox" data-options="precision:2,required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px"><span style="display:inline-block;width:20px"></span>
+		<input name="fenzhong5" class="easyui-numberbox" data-options="required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px">min
+		</div>
+		<br/>
+		<div style="margin-left:100px">
+		<input name="keshu1" class="easyui-numberbox" data-options="precision:2,required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px">-
+		<input name="keshu2" class="easyui-numberbox" data-options="precision:2,required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px"><span style="display:inline-block;width:20px"></span>
+		<input name="keshu3" class="easyui-numberbox" data-options="precision:2,required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px">-
+		<input name="keshu4" class="easyui-numberbox" data-options="precision:2,required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px"><span style="display:inline-block;width:20px"></span>
+		<input name="keshu5" class="easyui-numberbox" data-options="required:true,missingMessage:'必填项',showSeconds:false" style="width:60px;height:32px">课
+		</div>
+		</div>
+		
+		
+		<div style="margin-left:100px;">
+		<input type="submit" style="width:80px;height:32px">
+		</div>
+		
+	</div>
+#{/form}
+	
+	
+</div>

@@ -9,6 +9,7 @@ import utils.AnnouncementMgr;
 import utils.CityMgr;
 import utils.ClassroomMgr;
 import utils.EmployeeMgr;
+import utils.FitnessPlanMgr;
 import utils.GroupWebsiteMgr;
 import utils.GroupbuyMgr;
 import utils.StoreMgr;
@@ -562,6 +563,115 @@ public class Application extends Controller {
     	GroupbuyMgr.getInstance().update(a);
     	groupbuySetting();
     }
+    
+    
+    /*
+     * ···············--------健身计划FitnessPlan
+     */
+    
+    
+    //健身计划设置(展示)页面
+    public static void fitnessPlanSetting() {
+    	List<FitnessPlan> lists = FitnessPlanMgr.getInstance().getAllFitnessPlan();
+        render(lists);
+    }
+    
+    //添加健身计划页面
+    public static void addFitnessPlan() {
+        render();
+    }
+    
+    //添加健身计划
+    public static void addFitnessPlanToDB(int style, String name, int fitsex, int[] parts,
+    		double geshu1, double geshu2, double geshu3, double geshu4, int geshu5,
+    		double fenzhong1, double fenzhong2, double fenzhong3, double fenzhong4, int fenzhong5,
+    		double keshu1, double keshu2, double keshu3, double keshu4, int keshu5) {
+    	String ans_parts = "";
+    	String number = "";
+    	if (parts!=null) {
+    		int len = parts.length;
+    		for (int i=0; i<len; i++) {
+    			ans_parts +=parts[i]+",";
+    		}
+    	}
+    	number = geshu1+","+geshu2+","+geshu3+","+geshu4+","+geshu5+","+
+    			fenzhong1+","+fenzhong2+","+fenzhong3+","+fenzhong4+","+fenzhong5+","+
+    			keshu1+","+keshu2+","+keshu3+","+keshu4+","+keshu5+",";
+    	FitnessPlan a = new FitnessPlan(style, name, fitsex, ans_parts, number);
+    	FitnessPlanMgr.getInstance().save(a);
+    	fitnessPlanSetting();
+    }
+
+	//删除健身计划
+    public static void deleteFitnessPlan(int id) {
+    	boolean flag = FitnessPlanMgr.getInstance().deleteFitnessPlan(id);
+    	if (flag) 
+    		fitnessPlanSetting();
+    	else 
+    		renderText("删除失败");
+    }
+    
+    //健身计划详情(修改)页面
+    public static void fitnessPlanDetail(int id) {
+    	FitnessPlan s = FitnessPlanMgr.getInstance().findFitnessPlanById(id);
+    	FitnessPlanShow sc  = new FitnessPlanShow(s);
+    	String parts = sc.parts;
+    	String number = sc.number;
+    	String[] str = parts.split(",");
+    	for (String ss : str) {
+    		int temp = Integer.parseInt(ss);
+    		if (temp==1) sc.one=1;
+    		if (temp==2) sc.two=1;
+    		if (temp==3) sc.three=1;
+    		if (temp==4) sc.four=1;
+    		if (temp==5) sc.five=1;
+    	}
+    	str = number.split(",");
+    	for (int i=0; i<str.length; i++) {
+    		String ss = str[i];
+    		if (i==0) sc.geshu1 = Double.parseDouble(ss);
+    		if (i==1) sc.geshu2 = Double.parseDouble(ss);
+    		if (i==2) sc.geshu3 = Double.parseDouble(ss);
+    		if (i==3) sc.geshu4 = Double.parseDouble(ss);
+    		if (i==4) sc.geshu5 = Integer.parseInt(ss);
+    		
+    		if (i==5) sc.fenzhong1 = Double.parseDouble(ss);
+    		if (i==6) sc.fenzhong2 = Double.parseDouble(ss);
+    		if (i==7) sc.fenzhong3 = Double.parseDouble(ss);
+    		if (i==8) sc.fenzhong4 = Double.parseDouble(ss);
+    		if (i==9) sc.fenzhong5 = Integer.parseInt(ss);
+    		
+    		if (i==10) sc.keshu1 = Double.parseDouble(ss);
+    		if (i==11) sc.keshu2 = Double.parseDouble(ss);
+    		if (i==12) sc.keshu3 = Double.parseDouble(ss);
+    		if (i==13) sc.keshu4 = Double.parseDouble(ss);
+    		if (i==14) sc.keshu5 = Integer.parseInt(ss);
+    	}
+    	render(sc);
+    }
+    
+    //修改健身计划
+    public static void updateFitnessPlanToDB(int id, int style, String name, int fitsex, int[] parts,
+    		double geshu1, double geshu2, double geshu3, double geshu4, int geshu5,
+    		double fenzhong1, double fenzhong2, double fenzhong3, double fenzhong4, int fenzhong5,
+    		double keshu1, double keshu2, double keshu3, double keshu4, int keshu5) {
+    	String ans_parts = "";
+    	String number = "";
+    	if (parts!=null) {
+    		int len = parts.length;
+    		for (int i=0; i<len; i++) {
+    			ans_parts +=parts[i]+",";
+    		}
+    	}
+    	number = geshu1+","+geshu2+","+geshu3+","+geshu4+","+geshu5+","+
+    			fenzhong1+","+fenzhong2+","+fenzhong3+","+fenzhong4+","+fenzhong5+","+
+    			keshu1+","+keshu2+","+keshu3+","+keshu4+","+keshu5+",";
+    	FitnessPlan a = new FitnessPlan(id, style, name, fitsex, ans_parts, number);
+    	FitnessPlanMgr.getInstance().update(a);
+    	fitnessPlanSetting();
+    }
+    
+    
     
     
     
