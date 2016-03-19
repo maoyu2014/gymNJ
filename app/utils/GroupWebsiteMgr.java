@@ -12,6 +12,7 @@ import java.util.List;
 
 import models.City;
 import models.GroupWebsite;
+import models.Groupbuy;
 
 
 public class GroupWebsiteMgr {
@@ -51,6 +52,30 @@ public class GroupWebsiteMgr {
 			DB.close(rs);
 		}
 		return list;
+	}
+	
+	public GroupWebsite findGroupWebsiteById(int groupwebsiteid) {
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		GroupWebsite an = null;
+		try {
+			//加空格啊加空格，sql一定记得各种加空格
+			String sql = "select * from groupwebsite where id = " + groupwebsiteid;
+			rs = DB.executeQuery(stmt, sql);
+			if (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				an = new GroupWebsite(id, name);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return an;
 	}
 	
 	/*

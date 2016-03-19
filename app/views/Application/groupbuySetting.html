@@ -1,0 +1,54 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">门店公告设置</div>
+	
+	<div style="margin:20px">
+		<input name="groupwebsiteid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllGroupWebsite()}'" style="height:32px">
+		<select name=status class="easyui-combobox" style="height:32px;width:100px;">
+			<option value="1">进行中</option>
+		    <option value="2">已发布</option>
+		    <option value="3">已结束</option>
+		</select>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px;height:32px">搜索</a>        
+	    <a href="@{Application.addGroupbuy()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;position:absolute;right:20px;">增加团购</a>
+	</div>
+	
+	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'groupwebsitename',width:80">团购网站</th>
+	                <th data-options="field:'storename',width:100">所属店铺</th>
+	                <th data-options="field:'price',width:100">价格</th>
+	                <th data-options="field:'starttime',width:100">开始时间</th>
+	                <th data-options="field:'endtime',width:100">结束时间</th>
+	                <th data-options="field:'status',width:100">状态</th>
+	                <th data-options="field:'operation',width:100">操作</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        #{list items:lists, as:'GroupbuyShow'}
+	        	<tr>
+		            <td>${GroupbuyShow.groupwebsitename}</td>
+		            <td>${GroupbuyShow.storename}</td>
+		            <td>${GroupbuyShow.price}/${GroupbuyShow.times}次</td>          
+		            <td>${GroupbuyShow.starttime}</td>
+		            <td>${GroupbuyShow.endtime}</td>
+		            <td>${GroupbuyShow.status}</td>
+		            <td>
+		            	<a href="@{Application.groupbuyDetail(GroupbuyShow.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{Application.deleteGroupbuy(GroupbuyShow.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            </td>
+		        </tr>
+	        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+    
+    <div style="position:absolute;right:20px;font-size:15px;font-weight:600;">
+    	共${number}条记录
+	</div>
+	
+</div>

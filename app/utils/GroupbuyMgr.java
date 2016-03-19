@@ -18,33 +18,34 @@ import models.Store;
 import models.StoreCity;
 
 
-public class GroupbuytMgr {
+public class GroupbuyMgr {
 	
-	private GroupbuytMgr() {}
+	private GroupbuyMgr() {}
 	
-	private static GroupbuytMgr em = null;
+	private static GroupbuyMgr em = null;
 	static {
 		if (em == null) {
-			em = new GroupbuytMgr();
+			em = new GroupbuyMgr();
 		}
 	}
 	
-	public static GroupbuytMgr getInstance() {
+	public static GroupbuyMgr getInstance() {
 		return em;
 	}
 	
 	public void save(Groupbuy e) {
 		Connection conn = DB.getConn();
-		String sql = "insert into groupbuy values (null, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "insert into groupbuy values (null, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
 			pstmt.setInt(1, e.groupwebsiteid);
 			pstmt.setInt(2, e.storeid);
 			pstmt.setDouble(3, e.price);
-			pstmt.setString(4, e.starttime);
-			pstmt.setString(5, e.endtime);
-			pstmt.setString(6, e.introduce);
-			pstmt.setString(7, e.weburl);
+			pstmt.setDouble(4, e.times);
+			pstmt.setString(5, e.starttime);
+			pstmt.setString(6, e.endtime);
+			pstmt.setString(7, e.introduce);
+			pstmt.setString(8, e.weburl);
 			pstmt.executeUpdate();
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -67,11 +68,12 @@ public class GroupbuytMgr {
 				int groupwebsiteid = rs.getInt("groupwebsiteid");
 				int storeid = rs.getInt("storeid");
 				double price = rs.getDouble("price");
+				double times = rs.getDouble("times");
 				String starttime = rs.getString("starttime");
 				String endtime = rs.getString("endtime");
 				String introduce = rs.getString("introduce");
 				String weburl = rs.getString("weburl");
-				Groupbuy an = new Groupbuy(id, groupwebsiteid, storeid, price, starttime, endtime, introduce, weburl);
+				Groupbuy an = new Groupbuy(id, groupwebsiteid, storeid, price, times, starttime, endtime, introduce, weburl);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -115,11 +117,12 @@ public class GroupbuytMgr {
 				int groupwebsiteid = rs.getInt("groupwebsiteid");
 				int storeid = rs.getInt("storeid");
 				double price = rs.getDouble("price");
+				double times = rs.getDouble("times");
 				String starttime = rs.getString("starttime");
 				String endtime = rs.getString("endtime");
 				String introduce = rs.getString("introduce");
 				String weburl = rs.getString("weburl");
-				an = new Groupbuy(id, groupwebsiteid, storeid, price, starttime, endtime, introduce, weburl);
+				an = new Groupbuy(id, groupwebsiteid, storeid, price, times,starttime, endtime, introduce, weburl);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -133,16 +136,17 @@ public class GroupbuytMgr {
 	
 	public void update(Groupbuy e) {
 		Connection conn = DB.getConn();
-		String sql = "update groupbuy set groupwebsiteid = ?, storeid = ?, price = ?, starttime = ?, endtime = ?, introduce = ?, weburl = ?  where id = " +e.id;
+		String sql = "update groupbuy set groupwebsiteid = ?, storeid = ?, price = ?, times = ?, starttime = ?, endtime = ?, introduce = ?, weburl = ?  where id = " +e.id;
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
 			pstmt.setInt(1, e.groupwebsiteid);
 			pstmt.setInt(2, e.storeid);
 			pstmt.setDouble(3, e.price);
-			pstmt.setString(4, e.starttime);
-			pstmt.setString(5, e.endtime);
-			pstmt.setString(6, e.introduce);
-			pstmt.setString(7, e.weburl);
+			pstmt.setDouble(4, e.times);
+			pstmt.setString(5, e.starttime);
+			pstmt.setString(6, e.endtime);
+			pstmt.setString(7, e.introduce);
+			pstmt.setString(8, e.weburl);
 			pstmt.executeUpdate();
 		} catch (SQLException eee) {
 			eee.printStackTrace();

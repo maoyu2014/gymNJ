@@ -10,6 +10,7 @@ import utils.CityMgr;
 import utils.ClassroomMgr;
 import utils.EmployeeMgr;
 import utils.GroupWebsiteMgr;
+import utils.GroupbuyMgr;
 import utils.StoreMgr;
 
 import java.util.*;
@@ -220,6 +221,7 @@ public class Application extends Controller {
     	List<EmployeeShow> liste = new ArrayList<>();
     	for (Employee em : list) {
     		EmployeeShow es = new EmployeeShow(em);
+    		//TODO 可能为空，需要判断
     		StoreCity s = StoreMgr.getInstance().findStoreById(em.storeid);
     		es.storename = s.name;
     		liste.add(es);
@@ -364,7 +366,7 @@ public class Application extends Controller {
     }
     
     /*
-     * ···············--------营销管理······---------·门店公告Announcement
+     * ···············--------营销管理1······---------·门店公告Announcement
      */
     
     
@@ -374,11 +376,16 @@ public class Application extends Controller {
     	List<AnnouncementShow> listad = new ArrayList<>();
     	for (Announcement aa : lista) {
     		String starttime = aa.starttime;
-    		starttime = starttime.substring(6, 10)+starttime.substring(0, 2)+starttime.substring(3, 5)+
-    				starttime.substring(11, 13)+starttime.substring(14, 16);
+    		//TODO 时间问题需要更加详细的考虑
+    		if (starttime!=null && starttime.length()==16) {
+	    		starttime = starttime.substring(6, 10)+starttime.substring(0, 2)+starttime.substring(3, 5)+
+	    				starttime.substring(11, 13)+starttime.substring(14, 16);
+    		}
     		String endtime = aa.endtime;
-    		endtime = endtime.substring(6, 10)+endtime.substring(0, 2)+endtime.substring(3, 5)+
-    				endtime.substring(11, 13)+endtime.substring(14, 16);
+    		if (endtime!=null && endtime.length()==16) {
+	    		endtime = endtime.substring(6, 10)+endtime.substring(0, 2)+endtime.substring(3, 5)+
+	    				endtime.substring(11, 13)+endtime.substring(14, 16);
+    		}
     		Calendar calendar = new GregorianCalendar();
     		String nowtime = ""+calendar.get(Calendar.YEAR);
     		int month = calendar.get(Calendar.MONTH)+1; 
@@ -400,6 +407,7 @@ public class Application extends Controller {
     			status="已结束";
     		AnnouncementShow as = new AnnouncementShow(aa);
     		as.status = status;
+    		//TODO 可能为空，需要判断
     		as.storename = StoreMgr.getInstance().findStoreById(aa.storeid).name;
     		as.employeename = EmployeeMgr.getInstance().findEmployeeById(aa.employeeid).name;
     		listad.add(as);
@@ -452,6 +460,108 @@ public class Application extends Controller {
     	announcementSetting();
     }
     
+    
+    
+    /*
+     * ···············--------营销管理2······---------·团购活动Groupbuy
+     */
+    
+    
+    //团购活动设置(展示)页面
+    public static void groupbuySetting() {
+    	List<Groupbuy> list = GroupbuyMgr.getInstance().getAllGroupbuy();
+    	List<GroupbuyShow> lists = new ArrayList<>();
+    	for (Groupbuy aa : list) {
+    		//---
+    		String starttime = aa.starttime;
+    		//TODO 时间问题需要更加详细的考虑
+    		if (starttime!=null && starttime.length()==16) {
+	    		starttime = starttime.substring(6, 10)+starttime.substring(0, 2)+starttime.substring(3, 5)+
+	    				starttime.substring(11, 13)+starttime.substring(14, 16);
+    		}
+    		String endtime = aa.endtime;
+    		if (endtime!=null && endtime.length()==16) {
+	    		endtime = endtime.substring(6, 10)+endtime.substring(0, 2)+endtime.substring(3, 5)+
+	    				endtime.substring(11, 13)+endtime.substring(14, 16);
+    		}
+    		Calendar calendar = new GregorianCalendar();
+    		String nowtime = ""+calendar.get(Calendar.YEAR);
+    		int month = calendar.get(Calendar.MONTH)+1; 
+    		if (month<10) nowtime+="0"+month;
+    		else nowtime += month;
+    		int day = calendar.get(Calendar.DAY_OF_MONTH);
+    		if (day<10) nowtime+="0"+day;
+    		else nowtime+=day;
+    		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+    		if (hour<10) nowtime+="0"+hour;
+    		else nowtime+=hour;
+    		int minutes = calendar.get(Calendar.MINUTE);
+    		if (minutes<10) nowtime+="0"+minutes;
+    		else nowtime+=minutes;
+    		String status = "已发布";
+    		if (nowtime.compareTo(starttime)>0 && nowtime.compareTo(endtime)<0) 
+    			status="进行中";
+    		if (nowtime.compareTo(endtime)>0)
+    			status="已结束";
+    		//---
+    		GroupbuyShow as = new GroupbuyShow(aa);
+    		as.status = status;
+    		//TODO 可能为空，需要判断
+    		as.storename = StoreMgr.getInstance().findStoreById(aa.storeid).name;
+    		as.groupwebsitename = GroupWebsiteMgr.getInstance().findGroupWebsiteById(aa.groupwebsiteid).name;
+    		lists.add(as);
+    	}
+    	int number = lists.size();
+        render(lists,number);
+    }
+    
+    //添加团购活动页面
+    public static void addGroupbuy() {
+        render();
+    }
+    
+    //添加团购活动
+    public static void addGroupbuyToDB(int groupwebsiteid, int storeid, double price, double times,
+			String starttime, String endtime, String introduce, String weburl) {
+    	if (groupwebsiteid==0) {
+    		renderJSON("请选择一个团购网站!!!");
+    	}
+    	if (storeid==0) {
+    		renderJSON("请选择一个门店!!!");
+    	}
+    	Groupbuy a = new Groupbuy(groupwebsiteid, storeid, price, times, starttime, endtime, introduce, weburl);
+    	GroupbuyMgr.getInstance().save(a);
+    	groupbuySetting();
+    }
+
+	//删除团购活动
+    public static void deleteGroupbuy(int id) {
+    	boolean flag = GroupbuyMgr.getInstance().deleteGroupbuy(id);
+    	if (flag) 
+    		groupbuySetting();
+    	else 
+    		renderText("删除失败");
+    }
+    
+    //团购活动详情(修改)页面
+    public static void groupbuyDetail(int id) {
+    	Groupbuy sc = GroupbuyMgr.getInstance().findGroupbuyById(id);
+    	render(sc);
+    }
+    
+    //修改团购活动
+    public static void updateGroupbuyToDB(int id, int groupwebsiteid, int storeid, double price, double times,
+			String starttime, String endtime, String introduce, String weburl) {
+    	if (groupwebsiteid==0) {
+    		renderJSON("请选择一个团购网站!!!");
+    	}
+    	if (storeid==0) {
+    		renderJSON("请选择一个门店!!!");
+    	}
+    	Groupbuy a = new Groupbuy(id, groupwebsiteid, storeid, price, times, starttime, endtime, introduce, weburl);
+    	GroupbuyMgr.getInstance().update(a);
+    	groupbuySetting();
+    }
     
     
     
