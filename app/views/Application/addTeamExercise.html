@@ -1,0 +1,62 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加团操课程</div>
+	
+#{form @Application.addTeamExerciseToDB()}
+	<div style="margin-left:100px;">
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">课程名称：</span>
+		<input name="name" class="easyui-textbox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">课程图片：</span>
+		<input name="image" class="easyui-filebox" data-options="buttonText:'上传图片'" style="height:32px">
+		</div>
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">课程时长：</span>
+		<input name="usedtime" class="easyui-numberbox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">虐恋指数：</span>
+		<input type="radio" name="strength" value="1">1级
+		<input type="radio" name="strength" value="2">2级
+		<input type="radio" name="strength" value="3">3级
+		<input type="radio" name="strength" value="4">4级
+		<input type="radio" name="strength" value="5">5级
+		</div>
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">锻炼部位：</span>
+		<input type="checkbox" name="parts"  value="1">全身 
+		<input type="checkbox" name="parts"  value="2">臂力 
+		<input type="checkbox" name="parts"  value="3">胸部 
+		<input type="checkbox" name="parts"  value="4">腹部 
+		<input type="checkbox" name="parts"  value="5">腿部 
+		</div> 
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">简介：</span>
+		<textarea name="introduce" rows="8" cols="30"></textarea>
+		</div>
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">备注：</span>
+		<input name="notice" class="easyui-textbox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		</div>
+		
+		
+		<div style="margin-left:100px;">
+		<input type="submit" style="width:80px;height:32px">
+		</div>
+		
+	</div>
+#{/form}
+	
+	
+</div>

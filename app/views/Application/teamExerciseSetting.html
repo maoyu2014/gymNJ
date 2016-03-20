@@ -1,0 +1,83 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">团操课程和排期设置</div>
+	
+	<div class="easyui-tabs" data-options="fit:true,justified:true" >
+		
+		<div title="团操排期" style="">
+			<div style="margin:20px">
+			    <a href="@{Application.addTeamExerciseSchedule()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:120px;height:32px;">增加排期</a>
+			</div>
+			
+			<div style="margin:20px">
+		        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+			        <thead>
+			            <tr>
+			                <th data-options="field:'teamexercisename',width:80">课程名称</th>
+			                <th data-options="field:'employeename',width:80">教练</th>
+			                <th data-options="field:'storename',width:80">门店</th>
+			                <th data-options="field:'classroomname',width:80">教室</th>
+			                <th data-options="field:'begintime',width:80">开始时间</th>
+			                <th data-options="field:'endtime',width:80">结束时间</th>
+			                <th data-options="field:'oknum_num',width:80">预约人数</th>
+			                <th data-options="field:'operation',width:80">操作</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        #{list items:listtt, as:'TeamExerciseScheduleShow'}
+			        	<tr>
+				            <td>${TeamExerciseScheduleShow.teamexercisename}</td>
+				            <td>${TeamExerciseScheduleShow.employeename}</td>
+				            <td>${TeamExerciseScheduleShow.storename}</td>
+				            <td>${TeamExerciseScheduleShow.classroomname}</td>
+				            <td>${TeamExerciseScheduleShow.begintime}</td>
+				            <td>${TeamExerciseScheduleShow.endtime}</td>
+				            <td>${TeamExerciseScheduleShow.oknum}/${TeamExerciseScheduleShow.num}</td>
+				            <td>
+				            	<a href="@{Application.TeamExerciseScheduleDetail(TeamExerciseScheduleShow.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+				            	<a href="@{Application.deleteTeamExerciseSchedule(TeamExerciseScheduleShow.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+				            </td>
+				        </tr>
+			        #{/list}
+			        </tbody>
+			    </table>
+		    </div>
+	    </div>
+	    
+	    
+		<div title="团操课程" style="">
+			<div style="margin:20px">
+			    <a href="@{Application.addTeamExercise()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:120px;height:32px;">增加团操</a>
+			</div>
+			
+			<div style="margin:20px">
+		        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+			        <thead>
+			            <tr>
+			                <th data-options="field:'name',width:80">课程名称</th>
+			                <th data-options="field:'usedtime',width:80">时长</th>
+			                <th data-options="field:'operation',width:80">操作</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        #{list items:lists, as:'TeamExercise'}
+			        	<tr>
+				            <td>${TeamExercise.name}</td>
+				            <td>${TeamExercise.usedtime}</td>
+				            <td>
+				            	<a href="@{Application.teamExerciseDetail(TeamExercise.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+				            	<a href="@{Application.deleteTeamExercise(TeamExercise.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+				            </td>
+				        </tr>
+			        #{/list}
+			        </tbody>
+			    </table>
+		    </div>
+	    </div>
+	    
+	</div>
+  
+	
+</div>

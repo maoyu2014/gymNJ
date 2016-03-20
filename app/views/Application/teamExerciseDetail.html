@@ -1,0 +1,112 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">团操课程详情</div>
+	
+#{form @Application.updateTeamExerciseToDB(sc.id)}
+	<div style="margin-left:100px;">
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">课程名称：</span>
+		<input name="name" class="easyui-textbox" data-options="required:true,missingMessage:'必填项'" value="${sc.name}" style="height:32px">
+		</div>
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">课程图片：</span>
+		<input name="image" class="easyui-filebox" data-options="buttonText:'上传图片'" style="height:32px">
+		</div>
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">课程时长：</span>
+		<input name="usedtime" class="easyui-numberbox" data-options="required:true,missingMessage:'必填项'" value="${sc.usedtime}" style="height:32px">
+		</div>
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">虐恋指数：</span>
+		#{if sc.strength==1}
+		<input type="radio" name="strength" value="1" checked>1级
+		#{/if}
+		#{else}
+		<input type="radio" name="strength" value="1">1级
+		#{/else}
+		#{if sc.strength==2}
+		<input type="radio" name="strength" value="2" checked>2级
+		#{/if}
+		#{else}
+		<input type="radio" name="strength" value="2">2级
+		#{/else}
+		#{if sc.strength==3}
+		<input type="radio" name="strength" value="3" checked>3级
+		#{/if}
+		#{else}
+		<input type="radio" name="strength" value="3">3级
+		#{/else}
+		#{if sc.strength==4}
+		<input type="radio" name="strength" value="4" checked>4级
+		#{/if}
+		#{else}
+		<input type="radio" name="strength" value="4">4级
+		#{/else}
+		#{if sc.strength==5}
+		<input type="radio" name="strength" value="5" checked>5级
+		#{/if}
+		#{else}
+		<input type="radio" name="strength" value="5">5级
+		#{/else}
+		</div>
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">锻炼部位：</span>
+		#{if sc.one==1}
+		<input type="checkbox" name="parts"  value="1" checked>全身 
+		#{/if}
+		#{else}
+		<input type="checkbox" name="parts"  value="1">全身 
+		#{/else}
+		#{if sc.two==1}
+		<input type="checkbox" name="parts"  value="2" checked>臂力 
+		#{/if}
+		#{else}
+		<input type="checkbox" name="parts"  value="2">臂力 
+		#{/else}
+		#{if sc.three==1}
+		<input type="checkbox" name="parts"  value="3" checked>胸部 
+		#{/if}
+		#{else}
+		<input type="checkbox" name="parts"  value="3">胸部 
+		#{/else}
+		#{if sc.four==1}
+		<input type="checkbox" name="parts"  value="4" checked>腹部 
+		#{/if}
+		#{else}
+		<input type="checkbox" name="parts"  value="4">腹部 
+		#{/else}
+		#{if sc.five==1}
+		<input type="checkbox" name="parts"  value="5" checked>腿部 
+		#{/if}
+		#{else}
+		<input type="checkbox" name="parts"  value="5">腿部 
+		#{/else}
+		</div> 
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">简介：</span>
+		<textarea name="introduce" rows="8" cols="30">${sc.introduce}</textarea>
+		</div>
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">备注：</span>
+		<input name="notice" class="easyui-textbox" data-options="required:true,missingMessage:'必填项'" value="${sc.notice}" style="height:32px">
+		</div>
+		
+		
+		<div style="margin-left:100px;">
+		<input type="submit" style="width:80px;height:32px">
+		</div>
+		
+	</div>
+#{/form}
+	
+	
+</div>

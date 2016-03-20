@@ -277,6 +277,55 @@ public class EmployeeMgr {
 		return e;
 	}
 	
+	
+	public List<Employee> getAllEmployeeByStoreID(int astoreid) {
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		List<Employee> list = new ArrayList<>();
+		try {
+			//加空格啊加空格，sql一定记得各种加空格
+			String sql = "select * from employee where storeid = " + astoreid;
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String username = rs.getString("username");
+				String password = rs.getString("password");
+				String name = rs.getString("name");
+				String headimage = rs.getString("headimage");
+				int sex = rs.getInt("sex");			
+				String phone = rs.getString("phone");
+				
+				int ismanager = rs.getInt("ismanager");
+				int isfinance = rs.getInt("isfinance");
+				int iscoach = rs.getInt("iscoach");
+				
+				int domember = rs.getInt("domember");
+				int doappointment = rs.getInt("doappointment");
+				int docourse = rs.getInt("docourse");
+				int doplan = rs.getInt("doplan");
+				int domarkte = rs.getInt("domarkte");
+				int dofinance = rs.getInt("dofinance");
+				int doemployee = rs.getInt("doemployee");
+				int dostore = rs.getInt("dostore");
+				int dostatistics = rs.getInt("dostatistics");
+				
+				int storeid = rs.getInt("storeid");
+				String introduce = rs.getString("introduce");
+				Employee e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
+				list.add(e);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return list;
+	}
+	
+	
 	/*
 	
 	

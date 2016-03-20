@@ -13,6 +13,8 @@ import utils.FitnessPlanMgr;
 import utils.GroupWebsiteMgr;
 import utils.GroupbuyMgr;
 import utils.StoreMgr;
+import utils.TeamExerciseMgr;
+import utils.TeamExerciseScheduleMgr;
 
 import java.util.*;
 
@@ -210,12 +212,30 @@ public class Application extends Controller {
     	storeDetail(storeid);
     }
     
+    //返回属于某个店铺的所有'团操'教室
+    public static void getAllTuanClassroomByStoreId(int storeid) {
+    	List<Classroom> list = ClassroomMgr.getInstance().getAllClassroomByStoreId(storeid);
+    	List<Classroom> lists = new ArrayList<>();
+    	for (Classroom c: list) {
+    		if (c.usage==1) lists.add(c);
+    	}
+    	renderJSON(lists);
+    }
     
-    
+    //返回属于某个店铺的所有'私教'教室
+    public static void getAllPrivateClassroomByStoreId(int storeid) {
+    	List<Classroom> list = ClassroomMgr.getInstance().getAllClassroomByStoreId(storeid);
+    	List<Classroom> lists = new ArrayList<>();
+    	for (Classroom c: list) {
+    		if (c.usage==2) lists.add(c);
+    	}
+    	renderJSON(lists);
+    }
     
     /*
      * ----------------------员工设置Employee
      */
+    
     //员工设置(展示)页面
     public static void employeeSetting() {
     	List<Employee> list = EmployeeMgr.getInstance().getAllEmployee();
@@ -364,6 +384,16 @@ public class Application extends Controller {
     	id=3; name="教练";
     	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"}]";
     	renderJSON(result);
+    }
+    
+    //返回属于某个店铺的所有教练
+    public static void getAllCoachByStoreID(int storeid) {
+    	List<Employee> list = EmployeeMgr.getInstance().getAllEmployeeByStoreID(storeid);
+    	List<Employee> lists = new ArrayList<>();
+    	for (Employee e: list) {
+    		if (e.iscoach==1) lists.add(e);
+    	}
+    	renderJSON(lists);
     }
     
     /*
@@ -672,7 +702,132 @@ public class Application extends Controller {
     }
     
     
+    /*
+     * ···············--------课程管理1-----------团操课程TeamExercise
+     */
     
     
+    //团操课程TeamExercise			设置(展示)页面
+    //团课排期TeamExerciseSchedule	设置（展示）页面
+    //公用的，有两个tab
+    public static void teamExerciseSetting() {
+    	List<TeamExercise> lists = TeamExerciseMgr.getInstance().getAllTeamExercise();
+    	List<TeamExerciseSchedule> listss = TeamExerciseScheduleMgr.getInstance().getAllTeamExerciseSchedule();
+    	List<TeamExerciseScheduleShow> listtt = new ArrayList<>();
+    	for (TeamExerciseSchedule tes : listss) {
+    		TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
+    		StoreCity s = StoreMgr.getInstance().findStoreById(tes.storeid);
+    		if (s!=null) tess.storename = s.name;
+    		Employee e = EmployeeMgr.getInstance().findEmployeeById(tes.employeeid);
+    		if (e!=null) tess.employeename = e.name;
+    		Classroom c = ClassroomMgr.getInstance().findClassroomById(tes.classroomid);
+    		if (c!=null) tess.classroomname = c.name;
+    		TeamExercise t = TeamExerciseMgr.getInstance().findTeamExerciseById(tes.teamexerciseid);
+    		if (t!=null) tess.teamexercisename = t.name;
+    		listtt.add(tess);
+    	}
+    	render(lists, listtt);
+    }
+    
+    //添加团操课程页面
+    public static void addTeamExercise() {
+        render();
+    }
+    
+    //添加团操课程
+    public static void addTeamExerciseToDB(String name, String image, double usedtime, int strength,
+    		String parts, String introduce, String notice) {
+    	TeamExercise a = new TeamExercise(name, image, usedtime, strength, parts, introduce, notice);
+    	TeamExerciseMgr.getInstance().save(a);
+    	teamExerciseSetting();
+    }
+
+	//删除团操课程
+    public static void deleteTeamExercise(int id) {
+    	boolean flag = TeamExerciseMgr.getInstance().deleteTeamExercise(id);
+    	if (flag) 
+    		teamExerciseSetting();
+    	else 
+    		renderText("删除失败");
+    }
+    
+    //团操课程详情(修改)页面
+    public static void teamExerciseDetail(int id) {
+    	TeamExercise s = TeamExerciseMgr.getInstance().findTeamExerciseById(id);
+    	TeamExerciseShow sc  = new TeamExerciseShow(s);
+    	String parts = sc.parts;
+    	String[] str = parts.split(", ");
+    	for (String ss : str) {
+    		int temp = Integer.parseInt(ss);
+    		if (temp==1) sc.one=1;
+    		if (temp==2) sc.two=1;
+    		if (temp==3) sc.three=1;
+    		if (temp==4) sc.four=1;
+    		if (temp==5) sc.five=1;
+    	}
+    	render(sc);
+    }
+    
+    //修改团操课程
+    public static void updateTeamExerciseToDB(int id, String name, String image, double usedtime, int strength,
+    		String parts, String introduce, String notice) {
+    	TeamExercise a = new TeamExercise(id, name, image, usedtime, strength, parts, introduce, notice);
+    	TeamExerciseMgr.getInstance().update(a);
+    	teamExerciseSetting();
+    }
+    
+    //获得所有团操课程的json串
+    public static void getAllTeamExercise() {
+    	List<TeamExercise> lists = TeamExerciseMgr.getInstance().getAllTeamExercise();
+        renderJSON(lists);
+    }
+    
+    
+    /*
+     * ···············--------课程管理1-----------团操排期TeamExerciseSchedule
+     */
+    
+    //这里的展示跟团操课程一起展示
+    //团操排期设置(展示)页面
+//    public static void TeamExerciseScheduleSetting() {
+//    	List<TeamExerciseSchedule> lists = TeamExerciseScheduleMgr.getInstance().getAllTeamExerciseSchedule();
+//        render(lists);
+//    }
+    
+    //添加团操排期页面
+    public static void addTeamExerciseSchedule() {
+        render();
+    }
+    
+    //添加团操排期
+    public static void addTeamExerciseScheduleToDB(int storeid,int classroomid,int employeeid,int teamexerciseid,
+    		int num, String begintime, String endtime) {
+    	TeamExerciseSchedule a = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime, endtime);
+    	TeamExerciseScheduleMgr.getInstance().save(a);
+    	teamExerciseSetting();
+    }
+
+	//删除团操排期
+    public static void deleteTeamExerciseSchedule(int id) {
+    	boolean flag = TeamExerciseScheduleMgr.getInstance().deleteTeamExerciseSchedule(id);
+    	if (flag) 
+    		teamExerciseSetting();
+    	else 
+    		renderText("删除失败");
+    }
+    
+    //团操排期详情(修改)页面
+    public static void TeamExerciseScheduleDetail(int id) {
+    	TeamExerciseSchedule sc = TeamExerciseScheduleMgr.getInstance().findTeamExerciseScheduleById(id);
+    	render(sc);
+    }
+    
+    //修改团操排期
+    public static void updateTeamExerciseScheduleToDB(int id, int storeid,int classroomid,int employeeid,int teamexerciseid,
+    		int num, int oknum, String begintime, String endtime) {
+    	TeamExerciseSchedule a = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime);
+    	TeamExerciseScheduleMgr.getInstance().update(a);
+    	teamExerciseSetting();
+    }
     
 }
