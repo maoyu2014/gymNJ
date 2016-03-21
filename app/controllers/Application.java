@@ -109,24 +109,16 @@ public class Application extends Controller {
     
     
     /*
-     * ··························会员管理
-     */
-    
-    public static void memberManagement() {
-        render();
-    }
-    
-    /*
      * ························门店设置Store
      */
     
     //查询所有门店 + 全部门店
     public static void getAllStore() {
     	List<StoreCity> listsc = StoreMgr.getInstance().getAllStore();
-    	StoreCity sc = new StoreCity();
-    	sc.id=0;
-    	sc.name = "全部门店";
-    	listsc.add(sc);
+//    	StoreCity sc = new StoreCity();
+//    	sc.id=0;
+//    	sc.name = "全部门店";
+//    	listsc.add(sc);
         renderJSON(listsc);
     }
     
@@ -242,9 +234,8 @@ public class Application extends Controller {
     	List<EmployeeShow> liste = new ArrayList<>();
     	for (Employee em : list) {
     		EmployeeShow es = new EmployeeShow(em);
-    		//TODO 可能为空，需要判断
     		StoreCity s = StoreMgr.getInstance().findStoreById(em.storeid);
-    		es.storename = s.name;
+    		if (s!=null) es.storename = s.name;
     		liste.add(es);
     	}
     	int number = liste.size();
@@ -375,8 +366,8 @@ public class Application extends Controller {
     	int id;
     	String name;
     	String result="[";
-    	id=0; name="全部工作人员";
-    	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"},";
+//    	id=0; name="全部工作人员";
+//    	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"},";
     	id=1; name="店长";
     	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"},";
     	id=2; name="财务";
@@ -406,15 +397,15 @@ public class Application extends Controller {
     	List<Announcement> lista = AnnouncementMgr.getInstance().getAllAnnouncement();
     	List<AnnouncementShow> listad = new ArrayList<>();
     	for (Announcement aa : lista) {
-    		String starttime = aa.starttime;
     		//TODO 时间问题需要更加详细的考虑
+    		String starttime = aa.starttime;
     		if (starttime!=null && starttime.length()==16) {
-	    		starttime = starttime.substring(6, 10)+starttime.substring(0, 2)+starttime.substring(3, 5)+
+	    		starttime = starttime.substring(0, 4)+starttime.substring(5, 7)+starttime.substring(8, 10)+
 	    				starttime.substring(11, 13)+starttime.substring(14, 16);
     		}
     		String endtime = aa.endtime;
     		if (endtime!=null && endtime.length()==16) {
-	    		endtime = endtime.substring(6, 10)+endtime.substring(0, 2)+endtime.substring(3, 5)+
+	    		endtime = endtime.substring(0, 4)+endtime.substring(5, 7)+endtime.substring(8, 10)+
 	    				endtime.substring(11, 13)+endtime.substring(14, 16);
     		}
     		Calendar calendar = new GregorianCalendar();
@@ -438,9 +429,11 @@ public class Application extends Controller {
     			status="已结束";
     		AnnouncementShow as = new AnnouncementShow(aa);
     		as.status = status;
-    		//TODO 可能为空，需要判断
-    		as.storename = StoreMgr.getInstance().findStoreById(aa.storeid).name;
-    		as.employeename = EmployeeMgr.getInstance().findEmployeeById(aa.employeeid).name;
+    		//
+    		StoreCity s = StoreMgr.getInstance().findStoreById(aa.storeid);
+    		if (s!=null) as.storename = s.name; 
+    		Employee e = EmployeeMgr.getInstance().findEmployeeById(aa.employeeid);
+    		if (e!=null ) as.employeename = e.name;
     		listad.add(as);
     	}
     	int number = listad.size();
@@ -503,16 +496,15 @@ public class Application extends Controller {
     	List<Groupbuy> list = GroupbuyMgr.getInstance().getAllGroupbuy();
     	List<GroupbuyShow> lists = new ArrayList<>();
     	for (Groupbuy aa : list) {
-    		//---
-    		String starttime = aa.starttime;
     		//TODO 时间问题需要更加详细的考虑
+    		String starttime = aa.starttime;
     		if (starttime!=null && starttime.length()==16) {
-	    		starttime = starttime.substring(6, 10)+starttime.substring(0, 2)+starttime.substring(3, 5)+
+	    		starttime = starttime.substring(0, 4)+starttime.substring(5, 7)+starttime.substring(8, 10)+
 	    				starttime.substring(11, 13)+starttime.substring(14, 16);
     		}
     		String endtime = aa.endtime;
     		if (endtime!=null && endtime.length()==16) {
-	    		endtime = endtime.substring(6, 10)+endtime.substring(0, 2)+endtime.substring(3, 5)+
+	    		endtime = endtime.substring(0, 4)+endtime.substring(5, 7)+endtime.substring(8, 10)+
 	    				endtime.substring(11, 13)+endtime.substring(14, 16);
     		}
     		Calendar calendar = new GregorianCalendar();
@@ -537,9 +529,11 @@ public class Application extends Controller {
     		//---
     		GroupbuyShow as = new GroupbuyShow(aa);
     		as.status = status;
-    		//TODO 可能为空，需要判断
-    		as.storename = StoreMgr.getInstance().findStoreById(aa.storeid).name;
-    		as.groupwebsitename = GroupWebsiteMgr.getInstance().findGroupWebsiteById(aa.groupwebsiteid).name;
+    		//
+    		StoreCity s = StoreMgr.getInstance().findStoreById(aa.storeid);
+    		if (s!=null) as.storename = s.name;
+    		GroupWebsite g = GroupWebsiteMgr.getInstance().findGroupWebsiteById(aa.groupwebsiteid);
+    		if (g!=null) as.groupwebsitename = g.name;
     		lists.add(as);
     	}
     	int number = lists.size();
@@ -802,6 +796,18 @@ public class Application extends Controller {
     //添加团操排期
     public static void addTeamExerciseScheduleToDB(int storeid,int classroomid,int employeeid,int teamexerciseid,
     		int num, String begintime, String endtime) {
+    	if (storeid==0) {
+    		renderJSON("必须选择一个门店");
+    	}
+    	if (classroomid==0) {
+    		renderJSON("必须选择一个教室");
+    	}
+    	if (employeeid==0) {
+    		renderJSON("必须选择一个教练");
+    	}
+    	if (teamexerciseid==0) {
+    		renderJSON("必须选择一个课程");
+    	}
     	TeamExerciseSchedule a = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime, endtime);
     	TeamExerciseScheduleMgr.getInstance().save(a);
     	teamExerciseSetting();
@@ -825,9 +831,36 @@ public class Application extends Controller {
     //修改团操排期
     public static void updateTeamExerciseScheduleToDB(int id, int storeid,int classroomid,int employeeid,int teamexerciseid,
     		int num, int oknum, String begintime, String endtime) {
+    	if (storeid==0) {
+    		renderJSON("必须选择一个门店");
+    	}
+    	if (classroomid==0) {
+    		renderJSON("必须选择一个教室");
+    	}
+    	if (employeeid==0) {
+    		renderJSON("必须选择一个教练");
+    	}
+    	if (teamexerciseid==0) {
+    		renderJSON("必须选择一个课程");
+    	}
     	TeamExerciseSchedule a = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime);
     	TeamExerciseScheduleMgr.getInstance().update(a);
     	teamExerciseSetting();
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 }

@@ -14,9 +14,9 @@
 			textField:'name',
 			url:'@{Application.getAllStore()}',
 			onSelect: function(record){
-	            var url = '/getAllTuanClassroomByStoreId?storeid=' + record.id;
+	            var url = '@{Application.getAllTuanClassroomByStoreId()}?storeid=' + record.id;
 	            $('#classroomidq').combobox('reload', url);
-	            url = '/getAllCoachByStoreID?storeid=' + record.id;
+	            url = '@{Application.getAllCoachByStoreID()}?storeid=' + record.id;
 	            $('#employeeidq').combobox('reload', url);
         	}"  value="${sc.storeid}" style="height:32px">
 		</div>

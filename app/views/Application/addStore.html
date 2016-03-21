@@ -9,22 +9,22 @@
 		
 		<div style="margin:20px;">
 		<span style="font-size:14px;display:inline-block;width:100px">门店城市：</span>
-		<input name="cityid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}'" style="height:32px">
+		<input name="cityid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}',prompt:'请选择一个城市'" style="height:32px">
 		</div>
 		
 		<div style="margin:20px;">
 		<span style="font-size:14px;display:inline-block;width:100px">门店名称：</span>
-		<input name="name" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		<input name="name" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:20px;">
 		<span style="font-size:14px;display:inline-block;width:100px">门店地址：</span>
-		<input name="address" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		<input name="address" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:20px">
 		<span style="font-size:14px;display:inline-block;width:100px">门店面积：</span>
-		<input name="area" class="easyui-numberbox validatebox" data-options="required:true,missingMessage:'必填项'" style="height:32px"> 平方米
+		<input name="area" class="easyui-numberbox" data-options="required:true" style="height:32px"> 平方米
 		</div>
 		
 		<div style="margin:20px">
@@ -34,12 +34,12 @@
 		
 		<div style="margin:20px">
 		<span style="font-size:14px;display:inline-block;width:100px">联系人：</span>
-		<input name="manager" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		<input name="manager" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:20px">
 		<span style="font-size:14px;display:inline-block;width:100px">联系方式：</span>
-		<input name="phone" class="easyui-textbox validatebox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		<input name="phone" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin-left:100px;">

@@ -5,7 +5,7 @@
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">门店设置</div>
 	
 	<div style="margin:20px">
-		<input name="cityid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}'" style="height:32px">
+		<input name="cityid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}',prompt:'请选择一个城市'" style="height:32px">
 	    <input name="storename" class="easyui-textbox" data-options="prompt:'搜索门店名称关键字'" style="height:32px">
 		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px;height:32px">搜索</a>        
 	    <a href="@{Application.addStore()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;position:absolute;right:20px;">增加门店</a>
@@ -41,7 +41,7 @@
 	    </table>
     </div>
     
-    <div style="position:absolute;right:20px;font-size:15px;font-weight:600;">
+    <div style="margin:20px;font-size:15px;font-weight:600;">
     	共${number}条记录
 	</div>
 	

@@ -9,12 +9,12 @@
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">公告名称：</span>
-		<input name="name" class="easyui-textbox" data-options="required:true,missingMessage:'必填项'" style="height:32px">
+		<input name="name" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:10px">
 		<span style="font-size:14px;display:inline-block;width:100px">所属门店：</span>
-		<input name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}'" style="height:32px">
+		<input name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="height:32px">
 		</div>
 		
 		<div style="margin:10px;">
