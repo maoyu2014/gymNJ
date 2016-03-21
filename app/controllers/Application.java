@@ -12,6 +12,7 @@ import utils.EmployeeMgr;
 import utils.FitnessPlanMgr;
 import utils.GroupWebsiteMgr;
 import utils.GroupbuyMgr;
+import utils.PrivateExerciseMgr;
 import utils.StoreMgr;
 import utils.TeamExerciseMgr;
 import utils.TeamExerciseScheduleMgr;
@@ -850,7 +851,90 @@ public class Application extends Controller {
     
     
     
+    /*
+     * ···············--------课程管理2-----------特训班PrivateExercise
+     */
     
+    
+    //特训班PrivateExercise设置（展示）页面
+    public static void PrivateExerciseSetting() {
+    	List<PrivateExercise> list = PrivateExerciseMgr.getInstance().getAllPrivateExercise();
+    	List<PrivateExerciseShow> lists = new ArrayList<>();
+    	for (PrivateExercise p : list) {
+    		PrivateExerciseShow ps = new PrivateExerciseShow(p);
+    		StoreCity s = StoreMgr.getInstance().findStoreById(p.storeid);
+    		if (s!=null) ps.storename = s.name;
+    		Employee e = EmployeeMgr.getInstance().findEmployeeById(p.employeeid);
+    		if (e!=null) ps.employeename = e.name;
+    		Classroom c = ClassroomMgr.getInstance().findClassroomById(p.classroomid);
+    		if (c!=null) ps.classroomname = c.name;
+    		lists.add(ps);
+    	}
+    	int number = lists.size();
+    	render(lists, number);
+    }
+    
+    //添加特训班页面
+    public static void addPrivateExercise() {
+        render();
+    }
+    
+    //添加特训班
+    public static void addPrivateExerciseToDB(String name, String image, int weeks, int period, 
+    		int num, double price, int storeid, int classroomid, int employeeid, 
+    		String classbegintime, String classendtime, 
+    		int exerciseweeknum, String exercisebegintime, String exerciseendtime,
+    		String signbegintime, String signendtime,
+    		String courseintroduce, String courseplan, String notice, String fitstep) {
+    	if (storeid==0) {
+    		renderJSON("请选择一个门店");
+    	}
+    	if (classroomid==0) {
+    		renderJSON("请选择一个教室");
+    	}
+    	if (employeeid==0) {
+    		renderJSON("请选择一个教练");
+    	}
+    	PrivateExercise a = new PrivateExercise(name, image, weeks, period, num, 0, price, storeid, classroomid, employeeid, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime, courseintroduce, courseplan, notice, fitstep);
+    	PrivateExerciseMgr.getInstance().save(a);
+    	PrivateExerciseSetting();
+    }
+
+	//删除特训班
+    public static void deletePrivateExercise(int id) {
+    	boolean flag = PrivateExerciseMgr.getInstance().deletePrivateExercise(id);
+    	if (flag) 
+    		PrivateExerciseSetting();
+    	else 
+    		renderText("删除失败");
+    }
+    
+    //特训班详情(修改)页面
+    public static void PrivateExerciseDetail(int id) {
+    	PrivateExercise sc = PrivateExerciseMgr.getInstance().findPrivateExerciseById(id);
+    	render(sc);
+    }
+    
+    //修改特训班
+    public static void updatePrivateExerciseToDB(int id, String name, String image, int weeks, int period, 
+    		int num, int oknum, double price, int storeid, int classroomid, int employeeid, 
+    		String classbegintime, String classendtime, 
+    		int exerciseweeknum, String exercisebegintime, String exerciseendtime,
+    		String signbegintime, String signendtime,
+    		String courseintroduce, String courseplan, String notice, String fitstep) {
+    	if (storeid==0) {
+    		renderJSON("请选择一个门店");
+    	}
+    	if (classroomid==0) {
+    		renderJSON("请选择一个教室");
+    	}
+    	if (employeeid==0) {
+    		renderJSON("请选择一个教练");
+    	}
+    	PrivateExercise a = new PrivateExercise(id, name, image, weeks, period, num, oknum, price, storeid, classroomid, employeeid, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime, courseintroduce, courseplan, notice, fitstep);
+    	PrivateExerciseMgr.getInstance().update(a);
+    	PrivateExerciseSetting();
+    }
     
     
     

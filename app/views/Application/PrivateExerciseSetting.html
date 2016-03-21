@@ -1,0 +1,67 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">特训班设置</div>
+	
+	<div style="margin:20px">
+		<input name="storeid" class="easyui-combobox" data-options="
+			valueField:'id',
+			textField:'name',
+			url:'@{Application.getAllStore()}',
+			prompt:'请选择一个门店',
+			onSelect: function(record){
+	            url = '@{Application.getAllCoachByStoreID()}?storeid=' + record.id;
+	            $('#employeeidq').combobox('reload', url);
+        	}" style="height:32px">
+		<input id="employeeidq" name="employeeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',prompt:'请选择一个教练'" style="height:32px">
+		<select name="status" class="easyui-combobox" style="height:32px;width:100px;">
+			<option value="1">开课中</option>
+		    <option value="2">正在报名</option>
+		    <option value="3">课程结束</option>
+		</select>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px;height:32px">搜索</a>        
+	    <a href="@{Application.addPrivateExercise()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;position:absolute;right:20px;">加特训班</a>
+	</div>
+	
+	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'name',width:80">课程名称</th>
+	                <th data-options="field:'employeename',width:100">教练</th>
+	                <th data-options="field:'storename',width:100">门店</th>
+	                <th data-options="field:'classbegintime',width:100">开课时间</th>
+	                <th data-options="field:'weeks_period',width:100">课时</th>
+	                <th data-options="field:'oknum_num',width:100">报名人数</th>
+	                <th data-options="field:'status',width:100">状态</th>
+	                <th data-options="field:'price',width:100">费用（人/元）</th>
+	                <th data-options="field:'operation',width:100">操作</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        #{list items:lists, as:'PrivateExerciseShow'}
+	        	<tr>
+		            <td>${PrivateExerciseShow.name}</td>
+		            <td>${PrivateExerciseShow.employeename}</td>
+		            <td>${PrivateExerciseShow.storename}</td>          
+		            <td>${PrivateExerciseShow.classbegintime}</td>
+		            <td>${PrivateExerciseShow.weeks}周/${PrivateExerciseShow.period}</td>
+		            <td>${PrivateExerciseShow.oknum}/${PrivateExerciseShow.num}</td>
+		            <td>${PrivateExerciseShow.status}</td>
+		            <td>${PrivateExerciseShow.price}</td>
+		            <td>
+		            	<a href="@{Application.PrivateExerciseDetail(PrivateExerciseShow.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{Application.deletePrivateExercise(PrivateExerciseShow.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            </td>
+		        </tr>
+	        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+    
+    <div style="margin:20px;font-size:15px;font-weight:600;">
+    	共${number}条记录
+	</div>
+	
+</div>

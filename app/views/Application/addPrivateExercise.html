@@ -1,0 +1,138 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加特训班</div>
+	
+#{form @Application.addPrivateExerciseToDB()}
+	<div style="margin-left:100px;">
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">课程名称：</span>
+		<input name="name" class="easyui-textbox" data-options="required:true" style="height:32px">
+		</div>
+		
+		<div style="margin:10px">
+		<span style="font-size:14px;display:inline-block;width:100px">课程图片：</span>
+		<input name="image" class="easyui-filebox" data-options="buttonText:'上传图片'" style="height:32px">
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">课程周期：</span>
+		<input name="weeks" class="easyui-numberbox" data-options="required:true" style="width:100px;height:32px">周
+		<input name="period" class="easyui-numberbox" data-options="required:true" style="width:100px;height:32px">课
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">课程人数：</span>
+		<input name="num" class="easyui-numberbox" data-options="required:true" style="height:32px">人
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">课程费用：</span>
+		<input name="price" class="easyui-numberbox" data-options="required:true,precision:2" style="height:32px">元/人
+		</div>
+		
+		<div style="margin:10px">
+		<span style="font-size:14px;display:inline-block;width:100px">门店：</span>
+		<input name="storeid" class="easyui-combobox" data-options="
+			valueField:'id',
+			textField:'name',
+			url:'@{Application.getAllStore()}',
+			prompt:'请选择一个门店',
+			onSelect: function(record){
+	            var url = '@{Application.getAllPrivateClassroomByStoreId()}?storeid=' + record.id;
+	            $('#classroomidq').combobox('reload', url);
+	            url = '@{Application.getAllCoachByStoreID()}?storeid=' + record.id;
+	            $('#employeeidq').combobox('reload', url);
+        	}"  style="height:32px">
+		</div>
+		
+		<div style="margin:10px">
+		<span style="font-size:14px;display:inline-block;width:100px">教室：</span>
+		<input id="classroomidq" name="classroomid" class="easyui-combobox" data-options="valueField:'id',textField:'name',prompt:'请选择一个教室'"  style="height:32px">
+		</div>
+		
+		<div style="margin:10px">
+		<span style="font-size:14px;display:inline-block;width:100px">教练：</span>
+		<input id="employeeidq" name="employeeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',prompt:'请选择一个教练'" style="height:32px">
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">上课时间：</span>
+		<input name="classbegintime" class="easyui-datebox" data-options="required:true,editable:false" style="height:32px">--至--
+		<input name="classendtime" class="easyui-datebox" data-options="required:true,editable:false" style="height:32px">
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">训练时间：</span>
+		每周：<input name="exerciseweeknum" class="easyui-numberspinner" data-options="required:true,editable:false,min:1,max:7," style="width:100px;height:32px">
+		<br/>
+		<br/>
+		<span style="font-size:14px;display:inline-block;width:100px"></span>
+		几点几分：<input name="exercisebegintime" class="easyui-timespinner" data-options="required:true,editable:false" style="width:100px;height:32px">--至--
+		几点几分：<input name="exerciseendtime" class="easyui-timespinner" data-options="required:true,editable:false" style="width:100px;height:32px">
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">报名时间：</span>
+		<input name="signbegintime" class="easyui-datebox" data-options="required:true,editable:false" style="height:32px">--至--
+		<input name="signendtime" class="easyui-datebox" data-options="required:true,editable:false" style="height:32px">
+		</div>
+		
+		<div style="margin:10px">
+		<span style="font-size:14px;display:inline-block;width:100px">课程简介：</span>
+		<textarea name="courseintroduce" rows="8" cols="30"></textarea>
+		</div>
+		
+		<div id="ddffgg" style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">课程安排：</span>
+		<input name="courseplan" class="easyui-textbox" data-options="required:true" style="height:32px">(语句中不要含有逗号)
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px"></span>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="height:32px" onclick="addcourseplan()">添加课程安排</a>
+		</div>
+		
+		<div style="margin:10px">
+		<span style="font-size:14px;display:inline-block;width:100px">注意事项：</span>
+		<textarea name="notice" rows="8" cols="30"></textarea>
+		</div>
+		
+		<div id="ggffdd" style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">健身步骤：</span>
+		<input name="fitstep" class="easyui-textbox" data-options="required:true" style="height:32px">(语句中不要含有逗号)
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px"></span>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="height:32px" onclick="addfitstep()">添加健身步骤</a>
+		</div>
+		
+		<div style="margin-left:100px;">
+		<input type="submit" style="width:80px;height:32px">
+		</div>
+		
+	</div>
+#{/form}
+	
+
+<script>
+function addcourseplan() {
+	var txt = "<br/><br/>" + "<span style='font-size:14px;display:inline-block;width:100px'></span>" + "<input name='courseplan' class='easyui-textbox' data-options='required:true' style='height:32px'>(语句中不要含有逗号)";
+	$("#ddffgg").append(txt);
+	$.parser.parse('#ddffgg');
+}
+
+function addfitstep() {
+	var txt = "<br/><br/>" + "<span style='font-size:14px;display:inline-block;width:100px'></span>" + "<input name='fitstep' class='easyui-textbox' data-options='required:true' style='height:32px'>(语句中不要含有逗号)";
+	$("#ggffdd").append(txt);
+	$.parser.parse('#ggffdd');
+}
+
+</script>
+
+
+
+</div>
