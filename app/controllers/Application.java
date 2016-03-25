@@ -12,6 +12,7 @@ import utils.EmployeeMgr;
 import utils.FitnessPlanMgr;
 import utils.GroupWebsiteMgr;
 import utils.GroupbuyMgr;
+import utils.MemberMgr;
 import utils.PrivateExerciseMgr;
 import utils.StoreMgr;
 import utils.TeamExerciseMgr;
@@ -400,12 +401,12 @@ public class Application extends Controller {
     	for (Announcement aa : lista) {
     		//TODO 时间问题需要更加详细的考虑
     		String starttime = aa.starttime;
-    		if (starttime!=null && starttime.length()==16) {
+    		if (starttime!=null && starttime.length()>0) {
 	    		starttime = starttime.substring(0, 4)+starttime.substring(5, 7)+starttime.substring(8, 10)+
 	    				starttime.substring(11, 13)+starttime.substring(14, 16);
     		}
     		String endtime = aa.endtime;
-    		if (endtime!=null && endtime.length()==16) {
+    		if (endtime!=null && endtime.length()>0) {
 	    		endtime = endtime.substring(0, 4)+endtime.substring(5, 7)+endtime.substring(8, 10)+
 	    				endtime.substring(11, 13)+endtime.substring(14, 16);
     		}
@@ -499,12 +500,12 @@ public class Application extends Controller {
     	for (Groupbuy aa : list) {
     		//TODO 时间问题需要更加详细的考虑
     		String starttime = aa.starttime;
-    		if (starttime!=null && starttime.length()==16) {
+    		if (starttime!=null && starttime.length()>0) {
 	    		starttime = starttime.substring(0, 4)+starttime.substring(5, 7)+starttime.substring(8, 10)+
 	    				starttime.substring(11, 13)+starttime.substring(14, 16);
     		}
     		String endtime = aa.endtime;
-    		if (endtime!=null && endtime.length()==16) {
+    		if (endtime!=null && endtime.length()>0) {
 	    		endtime = endtime.substring(0, 4)+endtime.substring(5, 7)+endtime.substring(8, 10)+
 	    				endtime.substring(11, 13)+endtime.substring(14, 16);
     		}
@@ -868,6 +869,52 @@ public class Application extends Controller {
     		if (e!=null) ps.employeename = e.name;
     		Classroom c = ClassroomMgr.getInstance().findClassroomById(p.classroomid);
     		if (c!=null) ps.classroomname = c.name;
+    		
+    		String signbegintime = ps.signbegintime;
+    		String signendtime = ps.signendtime;
+    		String classbegintime = ps.classbegintime;
+    		String classendtime = ps.classendtime;
+    		if (signbegintime!=null && signbegintime.length()>0) {
+	    		signbegintime = signbegintime.substring(0, 4)+signbegintime.substring(5, 7)
+	    				+signbegintime.substring(8, 10);
+    		}
+    		if (signendtime!=null && signbegintime.length()>0) {
+	    		signendtime = signendtime.substring(0, 4)+signendtime.substring(5, 7)
+	    				+signendtime.substring(8, 10);
+    		}
+    		if (classbegintime!=null && signbegintime.length()>0) {
+	    		classbegintime = classbegintime.substring(0, 4)+classbegintime.substring(5, 7)
+	    				+classbegintime.substring(8, 10);
+    		}
+    		if (classendtime!=null && signbegintime.length()>0) {
+	    		classendtime = classendtime.substring(0, 4)+classendtime.substring(5, 7)
+	    				+classendtime.substring(8, 10);
+    		}
+    		Calendar calendar = new GregorianCalendar();
+    		String nowtime = ""+calendar.get(Calendar.YEAR);
+    		int month = calendar.get(Calendar.MONTH)+1; 
+    		if (month<10) nowtime+="0"+month;
+    		else nowtime += month;
+    		int day = calendar.get(Calendar.DAY_OF_MONTH);
+    		if (day<10) nowtime+="0"+day;
+    		else nowtime+=day;
+//    		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+//    		if (hour<10) nowtime+="0"+hour;
+//    		else nowtime+=hour;
+//    		int minutes = calendar.get(Calendar.MINUTE);
+//    		if (minutes<10) nowtime+="0"+minutes;
+//    		else nowtime+=minutes;
+    		
+//    		System.out.println(signbegintime);
+//    		System.out.println(signendtime);
+//    		System.out.println(classbegintime);
+//    		System.out.println(classendtime);
+//    		System.out.println(nowtime);
+    		String status = "已发布";
+    		if (nowtime.compareTo(signbegintime)>0 ) status="报名中";
+    		if (nowtime.compareTo(classbegintime)>=0 ) status="开课中";
+    		if (nowtime.compareTo(classendtime)>0 ) status="已结束";
+    		ps.status = status;
     		lists.add(ps);
     	}
     	int number = lists.size();
@@ -938,6 +985,95 @@ public class Application extends Controller {
     
     
     
+    /*
+     * ···············--------会员管理-----------Member
+     */
+    
+    
+    //Member设置（展示）页面
+    public static void MemberSetting() {
+    	List<Member> list = MemberMgr.getInstance().getAllMember();
+    	List<MemberShow> lists = new ArrayList<>();
+    	for (Member p : list) {
+    		MemberShow ps = new MemberShow(p);
+    		StoreCity s = StoreMgr.getInstance().findStoreById(p.storeid);
+    		if (s!=null) {
+    			ps.cityname = s.cityname;
+    			ps.storename = s.name;
+    		}
+    		if (ps.fingerprint==1) ps.fingerprinttype="已录入";
+    		else ps.fingerprinttype="未录入";
+    		if (ps.cardtype==0) ps.cardtypename="非会员";
+    		else if (ps.cardtype==1) ps.cardtypename="月卡";
+    		else if (ps.cardtype==2) ps.cardtypename="季卡";
+    		else if (ps.cardtype==3) ps.cardtypename="半年卡";
+    		else if (ps.cardtype==4) ps.cardtypename="年卡";
+    		//TODO 入场密码
+    		lists.add(ps);
+    	}
+    	int number = lists.size();
+    	render(lists, number);
+    }
+    
+// 后台不需要添加会员，会员在手机端添加
+//    //添加Member页面
+//    public static void addMember() {
+//        render();
+//    }
+//    
+//    //添加Member
+//    public static void addMemberToDB() {
+//    	
+//    }
+
+	//删除Member
+    public static void deleteMember(int id) {
+    	boolean flag = MemberMgr.getInstance().deleteMember(id);
+    	if (flag) 
+    		MemberSetting();
+    	else 
+    		renderText("删除失败");
+    }
+    
+    //Member详情(修改)页面
+    public static void MemberDetail(int id) {
+    	Member m = MemberMgr.getInstance().findMemberById(id);
+    	MemberShow sc = new MemberShow(m);
+    	StoreCity s = StoreMgr.getInstance().findStoreById(m.storeid);
+		if (s!=null) {
+			sc.cityname = s.cityname;
+			sc.storename = s.name;
+		}
+		if (sc.fingerprint==1) sc.fingerprinttype="已录入";
+		else sc.fingerprinttype="未录入";
+		if (sc.cardtype==0) sc.cardtypename="非会员";
+		else if (sc.cardtype==1) sc.cardtypename="月卡";
+		else if (sc.cardtype==2) sc.cardtypename="季卡";
+		else if (sc.cardtype==3) sc.cardtypename="半年卡";
+		else if (sc.cardtype==4) sc.cardtypename="年卡";
+		if (sc.sex==1) sc.sexvalue="男"; else sc.sexvalue="女";
+		if (sc.exercisetime==1) sc.exercisetimevalue="早上";
+		else if (sc.exercisetime==2) sc.exercisetimevalue="下午";
+		else if (sc.exercisetime==3) sc.exercisetimevalue="晚上";
+		if (sc.exercisegoal==1) sc.exercisegoalvalue="减脂";
+		else if (sc.exercisegoal==2) sc.exercisegoalvalue="塑形";
+		else if (sc.exercisegoal==3) sc.exercisegoalvalue="增肌";
+		if (sc.exercisehz==1) sc.exercisehzvalue="难的";
+		else if (sc.exercisehz==2) sc.exercisehzvalue="一周一次";
+		else if (sc.exercisehz==3) sc.exercisehzvalue="一周三次";
+		else if (sc.exercisehz==4) sc.exercisehzvalue="每天";
+		if (sc.distance==1) sc.distancevalue="一公里以内";
+		else if (sc.distance==2) sc.distancevalue="三公里以内";
+		else if (sc.distance==3) sc.distancevalue="三公里以外";
+		//TODO 入场密码
+    	render(sc);
+    }
+   
+// 后台也不需要修改会员
+//    //修改Member
+//    public static void updateMemberToDB() {
+//
+//    }
     
     
     

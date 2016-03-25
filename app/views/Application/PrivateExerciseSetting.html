@@ -16,9 +16,10 @@
         	}" style="height:32px">
 		<input id="employeeidq" name="employeeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',prompt:'请选择一个教练'" style="height:32px">
 		<select name="status" class="easyui-combobox" style="height:32px;width:100px;">
-			<option value="1">开课中</option>
-		    <option value="2">正在报名</option>
-		    <option value="3">课程结束</option>
+			<option value="1">已发布</option>
+		    <option value="2">报名中</option>
+		    <option value="3">开课中</option>
+		    <option value="4">已结束</option>
 		</select>
 		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px;height:32px">搜索</a>        
 	    <a href="@{Application.addPrivateExercise()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;position:absolute;right:20px;">加特训班</a>

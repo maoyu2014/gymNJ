@@ -1,0 +1,248 @@
+#{extends 'main.html' /}
+
+
+<div data-options="region:'center'">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">会员详情</div>
+		
+	<div class="easyui-layout" data-options="fit:true">
+		
+		<div data-options="region:'west',title:'个人信息',collapsible:false" style="width:50%;">
+			<div style="margin-left:100px;">
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">姓名：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.name}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">微信名称：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.wechatname}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">性别：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.sexvalue}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">身高：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.height}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">生日：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.birthday}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">电话：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.phone}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">指纹录入：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.fingerprinttype}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">入场密码：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.comeinpasswordvalue}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">所在城市：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.cityname}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">所属门店：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.storename}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">会员种类：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.cardtypename}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">健身时间：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.exercisetimevalue}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">健身目标：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.exercisegoalvalue}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">健身频率：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.exercisehzvalue}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">距离：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.distancevalue}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">BMI：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.bmi}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">肌肉率：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.muscle}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">脂肪：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.fat}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">水分：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.water}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">蛋白质：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.protein}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">基础代谢率：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.basicrate}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">身体年龄：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.bodyage}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px"></span>
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px"></span>
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px"></span>
+				</div>
+				
+			</div>
+		</div>
+		
+		<div data-options="region:'center',title:'锻炼信息'" style="">
+			
+			<div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">购卡信息</div>
+			<div style="margin:10px">
+		        <table class="easyui-datagrid" data-options="fitColumns:false,singleSelect:true,striped:true,rownumbers:true">
+			        <thead>
+			            <tr>
+			                <th data-options="field:'cardtypename',width:150">卡类型</th>
+			                <th data-options="field:'deaddate',width:150">到期时间</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        	<tr>
+				            <td>${sc.cardtypename}</td>
+				            <td>${sc.deaddate}</td>
+				        </tr>
+			        </tbody>
+			    </table>
+		    </div>
+		    
+			<div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">到店状态</div>
+			<div style="margin:10px">
+		        <table class="easyui-datagrid" data-options="fitColumns:false,singleSelect:true,striped:true,rownumbers:false">
+			        <thead>
+			            <tr>
+			                <th data-options="field:'name',width:150">到店</th>
+			                <th data-options="field:'wechatname',width:150">离开</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        	<tr>
+				            <td>${sc.cardtypename}</td>
+				            <td>${sc.deaddate}</td>
+				        </tr>
+				        <tr>
+				            <td>${sc.cardtypename}</td>
+				            <td>${sc.deaddate}</td>
+				        </tr>
+			        </tbody>
+			    </table>
+		    </div>
+		    
+			<div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">团操课程</div>
+			<div style="margin:10px">
+		        <table class="easyui-datagrid" data-options="fitColumns:false,singleSelect:true,striped:true,rownumbers:true">
+			        <thead>
+			            <tr>
+			                <th data-options="field:'name',width:150">课程</th>
+			                <th data-options="field:'wechatname',width:150">状态</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        	<tr>
+				            <td>${sc.cardtypename}</td>
+				            <td>${sc.deaddate}</td>
+				        </tr>
+				        <tr>
+				            <td>${sc.cardtypename}</td>
+				            <td>${sc.deaddate}</td>
+				        </tr>
+			        </tbody>
+			    </table>
+		    </div>
+		    
+			<div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">特训课程</div>
+			<div style="margin:10px">
+		        <table class="easyui-datagrid" data-options="fitColumns:false,singleSelect:true,striped:true,rownumbers:true">
+			        <thead>
+			            <tr>
+			                <th data-options="field:'name',width:150">课程</th>
+			                <th data-options="field:'wechatname',width:150">教练</th>
+			                <th data-options="field:'wechatname',width:150">状态</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        	<tr>
+				            <td>${sc.cardtypename}</td>
+				            <td>${sc.deaddate}</td>
+				            <td>${sc.deaddate}</td>
+				        </tr>
+				        <tr>
+				            <td>${sc.cardtypename}</td>
+				            <td>${sc.deaddate}</td>
+				            <td>${sc.deaddate}</td>
+				        </tr>
+				        <tr>
+				            <td>${sc.cardtypename}</td>
+				            <td>${sc.deaddate}</td>
+				            <td>${sc.deaddate}</td>
+				        </tr>
+			        </tbody>
+			    </table>
+		    </div>
+		    
+		    <div style="margin:10px;">
+			<span style="font-size:14px;display:inline-block;width:100px"></span>
+			</div>
+			
+			<div style="margin:10px;">
+			<span style="font-size:14px;display:inline-block;width:100px"></span>
+			</div>
+			
+			<div style="margin:10px;">
+			<span style="font-size:14px;display:inline-block;width:100px"></span>
+			</div>
+				
+		</div>
+		
+	</div>
+	
+</div>

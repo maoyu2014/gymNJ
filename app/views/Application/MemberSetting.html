@@ -1,0 +1,61 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">会员设置</div>
+	
+	<div style="margin:20px">
+		<input name="cityid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}',prompt:'请选择一个城市'" style="height:32px">
+		<input name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="height:32px">
+		<select name="cardtype" class="easyui-combobox" style="height:32px;width:100px;">
+			<option value="1">月卡</option>
+		    <option value="2">季卡</option>
+		    <option value="3">半年卡</option>
+		    <option value="4">年卡</option>
+		    <option value="0">非会员</option>
+		</select>
+		<input name="keyname" class="easyui-textbox" data-options="prompt:'搜姓名、手机、微信号'" style="height:32px">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px;height:32px">搜索</a>        
+	</div>
+	
+	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'name',width:80">姓名</th>
+	                <th data-options="field:'wechatname',width:100">微信名</th>
+	                <th data-options="field:'phone',width:100">电话</th>
+	                <th data-options="field:'fingerprinttype',width:100">指纹录入</th>
+	                <th data-options="field:'comeinpasswordvalue',width:100">入场密码</th>
+	                <th data-options="field:'cityname',width:100">所在城市</th>
+	                <th data-options="field:'storename',width:100">常去门店</th>
+	                <th data-options="field:'cardtype',width:100">会员种类</th>
+	                <th data-options="field:'operation',width:100">操作</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        #{list items:lists, as:'MemberShow'}
+	        	<tr>
+		            <td>${MemberShow.name}</td>
+		            <td>${MemberShow.wechatname}</td>
+		            <td>${MemberShow.phone}</td>          
+		            <td>${MemberShow.fingerprinttype}</td>
+		            <td>${MemberShow.comeinpasswordvalue}</td>
+		            <td>${MemberShow.cityname}</td>
+		            <td>${MemberShow.storename}</td>
+		            <td>${MemberShow.cardtypename}</td>
+		            <td>
+		            	<a href="@{Application.MemberDetail(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{Application.deleteMember(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            </td>
+		        </tr>
+	        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+    
+    <div style="margin:20px;font-size:15px;font-weight:600;">
+    	共${number}条记录
+	</div>
+	
+</div>
