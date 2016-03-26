@@ -47,7 +47,7 @@
 				
 				<div style="margin:5px;">
 				<span style="font-size:14px;display:inline-block;width:100px">入场密码：</span>
-				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.comeinpasswordvalue}" style="">
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.comeinpassword}" style="">
 				</div>
 				
 				<div style="margin:5px;">
@@ -56,8 +56,8 @@
 				</div>
 				
 				<div style="margin:5px;">
-				<span style="font-size:14px;display:inline-block;width:100px">所属门店：</span>
-				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.storename}" style="">
+				<span style="font-size:14px;display:inline-block;width:100px">常去门店：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.offenstorename}" style="">
 				</div>
 				
 				<div style="margin:5px;">
@@ -160,16 +160,12 @@
 		        <table class="easyui-datagrid" data-options="fitColumns:false,singleSelect:true,striped:true,rownumbers:false">
 			        <thead>
 			            <tr>
-			                <th data-options="field:'name',width:150">到店</th>
-			                <th data-options="field:'wechatname',width:150">离开</th>
+			                <th data-options="field:'daodian',width:150">到店</th>
+			                <th data-options="field:'lidian',width:150">离开</th>
 			            </tr>
 			        </thead>
 			        <tbody>
 			        	<tr>
-				            <td>${sc.cardtypename}</td>
-				            <td>${sc.deaddate}</td>
-				        </tr>
-				        <tr>
 				            <td>${sc.cardtypename}</td>
 				            <td>${sc.deaddate}</td>
 				        </tr>
@@ -183,18 +179,16 @@
 			        <thead>
 			            <tr>
 			                <th data-options="field:'name',width:150">课程</th>
-			                <th data-options="field:'wechatname',width:150">状态</th>
+			                <th data-options="field:'status',width:150">状态</th>
 			            </tr>
 			        </thead>
 			        <tbody>
+			        #{list items:listte, as:'teamexercise'}
 			        	<tr>
-				            <td>${sc.cardtypename}</td>
-				            <td>${sc.deaddate}</td>
+				            <td>${teamexercise.name}</td>
+				            <td></td>
 				        </tr>
-				        <tr>
-				            <td>${sc.cardtypename}</td>
-				            <td>${sc.deaddate}</td>
-				        </tr>
+				    #{/list}
 			        </tbody>
 			    </table>
 		    </div>
@@ -205,26 +199,18 @@
 			        <thead>
 			            <tr>
 			                <th data-options="field:'name',width:150">课程</th>
-			                <th data-options="field:'wechatname',width:150">教练</th>
-			                <th data-options="field:'wechatname',width:150">状态</th>
+			                <th data-options="field:'employeename',width:150">教练</th>
+			                <th data-options="field:'status',width:150">状态</th>
 			            </tr>
 			        </thead>
 			        <tbody>
+			        #{list items:listpe, as:'PrivateExerciseShow'}
 			        	<tr>
-				            <td>${sc.cardtypename}</td>
-				            <td>${sc.deaddate}</td>
-				            <td>${sc.deaddate}</td>
+				            <td>${PrivateExerciseShow.name}</td>
+				            <td>${PrivateExerciseShow.employeename}</td>
+				            <td></td>
 				        </tr>
-				        <tr>
-				            <td>${sc.cardtypename}</td>
-				            <td>${sc.deaddate}</td>
-				            <td>${sc.deaddate}</td>
-				        </tr>
-				        <tr>
-				            <td>${sc.cardtypename}</td>
-				            <td>${sc.deaddate}</td>
-				            <td>${sc.deaddate}</td>
-				        </tr>
+				    #{/list}
 			        </tbody>
 			    </table>
 		    </div>

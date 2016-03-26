@@ -12,9 +12,7 @@ public class Member {
 	public String birthday;	//生日
 	public String phone;
 	public int fingerprint;	//指纹状态，1已录入 2未录入
-	public int comeinpasswordid;				//入场密码表
-	public int cityid;
-	public int storeid;
+	public int cityid;		//会员属于哪个城市
 	public int cardtype;	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
 	public String deaddate;	//到期时间
 	public int exercisetime; 	//时间   1早上 2下午 3晚上
@@ -35,7 +33,7 @@ public class Member {
 	
 	public Member(int id, String openid, String name, String wechatname,
 			int sex, double height, String birthday, String phone,
-			int fingerprint, int comeinpasswordid, int cityid, int storeid,
+			int fingerprint, int cityid,
 			int cardtype, String deaddate, int exercisetime, int exercisegoal, int exercisehz,
 			int distance, String bmi, String muscle, String fat, String water,
 			String protein, int basicrate, int bodyage) {
@@ -48,9 +46,7 @@ public class Member {
 		this.birthday = birthday;
 		this.phone = phone;
 		this.fingerprint = fingerprint;
-		this.comeinpasswordid = comeinpasswordid;
 		this.cityid = cityid;
-		this.storeid = storeid;
 		this.cardtype = cardtype;
 		this.deaddate = deaddate;
 		this.exercisetime = exercisetime;

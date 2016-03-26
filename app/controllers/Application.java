@@ -6,8 +6,10 @@ import play.mvc.*;
 import play.mvc.Scope.Session;
 import play.mvc.results.RenderJson;
 import utils.AnnouncementMgr;
+import utils.BookExerciseMgr;
 import utils.CityMgr;
 import utils.ClassroomMgr;
+import utils.ComeInPasswordMgr;
 import utils.EmployeeMgr;
 import utils.FitnessPlanMgr;
 import utils.GroupWebsiteMgr;
@@ -986,7 +988,7 @@ public class Application extends Controller {
     
     
     /*
-     * ···············--------会员管理-----------Member
+     * ···············--------会员管理--------------------Member
      */
     
     
@@ -996,10 +998,9 @@ public class Application extends Controller {
     	List<MemberShow> lists = new ArrayList<>();
     	for (Member p : list) {
     		MemberShow ps = new MemberShow(p);
-    		StoreCity s = StoreMgr.getInstance().findStoreById(p.storeid);
+    		City s = CityMgr.getInstance().findCityById(p.cityid);
     		if (s!=null) {
-    			ps.cityname = s.cityname;
-    			ps.storename = s.name;
+    			ps.cityname = s.name;
     		}
     		if (ps.fingerprint==1) ps.fingerprinttype="已录入";
     		else ps.fingerprinttype="未录入";
@@ -1008,7 +1009,13 @@ public class Application extends Controller {
     		else if (ps.cardtype==2) ps.cardtypename="季卡";
     		else if (ps.cardtype==3) ps.cardtypename="半年卡";
     		else if (ps.cardtype==4) ps.cardtypename="年卡";
-    		//TODO 入场密码
+    		// 入场密码
+    		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(ps.id);
+    		if (cp!=null) {
+    			Calendar calendar = Calendar.getInstance();  
+    			int hour = calendar.get(Calendar.HOUR_OF_DAY);
+    			ps.comeinpassword  = cp.arr[hour];
+    		}
     		lists.add(ps);
     	}
     	int number = lists.size();
@@ -1020,7 +1027,7 @@ public class Application extends Controller {
 //    public static void addMember() {
 //        render();
 //    }
-//    
+  
 //    //添加Member
 //    public static void addMemberToDB() {
 //    	
@@ -1039,10 +1046,9 @@ public class Application extends Controller {
     public static void MemberDetail(int id) {
     	Member m = MemberMgr.getInstance().findMemberById(id);
     	MemberShow sc = new MemberShow(m);
-    	StoreCity s = StoreMgr.getInstance().findStoreById(m.storeid);
+    	City s = CityMgr.getInstance().findCityById(m.cityid);
 		if (s!=null) {
-			sc.cityname = s.cityname;
-			sc.storename = s.name;
+			sc.cityname = s.name;
 		}
 		if (sc.fingerprint==1) sc.fingerprinttype="已录入";
 		else sc.fingerprinttype="未录入";
@@ -1065,8 +1071,32 @@ public class Application extends Controller {
 		if (sc.distance==1) sc.distancevalue="一公里以内";
 		else if (sc.distance==2) sc.distancevalue="三公里以内";
 		else if (sc.distance==3) sc.distancevalue="三公里以外";
-		//TODO 入场密码
-    	render(sc);
+		// 入场密码
+		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(sc.id);
+		if (cp!=null) {
+			Calendar calendar = Calendar.getInstance();  
+			int hour = calendar.get(Calendar.HOUR_OF_DAY);
+			sc.comeinpassword  = cp.arr[hour];
+		}
+		//团操课程，特训课程展示
+		List<BookExercise> listbe = BookExerciseMgr.getInstance().findBookExerciseByMemberId(sc.id);
+		List<TeamExercise> listte = new ArrayList<>();
+		List<PrivateExerciseShow> listpe = new ArrayList<>();
+		for (BookExercise be : listbe) {
+			if (be.type==0) {
+				TeamExercise te = TeamExerciseMgr.getInstance().findTeamExerciseById(be.exerciseid);
+				if (te!=null) listte.add(te);
+			} else if (be.type==1) {
+				PrivateExercise pe = PrivateExerciseMgr.getInstance().findPrivateExerciseById(be.exerciseid);
+				if (pe!=null) {
+					PrivateExerciseShow pes = new PrivateExerciseShow(pe);
+					Employee e = EmployeeMgr.getInstance().findEmployeeById(pes.employeeid);
+					pes.employeename = e.name;
+					listpe.add(pes);
+				}
+			}
+		}
+		render(sc, listte, listpe);
     }
    
 // 后台也不需要修改会员
@@ -1076,7 +1106,79 @@ public class Application extends Controller {
 //    }
     
     
+    /*
+     * ···············--------预约管理--------------------BookExercise
+     */
     
+    
+    //BookExercise预约设置（展示）页面
+    public static void BookExerciseSetting() {
+    	List<BookExercise> listBookExercise = BookExerciseMgr.getInstance().getAllBookExercise();
+    	List<Member> listMember = new ArrayList<>();
+    	List<String> listCity = new ArrayList<>();
+    	Map<Integer, TeamExerciseScheduleShow> listTeamExerciseScheduleShow = new HashMap<>();
+    	Map<Integer, PrivateExerciseShow> listPrivateExerciseShow = new HashMap<>();
+    	for (BookExercise be : listBookExercise) {
+    		Member m = MemberMgr.getInstance().findMemberById(be.memberid);
+    		listMember.add(m);
+    		if (be.type==0) {
+    			TeamExerciseSchedule tes = TeamExerciseScheduleMgr.getInstance().findTeamExerciseScheduleById(be.exerciseid);
+    			TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
+    			StoreCity sc = StoreMgr.getInstance().findStoreById(tess.storeid);
+    			listCity.add(sc.cityname);
+    			if (sc!=null) tess.storename = sc.name;
+    			Classroom c = ClassroomMgr.getInstance().findClassroomById(tess.classroomid);
+    			if (c!=null) tess.classroomname = c.name;
+    			TeamExercise te = TeamExerciseMgr.getInstance().findTeamExerciseById(tess.teamexerciseid);
+    			if (te!=null) tess.teamexercisename = te.name;
+    			listTeamExerciseScheduleShow.put(be.id, tess);
+    			
+    		} else if (be.type==1) {
+    			PrivateExercise pe = PrivateExerciseMgr.getInstance().findPrivateExerciseById(be.exerciseid);
+    			PrivateExerciseShow pes = new PrivateExerciseShow(pe);
+    			StoreCity sc = StoreMgr.getInstance().findStoreById(pes.storeid);
+    			listCity.add(sc.cityname);
+    			if (sc!=null) pes.storename = sc.name;
+    			Classroom c = ClassroomMgr.getInstance().findClassroomById(pes.classroomid);
+    			if (c!=null) pes.classroomname = c.name; 
+    			listPrivateExerciseShow.put(be.id, pes);
+    			
+    		}
+    	}
+    	int number = listBookExercise.size();
+    	render(listBookExercise, listMember, listCity, listPrivateExerciseShow, listTeamExerciseScheduleShow, number);
+    }
+    
+// 后台不需要添加BookExercise，BookExercise在手机端添加
+//    //添加BookExercise页面
+//    public static void addBookExercise() {
+//        render();
+//    }
+ 
+//    //添加BookExercise
+//    public static void addBookExerciseToDB() {
+//    	
+//    }
+
+	//删除BookExercise预约
+    public static void deleteBookExercise(int id) {
+    	boolean flag = BookExerciseMgr.getInstance().deleteBookExercise(id);
+    	if (flag) 
+    		BookExerciseSetting();
+    	else 
+    		renderText("删除失败");
+    }
+    
+//    //BookExercise预约详情(修改)页面
+//    public static void BookExerciseDetail(int id) {
+//		render();
+//    }
+   
+// 后台也不需要修改预约BookExercise
+//    //修改预约
+//    public static void updateBookExerciseToDB() {
+//
+//    }
     
     
     

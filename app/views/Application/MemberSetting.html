@@ -26,9 +26,9 @@
 	                <th data-options="field:'wechatname',width:100">微信名</th>
 	                <th data-options="field:'phone',width:100">电话</th>
 	                <th data-options="field:'fingerprinttype',width:100">指纹录入</th>
-	                <th data-options="field:'comeinpasswordvalue',width:100">入场密码</th>
+	                <th data-options="field:'comeinpassword',width:100">入场密码</th>
 	                <th data-options="field:'cityname',width:100">所在城市</th>
-	                <th data-options="field:'storename',width:100">常去门店</th>
+	                <th data-options="field:'offenstorename',width:100">常去门店</th>
 	                <th data-options="field:'cardtype',width:100">会员种类</th>
 	                <th data-options="field:'operation',width:100">操作</th>
 	            </tr>
@@ -40,9 +40,9 @@
 		            <td>${MemberShow.wechatname}</td>
 		            <td>${MemberShow.phone}</td>          
 		            <td>${MemberShow.fingerprinttype}</td>
-		            <td>${MemberShow.comeinpasswordvalue}</td>
+		            <td>${MemberShow.comeinpassword}</td>
 		            <td>${MemberShow.cityname}</td>
-		            <td>${MemberShow.storename}</td>
+		            <td>${MemberShow.offenstorename}</td>
 		            <td>${MemberShow.cardtypename}</td>
 		            <td>
 		            	<a href="@{Application.MemberDetail(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>

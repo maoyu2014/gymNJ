@@ -12,9 +12,8 @@ public class MemberShow {
 	public String birthday;	//生日
 	public String phone;
 	public int fingerprint;	//指纹状态，1已录入 2未录入
-	public int comeinpasswordid;				//入场密码表
+	public int comeinpassword;				//入场密码表，注意这个字段不在构造函数中，因为字段是变化的
 	public int cityid;
-	public int storeid;
 	public int cardtype;	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
 	public String deaddate;	//到期时间
 	public int exercisetime; 	//时间   1早上 2下午 3晚上
@@ -33,9 +32,8 @@ public class MemberShow {
 	
 	public String sexvalue;
 	public String fingerprinttype;
-	public String comeinpasswordvalue;
 	public String cityname;
-	public String storename;
+	public String offenstorename;
 	public String cardtypename;
 	public String exercisetimevalue;
 	public String exercisegoalvalue;
@@ -52,9 +50,7 @@ public class MemberShow {
 		this.birthday = gg.birthday;
 		this.phone = gg.phone;
 		this.fingerprint = gg.fingerprint;
-		this.comeinpasswordid = gg.comeinpasswordid;
 		this.cityid = gg.cityid;
-		this.storeid = gg.storeid;
 		this.cardtype = gg.cardtype;
 		this.deaddate = gg.deaddate;
 		this.exercisetime = gg.exercisetime;

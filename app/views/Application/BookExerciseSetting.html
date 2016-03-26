@@ -1,0 +1,82 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">预约团操/特训班设置</div>
+	
+	<div style="margin:20px">
+		<input name="employeetype" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}',prompt:'请选择一个城市'" style="height:32px">
+		<input name="employeetype" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="height:32px">
+		<input name="starttime" class="easyui-datebox" data-options="editable:false" style="height:32px">-至-
+		<input name="endtime" class="easyui-datebox" data-options="editable:false" style="height:32px">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px;height:32px">搜索</a>        
+	</div>
+	
+	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'name',width:80">会员</th>
+	                <th data-options="field:'booktime',width:100">预约时间</th>
+	                <th data-options="field:'cityname',width:100">城市</th>
+	                <th data-options="field:'storename',width:100">门店</th>
+	                <th data-options="field:'classroomname',width:100">教室</th>
+	                <th data-options="field:'exercisename',width:100">课程</th>
+	                <th data-options="field:'begintime',width:100">上课时间</th>
+	                <th data-options="field:'status',width:100">状态</th>
+	                <th data-options="field:'operation',width:100">操作</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        #{list items:0..number-1, as:'i'}
+	        	<tr>
+		            <td>${listMember[i].name}</td>
+		            <td>${listBookExercise[i].booktime}</td>
+		            <td>${listCity[i]}</td>          
+		            <td>
+		            #{if listBookExercise[i].type==0}
+		            	${listTeamExerciseScheduleShow.get(listBookExercise[i].id).storename}
+		            #{/if}
+		            #{else}
+		            	${listPrivateExerciseShow.get(listBookExercise[i].id).storename}
+		            #{/else}
+		            </td>
+		            <td>
+		            #{if  listBookExercise[i].type==0}
+		            	${listTeamExerciseScheduleShow.get(listBookExercise[i].id).classroomname}
+		            #{/if}
+		            #{else}
+		            	${listPrivateExerciseShow.get(listBookExercise[i].id).classroomname}
+		            #{/else}
+					</td>
+		            <td>
+		            #{if  listBookExercise[i].type==0}
+		            	${listTeamExerciseScheduleShow.get(listBookExercise[i].id).teamexercisename}
+		            #{/if}
+		            #{else}
+		            	${listPrivateExerciseShow.get(listBookExercise[i].id).name}
+		            #{/else}
+		            </td>
+		            <td>
+		            #{if listBookExercise[i].type==0}
+		            	${listTeamExerciseScheduleShow.get(listBookExercise[i].id).begintime}
+		            #{/if}
+		            #{else}	
+		            	${listPrivateExerciseShow.get(listBookExercise[i].id).classbegintime}
+		            #{/else}
+		            </td>
+		            <td>状态</td>
+		            <td>
+		            	<a href="@{Application.deleteBookExercise(listBookExercise[i].id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            </td>
+		        </tr>
+	        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+    
+    <div style="margin:20px;font-size:15px;font-weight:600;">
+    	共${number}条记录
+	</div>
+	
+</div>

@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import models.City;
+import models.StoreCity;
 
 
 public class CityMgr {
@@ -52,6 +53,28 @@ public class CityMgr {
 		return list;
 	}
 	
+	public City findCityById(int cid) {
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		City sc = null;
+		try {
+			String sql = "select * from city where id = " + cid;
+			rs = DB.executeQuery(stmt, sql);
+			if (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				sc = new City(id, name);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return sc;
+	}
 	/*
 	public boolean hasMember(String pengid) {
 		Connection conn = DB.getConn();

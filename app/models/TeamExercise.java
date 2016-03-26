@@ -1,5 +1,7 @@
 package models;
 
+//这个团操的课程是共享的，切记。
+//真正可以唯一定位一个团操的是TeamExerciseSchedule
 public class TeamExercise {
 
 	public int id;

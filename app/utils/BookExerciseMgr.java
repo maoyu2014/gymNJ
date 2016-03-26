@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import models.Announcement;
+import models.BookExercise;
 import models.City;
 import models.Employee;
 import models.Member;
@@ -18,18 +19,18 @@ import models.Store;
 import models.StoreCity;
 
 
-public class MemberMgr {
+public class BookExerciseMgr {
 	
-	private MemberMgr() {}
+	private BookExerciseMgr() {}
 	
-	private static MemberMgr em = null;
+	private static BookExerciseMgr em = null;
 	static {
 		if (em == null) {
-			em = new MemberMgr();
+			em = new BookExerciseMgr();
 		}
 	}
 	
-	public static MemberMgr getInstance() {
+	public static BookExerciseMgr getInstance() {
 		return em;
 	}
 	
@@ -53,40 +54,21 @@ public class MemberMgr {
 //		}
 //	}
 	
-	public List<Member> getAllMember() {
-		List<Member> list = new ArrayList<Member>();
+	public List<BookExercise> getAllBookExercise() {
+		List<BookExercise> list = new ArrayList<BookExercise>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select * from Member";
+			String sql = "select * from BookExercise";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				String openid = rs.getString("openid");			//微信唯一标识
-				String name = rs.getString("name");
-				String wechatname = rs.getString("wechatname");
-				int sex = rs.getInt("sex");		//1男 2女
-				double height = rs.getDouble("height");
-				String birthday = rs.getString("birthday");	//生日
-				String phone = rs.getString("phone");
-				int fingerprint = rs.getInt("fingerprint");	//指纹状态，1已录入 2未录入
-				int cityid = rs.getInt("cityid");
-				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
-				String deaddate = rs.getString("deaddate");
-				int exercisetime = rs.getInt("exercisetime"); 	//时间   1早上 2下午 3晚上
-				int exercisegoal = rs.getInt("exercisegoal");	//目标   1减脂 2塑形 3增肌
-				int exercisehz = rs.getInt("exercisehz");	//频率，1难的  2一周一次   3一周三次   4每天
-				int distance = rs.getInt("distance");	//距离  1：一公里以内  2：三公里以内  3：三公里以外
-				//体脂信息
-				String bmi = rs.getString("bmi");		//BMI
-				String muscle = rs.getString("muscle");		//肌肉率
-				String fat = rs.getString("fat");		//脂肪
-				String water = rs.getString("water");		//水分
-				String protein = rs.getString("protein");	//蛋白质
-				int basicrate = rs.getInt("basicrate");	//基础代谢率
-				int bodyage = rs.getInt("bodyage");		//身体年龄
-				Member an = new Member(id, openid, name, wechatname, sex, height, birthday, phone, fingerprint,  cityid, cardtype, deaddate, exercisetime, exercisegoal, exercisehz, distance, bmi, muscle, fat, water, protein, basicrate, bodyage);
+				int memberid = rs.getInt("memberid");
+				int type = rs.getInt("type");
+				int exerciseid = rs.getInt("exerciseid");
+				String booktime = rs.getString("booktime");
+				BookExercise an = new BookExercise(id, memberid, type, exerciseid, booktime);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -99,11 +81,11 @@ public class MemberMgr {
 		return list;
 	}
 	
-	public boolean deleteMember(int id) {
+	public boolean deleteBookExercise(int aid) {
 		boolean flag = false;
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
-		String sql = "delete from Member where id = " + id;
+		String sql = "delete from BookExercise where id = " + aid;
 		try {
 			stmt.executeUpdate(sql);
 			flag=true;
@@ -116,42 +98,21 @@ public class MemberMgr {
 		return flag;
 	}
 	
-	public Member findMemberById(int aid) {
+	public BookExercise findBookExerciseById(int aid) {
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
-		Member an = null;
+		BookExercise an = null;
 		try {
-			//加空格啊加空格，sql一定记得各种加空格
-			String sql = "select * from Member where id = " + aid;
+			String sql = "select * from BookExercise where id = " + aid;
 			rs = DB.executeQuery(stmt, sql);
 			if (rs.next()) {
 				int id = rs.getInt("id");
-				String openid = rs.getString("openid");			//微信唯一标识
-				String name = rs.getString("name");
-				String wechatname = rs.getString("wechatname");
-				int sex = rs.getInt("sex");		//1男 2女
-				double height = rs.getDouble("height");
-				String birthday = rs.getString("birthday");	//生日
-				String phone = rs.getString("phone");
-				int fingerprint = rs.getInt("fingerprint");	//指纹状态，1已录入 2未录入
-//				int comeinpasswordid = rs.getInt("comeinpasswordid");			//入场密码表
-				int cityid = rs.getInt("cityid");
-				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
-				String deaddate = rs.getString("deaddate");
-				int exercisetime = rs.getInt("exercisetime"); 	//时间   1早上 2下午 3晚上
-				int exercisegoal = rs.getInt("exercisegoal");	//目标   1减脂 2塑形 3增肌
-				int exercisehz = rs.getInt("exercisehz");	//频率，1难的  2一周一次   3一周三次   4每天
-				int distance = rs.getInt("distance");	//距离  1：一公里以内  2：三公里以内  3：三公里以外
-				//体脂信息
-				String bmi = rs.getString("bmi");		//BMI
-				String muscle = rs.getString("muscle");		//肌肉率
-				String fat = rs.getString("fat");		//脂肪
-				String water = rs.getString("water");		//水分
-				String protein = rs.getString("protein");	//蛋白质
-				int basicrate = rs.getInt("basicrate");	//基础代谢率
-				int bodyage = rs.getInt("bodyage");		//身体年龄
-				an = new Member(id, openid, name, wechatname, sex, height, birthday, phone, fingerprint,  cityid,  cardtype, deaddate, exercisetime, exercisegoal, exercisehz, distance, bmi, muscle, fat, water, protein, basicrate, bodyage);
+				int memberid = rs.getInt("memberid");
+				int type = rs.getInt("type");
+				int exerciseid = rs.getInt("exerciseid");
+				String booktime = rs.getString("booktime");
+				an = new BookExercise(id, memberid, type, exerciseid, booktime);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -161,6 +122,34 @@ public class MemberMgr {
 			DB.close(rs);
 		}
 		return an;
+	}
+	
+	public List<BookExercise> findBookExerciseByMemberId(int mid) {
+		List<BookExercise> list = new ArrayList<BookExercise>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		BookExercise an = null;
+		try {
+			String sql = "select * from BookExercise where memberid = " + mid;
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				int memberid = rs.getInt("memberid");
+				int type = rs.getInt("type");
+				int exerciseid = rs.getInt("exerciseid");
+				String booktime = rs.getString("booktime");
+				an = new BookExercise(id, memberid, type, exerciseid, booktime);
+				list.add(an);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return list;
 	}
 	
 //	public void update(Member e) {
