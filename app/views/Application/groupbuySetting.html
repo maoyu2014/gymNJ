@@ -7,6 +7,7 @@
 	<div style="margin:20px">
 		<input name="groupwebsiteid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllGroupWebsite()}',prompt:'请选择一个网站'" style="height:32px">
 		<select name="status" class="easyui-combobox" style="height:32px;width:100px;">
+			<option value="0">全部状态</option>
 			<option value="1">进行中</option>
 		    <option value="2">已发布</option>
 		    <option value="3">已结束</option>

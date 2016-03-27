@@ -1,0 +1,65 @@
+#{extends 'main.html' /}
+
+<div data-options="region:'center',split:false">
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">财务收入</div>
+	
+	<div style="margin-top:20px;margin-left:300px;width:300px;height:120px;border:0px solid;">
+		<div style="background-color:#1a1a1a;height:50%;border:0px solid;font-size:25px;text-align:center;color:white;padding:10px">现金额度</div>
+		<div style="background-color:#a6a6a6;height:50%;border:0px solid;font-size:30px;text-align:center;padding:10px">￥${feesum.format('000.00')}元</div>
+	</div>
+	
+	<div style="margin:20px">
+		<input name="city" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}',prompt:'请选择一个城市'" style="width:120px;height:32px">
+		<input name="store" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="width:120px;height:32px">
+		<select name="cardtype" class="easyui-combobox" style="height:32px;width:100px;">
+			<option value="9">全部卡种类</option>
+			<option value="1">月卡</option>
+		    <option value="2">季卡</option>
+		    <option value="3">半年卡</option>
+		    <option value="4">年卡</option>
+		</select>
+		<input name="starttime" class="easyui-datetimebox" data-options="editable:false" style="height:32px">-至-
+		<input name="endtime" class="easyui-datetimebox" data-options="editable:false" style="height:32px">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:60px;height:32px">搜索</a>        
+	</div>
+	
+	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'name',width:80">会员</th>
+	                <th data-options="field:'cardtype',width:100">会员卡种类</th>
+	                <th data-options="field:'offengostore',width:100">常去门店</th>
+	                <th data-options="field:'purchasetime',width:100">支付时间</th>
+	                <th data-options="field:'fee',width:100">支付金额</th>
+	                <th data-options="field:'purchasetype',width:100">支付方式</th>
+	                <th data-options="field:'notice',width:100">备注</th>
+	                <th data-options="field:'operation',width:100">操作</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        #{list items:0..number-1, as:'i'}
+	        	<tr>
+		            <td>${listMemberShow[i].name}</td>
+		            <td>${listMemberShow[i].cardtypename}</td>
+		            <td></td>          
+		            <td>${listPurchaseHistory[i].purchasetime}</td>
+		            <td>${listPurchaseHistory[i].fee}</td>
+		            <td>${listPurchaseHistory[i].purchasetypename}</td>
+		            <td>${listPurchaseHistory[i].notice}</td>
+		            <td>
+		            	<a href="@{Application.MemberDetail(listMemberShow[i].id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{Application.deletePurchaseHistory(listPurchaseHistory[i].id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            </td>
+		        </tr>
+	        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+    
+    <div style="margin:20px;font-size:15px;font-weight:600;">
+    	共${number}条记录
+	</div>
+	
+</div>

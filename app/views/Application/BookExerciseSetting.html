@@ -5,11 +5,26 @@
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">预约团操/特训班设置</div>
 	
 	<div style="margin:20px">
-		<input name="employeetype" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}',prompt:'请选择一个城市'" style="height:32px">
-		<input name="employeetype" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="height:32px">
-		<input name="starttime" class="easyui-datebox" data-options="editable:false" style="height:32px">-至-
-		<input name="endtime" class="easyui-datebox" data-options="editable:false" style="height:32px">
-		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px;height:32px">搜索</a>        
+		<input name="city" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}',prompt:'请选择一个城市'" style="width:120px;height:32px">
+		<input name="store" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="width:120px;height:32px">
+		<select name="classtype" class="easyui-combobox" style="height:32px;width:80px;">
+			<option value="0">全部种类</option>
+			<option value="1">团操</option>
+		    <option value="2">特训班</option>
+		</select>
+		<input name="exerciseclass" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'',prompt:'请选择一个课程'" style="width:120px;height:32px">	
+		<select name="status" class="easyui-combobox" style="height:32px;width:80px;">
+			<option value="0">全部状态</option>
+			<option value="1">待定</option>
+		    <option value="2">待定</option>
+		    <option value="3">待定</option>
+		    <option value="4">待定</option>
+		    <option value="0">待定</option>
+		</select>
+		<input name="keyname" class="easyui-textbox" data-options="prompt:'搜姓名、手机、微信号'" style="width:150px;height:32px">
+		<input name="starttime" class="easyui-datebox" data-options="editable:false" style="width:120px;height:32px">-至-
+		<input name="endtime" class="easyui-datebox" data-options="editable:false" style="width:120px;height:32px">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:60px;height:32px">搜索</a>        
 	</div>
 	
 	<div style="margin:20px">

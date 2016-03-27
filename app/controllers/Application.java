@@ -16,6 +16,7 @@ import utils.GroupWebsiteMgr;
 import utils.GroupbuyMgr;
 import utils.MemberMgr;
 import utils.PrivateExerciseMgr;
+import utils.PurchaseHistoryMgr;
 import utils.StoreMgr;
 import utils.TeamExerciseMgr;
 import utils.TeamExerciseScheduleMgr;
@@ -1107,7 +1108,7 @@ public class Application extends Controller {
     
     
     /*
-     * ···············--------预约管理--------------------BookExercise
+     * ···············--------预约管理-------------1预约团操和私教BookExercise
      */
     
     
@@ -1182,6 +1183,63 @@ public class Application extends Controller {
     
     
     
+    /*
+     * ···············--------财务管理-------------PurchaseHistory
+     */
+    
+    
+    //PurchaseHistory财务设置（展示）页面
+    public static void PurchaseHistorySetting() {
+    	List<PurchaseHistory> listPurchaseHistory = PurchaseHistoryMgr.getInstance().getAllPurchaseHistory();
+    	List<MemberShow> listMemberShow = new ArrayList<>();
+    	double feesum=0.0;
+    	for (PurchaseHistory ph : listPurchaseHistory) {
+    		feesum+=ph.fee;
+    		if (ph.isprivate==1) ph.notice="私教课程";
+    		if (ph.purchasetype==1) ph.purchasetypename="微信支付";
+    		Member m = MemberMgr.getInstance().findMemberById(ph.memberid);
+    		MemberShow ms = new MemberShow(m);
+    		if (ms.cardtype==0) ms.cardtypename="非会员";
+    		else if (ms.cardtype==1) ms.cardtypename="月卡";
+    		else if (ms.cardtype==2) ms.cardtypename="季卡";
+    		else if (ms.cardtype==3) ms.cardtypename="半年卡";
+    		else if (ms.cardtype==4) ms.cardtypename="年卡";
+    		listMemberShow.add(ms);
+    	}
+    	int number = listPurchaseHistory.size();
+    	render(listPurchaseHistory, listMemberShow, number, feesum);
+    }
+    
+// 后台不需要添加BookExercise，BookExercise在手机端添加
+//    //添加BookExercise页面
+//    public static void addBookExercise() {
+//        render();
+//    }
+ 
+//    //添加BookExercise
+//    public static void addBookExerciseToDB() {
+//    	
+//    }
+
+	//删除PurchaseHistory某个付款
+    public static void deletePurchaseHistory(int id) {
+    	boolean flag = PurchaseHistoryMgr.getInstance().deletePurchaseHistory(id);
+    	if (flag) 
+    		PurchaseHistorySetting();
+    	else 
+    		renderText("删除失败");
+    }
+    
+//    //BookExercise预约详情(修改)页面
+//    public static void BookExerciseDetail(int id) {
+//		render();
+//    }
+   
+// 后台也不需要修改预约BookExercise
+//    //修改预约
+//    public static void updateBookExerciseToDB() {
+//
+//    }
     
     
     
