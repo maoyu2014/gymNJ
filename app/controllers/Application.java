@@ -41,7 +41,7 @@ public class Application extends Controller {
 	 */
 	
     //在所有功能前检查是否是已经登录的
-    @Before(unless={"login","check"})
+    @Before(unless={"login","check","getPwdInfoList","getCheckTm"})
     public static void checkAuthentification() {
     	if (session.get("user") == null) login();
     }

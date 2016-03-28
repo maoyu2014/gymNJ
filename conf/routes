@@ -4,6 +4,8 @@
 
 # Home page
 GET     /                                       Application.index
+GET     /pwdList/getPwdInfoList                 Application.getPwdInfoList
+GET     /devCheckSysTm/getCheckTm               Application.getCheckTm
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
