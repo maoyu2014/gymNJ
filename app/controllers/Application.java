@@ -17,6 +17,7 @@ import utils.GroupbuyMgr;
 import utils.MemberMgr;
 import utils.PrivateExerciseMgr;
 import utils.PurchaseHistoryMgr;
+import utils.PwdToHardMgr;
 import utils.StoreMgr;
 import utils.TeamExerciseMgr;
 import utils.TeamExerciseScheduleMgr;
@@ -24,6 +25,9 @@ import utils.TeamExerciseScheduleMgr;
 import java.util.*;
 
 import models.*;
+import models.front.CheckTm;
+import models.front.InnerPwd;
+import models.front.PwdToHard;
 
 public class Application extends Controller {
 
@@ -1241,6 +1245,62 @@ public class Application extends Controller {
 //
 //    }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*
+     * 传送给硬件的json密码串
+     */
+    
+    //每个用户今天的24小时段所有密码
+    public static void getPwdInfoList(String deviceId) {
+    	PwdToHard pth = new PwdToHard();
+    	pth.datatype = "pwdList";
+    	Map<String, Object> map = PwdToHardMgr.getInstance().findPwdToHardByToday();
+    	if (deviceId==null || deviceId.length()!=12 || map==null || map.get("list")==null) {
+    		pth.state = "0001";
+    		renderJSON(pth);
+    	}
+    	List<InnerPwd> list = (List<InnerPwd>) map.get("list");
+    	pth.state = "0000";
+    	pth.lastUpdateTime = (String) map.get("updateTime");
+    	pth.josnSize = String.valueOf(list.size());
+    	pth.pAList = list;
+    	renderJSON(pth);
+    }
+    
+    //本地设备校时
+    public static void getCheckTm(String deviceId) {
+    	CheckTm ct = new CheckTm();
+    	ct.datatype="devCheckSysTm";
+    	if (deviceId==null || deviceId.length()!=12) {
+    		ct.state="0001";
+    		renderJSON(ct);
+    	}
+    	ct.state="0000";
+    	
+    	Calendar calendar = Calendar.getInstance();  
+		String today = "" + calendar.get(Calendar.YEAR)+"-";
+		int month = calendar.get(Calendar.MONTH)+1; 
+		if (month<10) today+="0"+month+"-"; else today += month+"-";
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		if (day<10) today+="0"+day+" "; else today+=day+" ";
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		if (hour<10) today+="0"+hour+":"; else today+=hour+":";
+		int minutes = calendar.get(Calendar.MINUTE);
+		if (minutes<10) today+="0"+minutes+":"; else today+=minutes+":";
+		int seconds = calendar.get(Calendar.SECOND);
+		if (seconds<10) today+="0"+seconds; else today+=seconds;
+		
+		ct.SysTm = today;
+		renderJSON(ct);
+    }
     
     
 }
