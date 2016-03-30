@@ -4,27 +4,27 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加工作人员</div>
 	
-#{form @Application.addEmployeeToDB()}
+	#{form @Application.addEmployeeToDB(), onsubmit:"return check()", enctype:'multipart/form-data'}
 	<div style="margin-left:100px;">
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">登录账号：</span>
-		<input name="username" class="easyui-textbox" data-options="required:true" style="height:32px">
+		<input id="username" name="username" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">登录密码：</span>
-		<input name="password" class="easyui-textbox" type="password" data-options="required:true" style="height:32px">
+		<input id="password" name="password" class="easyui-textbox" type="password" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">姓名：</span>
-		<input name="name" class="easyui-textbox" data-options="required:true" style="height:32px">
+		<input id="name" name="name" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:10px">
 		<span style="font-size:14px;display:inline-block;width:100px">头像：</span>
-		<input name="headimage" class="easyui-filebox" data-options="buttonText:'上传图片'" style="height:32px">
+		<input name="headimagefile" class="easyui-filebox" data-options="buttonText:'上传图片'" style="height:32px">
 		</div>
 		
 		<div style="margin:10px;">
@@ -35,7 +35,7 @@
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">电话：</span>
-		<input name="phone" class="easyui-numberbox" data-options="required:true" style="height:32px">
+		<input id="phone" name="phone" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:10px;">
@@ -62,7 +62,7 @@
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">所属门店：</span>
-		<input name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="height:32px">
+		<input id="storeid" name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="height:32px">
 		</div>
 		
 		<div style="margin:10px">
@@ -75,7 +75,7 @@
 		</div>
 		
 	</div>
-#{/form}
+	#{/form}
 	
 	<script>
 	$("input[name='identity']").click(function(){
@@ -104,6 +104,21 @@
 			}
 		}
 	});
+	
+	function check() {
+		var v;
+		v = $("#username").val();
+		if (v==null || v=="") { alert("输入不完整！"); return false; }
+		v = $("#password").val();
+		if (v==null || v=="") { alert("输入不完整！"); return false; }
+		v = $("#name").val();
+		if (v==null || v=="") { alert("输入不完整！"); return false; }
+		v = $("#phone").val();
+		if (v==null || v=="") { alert("输入不完整！"); return false; }
+		v = $("#storeid").combobox("getValue"); 
+		if (v==null || v=="") { alert("输入不完整！"); return false; }
+		return true;
+	}
 	</script>
 	
 </div>

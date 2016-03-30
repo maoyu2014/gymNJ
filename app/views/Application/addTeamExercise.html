@@ -4,22 +4,22 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加团操课程</div>
 	
-#{form @Application.addTeamExerciseToDB()}
+	#{form @Application.addTeamExerciseToDB(), onsubmit:"return check()", enctype:'multipart/form-data'}
 	<div style="margin-left:100px;">
 		
 		<div style="margin:20px;">
 		<span style="font-size:14px;display:inline-block;width:100px">课程名称：</span>
-		<input name="name" class="easyui-textbox" data-options="required:true" style="height:32px">
+		<input id="name" name="name" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:20px">
 		<span style="font-size:14px;display:inline-block;width:100px">课程图片：</span>
-		<input name="image" class="easyui-filebox" data-options="buttonText:'上传图片'" style="height:32px">
+		<input name="imagefile" class="easyui-filebox" data-options="buttonText:'上传图片'" style="height:32px">
 		</div>
 		
 		<div style="margin:20px;">
 		<span style="font-size:14px;display:inline-block;width:100px">课程时长：</span>
-		<input name="usedtime" class="easyui-numberbox" data-options="required:true" style="height:32px">
+		<input id="usedtime" name="usedtime" class="easyui-numberbox" data-options="required:true" style="height:32px">分钟
 		</div>
 		
 		<div style="margin:20px">
@@ -42,12 +42,12 @@
 		
 		<div style="margin:20px">
 		<span style="font-size:14px;display:inline-block;width:100px">简介：</span>
-		<textarea name="introduce" rows="8" cols="30"></textarea>
+		<textarea id="introduce" name="introduce" rows="8" cols="30"></textarea>
 		</div>
 		
 		<div style="margin:20px;">
 		<span style="font-size:14px;display:inline-block;width:100px">备注：</span>
-		<input name="notice" class="easyui-textbox" data-options="required:true" style="height:32px">
+		<input id="notice" name="notice" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		
@@ -56,7 +56,22 @@
 		</div>
 		
 	</div>
-#{/form}
+	#{/form}
 	
 	
 </div>
+
+<script>
+function check() {
+	var v;
+	v = $("#name").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#usedtime").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#introduce").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#notice").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	return true;
+}
+</script>

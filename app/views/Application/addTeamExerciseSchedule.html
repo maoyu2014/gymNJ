@@ -4,12 +4,12 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加团操排期</div>
 	
-#{form @Application.addTeamExerciseScheduleToDB()}
+	#{form @Application.addTeamExerciseScheduleToDB(), onsubmit:"return check()"}
 	<div style="margin-left:100px;">
 		
 		<div style="margin:10px">
 		<span style="font-size:14px;display:inline-block;width:100px">门店：</span>
-		<input name="storeid" class="easyui-combobox" data-options="
+		<input id="storeid" name="storeid" class="easyui-combobox" data-options="
 			valueField:'id',
 			textField:'name',
 			url:'@{Application.getAllStore()}',
@@ -34,18 +34,18 @@
 		
 		<div style="margin:10px">
 		<span style="font-size:14px;display:inline-block;width:100px">课程：</span>
-		<input name="teamexerciseid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllTeamExercise()}',prompt:'请选择一个课程'" style="height:32px">
+		<input id="teamexerciseid" name="teamexerciseid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllTeamExercise()}',prompt:'请选择一个课程'" style="height:32px">
 		</div>
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">预约人数：</span>
-		<input name="num" class="easyui-numberbox" data-options="required:true" style="height:32px">
+		<input id="num" name="num" class="easyui-numberbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">课程安排：</span>
-		<input name="begintime" class="easyui-datetimebox" data-options="required:true,showSeconds:false,editable:false" style="height:32px">--至--
-		<input name="endtime" class="easyui-datetimebox" data-options="required:true,showSeconds:false,editable:false" style="height:32px">
+		<input id="begintime" name="begintime" class="easyui-datetimebox" data-options="required:true,showSeconds:false,editable:false" style="height:32px">--至--
+		<input id="endtime" name="endtime" class="easyui-datetimebox" data-options="required:true,showSeconds:false,editable:false" style="height:32px">
 		</div>
 		
 		<div style="margin-left:100px;">
@@ -53,10 +53,27 @@
 		</div>
 		
 	</div>
-#{/form}
-	
-<script>
-
-</script>
+	#{/form}
 	
 </div>
+
+<script>
+function check() {
+	var v;
+	v = $("#storeid").combobox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#classroomidq").combobox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#employeeidq").combobox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#teamexerciseid").combobox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#num").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#begintime").datetimebox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#endtime").datetimebox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	return true;
+}
+</script>

@@ -29,7 +29,7 @@ public class Member {
 	public int basicrate;	//基础代谢率
 	public int bodyage;		//身体年龄
 	
-	
+	public Member() {}
 	
 	public Member(int id, String openid, String name, String wechatname,
 			int sex, double height, String birthday, String phone,

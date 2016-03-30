@@ -5,10 +5,9 @@
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">预约团操/特训班设置</div>
 	
 	<div style="margin:20px">
-		<input name="city" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}',prompt:'请选择一个城市'" style="width:120px;height:32px">
 		<input name="store" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="width:120px;height:32px">
-		<select name="classtype" class="easyui-combobox" style="height:32px;width:80px;">
-			<option value="0">全部种类</option>
+		<select name="classtype" class="easyui-combobox" style="height:32px;width:120px;">
+			<option value="0">全部课程种类</option>
 			<option value="1">团操</option>
 		    <option value="2">特训班</option>
 		</select>
@@ -32,7 +31,7 @@
 	        <thead>
 	            <tr>
 	                <th data-options="field:'name',width:80">会员</th>
-	                <th data-options="field:'booktime',width:100">预约时间</th>
+	                <th data-options="field:'booktime',width:120">预约时间</th>
 	                <th data-options="field:'cityname',width:100">城市</th>
 	                <th data-options="field:'storename',width:100">门店</th>
 	                <th data-options="field:'classroomname',width:100">教室</th>

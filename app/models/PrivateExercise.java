@@ -30,6 +30,8 @@ public class PrivateExercise {
 	public String fitstep;			//健身步骤，中间用逗号空格(, )号分割
 	
 	
+	public PrivateExercise() {}
+	
 	public PrivateExercise(int id, String name, String image, int weeks,
 			int period, int num, int oknum, double price, int storeid,
 			int classroomid, int employeeid, String classbegintime,

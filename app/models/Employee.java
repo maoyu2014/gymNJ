@@ -9,10 +9,10 @@ public class Employee {
 	
 	public String name;
 	public String headimage;
-	public int sex;				//1表示男，2表示女
+	public int sex;				//1表示男，2表示女,0未设置
 	public String phone;
 	
-	public int ismanager;
+	public int ismanager;		//用0和1区别
 	public int isfinance;
 	public int iscoach;
 	

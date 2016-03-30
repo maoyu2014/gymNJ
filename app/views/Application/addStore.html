@@ -4,42 +4,42 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加门店</div>
 	
-#{form @Application.addStoreToDB()}
+#{form @Application.addStoreToDB(), onsubmit:"return check()", enctype:'multipart/form-data'}
 	<div style="margin-left:100px;">
 		
 		<div style="margin:20px;">
 		<span style="font-size:14px;display:inline-block;width:100px">门店城市：</span>
-		<input name="cityid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}',prompt:'请选择一个城市'" style="height:32px">
+		<input id="cityid" name="cityid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}',prompt:'请选择一个城市'" style="height:32px">
 		</div>
 		
 		<div style="margin:20px;">
 		<span style="font-size:14px;display:inline-block;width:100px">门店名称：</span>
-		<input name="name" class="easyui-textbox" data-options="required:true" style="height:32px">
+		<input id="name" name="name" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:20px;">
 		<span style="font-size:14px;display:inline-block;width:100px">门店地址：</span>
-		<input name="address" class="easyui-textbox" data-options="required:true" style="height:32px">
+		<input id="address" name="address" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:20px">
 		<span style="font-size:14px;display:inline-block;width:100px">门店面积：</span>
-		<input name="area" class="easyui-numberbox" data-options="required:true" style="height:32px"> 平方米
+		<input id="area" name="area" class="easyui-numberbox" data-options="required:true,precision:2" style="height:32px"> 平方米
 		</div>
 		
 		<div style="margin:20px">
 		<span style="font-size:14px;display:inline-block;width:100px">相册：</span>
-		<input name="photo" class="easyui-filebox" data-options="buttonText:'上传图片'" style="height:32px">
+		<input id="photofile" name="photofile" class="easyui-filebox" data-options="buttonText:'上传图片'" style="height:32px">
 		</div>
 		
 		<div style="margin:20px">
 		<span style="font-size:14px;display:inline-block;width:100px">联系人：</span>
-		<input name="manager" class="easyui-textbox" data-options="required:true" style="height:32px">
+		<input id="manager" name="manager" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:20px">
 		<span style="font-size:14px;display:inline-block;width:100px">联系方式：</span>
-		<input name="phone" class="easyui-textbox" data-options="required:true" style="height:32px">
+		<input id="phone" name="phone" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin-left:100px;">
@@ -49,5 +49,26 @@
 	</div>
 #{/form}
 	
+<script>
+function check() {
+	var v;
+	v = $("#cityid").combobox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#name").val(); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#address").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#area").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+//可以不传图像
+//	v = $("#photofile").filebox("getValue"); 
+//	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#manager").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#phone").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	return true;
+}
+</script>
 	
 </div>

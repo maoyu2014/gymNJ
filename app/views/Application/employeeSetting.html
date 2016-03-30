@@ -5,8 +5,13 @@
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">员工设置</div>
 	
 	<div style="margin:20px">
-		<input name="employeetype" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getThreeKindsEmployee()}',prompt:'请选择员工身份'" style="height:32px">
 		<input name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="height:32px">
+	    <select name="classtype" class="easyui-combobox" style="height:32px;width:120px;">
+			<option value="0">全部员工</option>
+			<option value="1">店长</option>
+			<option value="2">财务</option>
+		    <option value="3">教练</option>
+		</select>
 	    <input name="employeename" class="easyui-textbox" data-options="prompt:'搜索工作人员名称关键字'" style="height:32px">
 		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px;height:32px">搜索</a>        
 	    <a href="@{Application.addEmployee()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;position:absolute;right:20px;">增加人员</a>
@@ -16,7 +21,7 @@
         <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
 	        <thead>
 	            <tr>
-	                <th data-options="field:'headimage',width:80">头像</th>
+	                <th data-options="field:'headimage',width:70">头像</th>
 	                <th data-options="field:'name',width:80">姓名</th>
 	                <th data-options="field:'sex',width:80">性别</th>
 	                <th data-options="field:'phone',width:100">电话</th>
@@ -29,7 +34,7 @@
 	        <tbody>
 	        #{list items:liste, as:'employee'}
 	        	<tr>
-		            <td>${employee.headimage}</td>
+		            <td><img src="/public/images/${employee.headimage}" alt="门店图像" width="20" height="20" style=""></td>
 		            <td>${employee.name}</td>
 		            <td>
 		            #{if employee.sex==1}

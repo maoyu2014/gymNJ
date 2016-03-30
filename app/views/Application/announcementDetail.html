@@ -4,32 +4,32 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">门店公告详情</div>
 	
-#{form @Application.updateAnnouncementToDB(sc.id)}
+	#{form @Application.updateAnnouncementToDB(sc.id), onsubmit:"return check()"}
 	<div style="margin-left:100px;">
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">公告名称：</span>
-		<input name="name" class="easyui-textbox" data-options="required:true" value="${sc.name}" style="height:32px">
+		<input id="name" name="name" class="easyui-textbox" data-options="required:true" value="${sc.name}" style="height:32px">
 		</div>
 		
 		<div style="margin:10px">
 		<span style="font-size:14px;display:inline-block;width:100px">所属门店：</span>
-		<input name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" value="${sc.storeid}" style="height:32px">
+		<input id="storeid" name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" value="${sc.storeid}" style="height:32px">
 		</div>
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">开始时间：</span>
-		<input name="starttime" class="easyui-datetimebox" data-options="required:true,showSeconds:false,editable:false" value="${sc.starttime}" style="height:32px">
+		<input id="starttime" name="starttime" class="easyui-datetimebox" data-options="required:true,showSeconds:false,editable:false" value="${sc.starttime}" style="height:32px">
 		</div>
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">结束时间：</span>
-		<input name="endtime" class="easyui-datetimebox" data-options="required:true,showSeconds:false,editable:false" value="${sc.endtime}" style="height:32px">
+		<input id="endtime" name="endtime" class="easyui-datetimebox" data-options="required:true,showSeconds:false,editable:false" value="${sc.endtime}" style="height:32px">
 		</div>
 		
 		<div style="margin:10px">
 		<span style="font-size:14px;display:inline-block;width:100px">公告详情：</span>
-		<textarea name="content" rows="8" cols="30">${sc.content}</textarea>
+		<textarea id="content" name="content" rows="8" cols="30">${sc.content}</textarea>
 		</div>
 		
 		<div style="margin-left:100px;">
@@ -37,7 +37,23 @@
 		</div>
 		
 	</div>
-#{/form}
-	
+	#{/form}
 	
 </div>
+
+<script>
+function check() {
+	var v;
+	v = $("#storeid").combobox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#name").val(); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#starttime").datetimebox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#endtime").datetimebox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#content").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	return true;
+}
+</script>

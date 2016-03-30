@@ -1,7 +1,9 @@
 package controllers;
 
 import play.*;
+import play.data.Upload;
 import play.data.validation.Required;
+import play.libs.Files;
 import play.mvc.*;
 import play.mvc.Scope.Session;
 import play.mvc.results.RenderJson;
@@ -22,6 +24,7 @@ import utils.StoreMgr;
 import utils.TeamExerciseMgr;
 import utils.TeamExerciseScheduleMgr;
 
+import java.io.File;
 import java.util.*;
 
 import models.*;
@@ -145,7 +148,18 @@ public class Application extends Controller {
     
     //添加门店
     public static void addStoreToDB(int cityid, String name, String address,
-    		double area, String photo, String manager, String phone) {
+    		double area, File photofile, String manager, String phone) {
+    	String photo = null;
+    	if (photofile!=null) {
+	    	long currentTime = System.currentTimeMillis();
+	    	String fileName = currentTime + photofile.getName();
+	    	photo = fileName;
+	    	//这里加不加“.”都无所谓，因为利用了play的getFile方法
+	    	Files.copy(photofile, Play.getFile("public/images/" + fileName));
+    	}
+    	//这里一定要加“.”，而在template中展示的时候，不要加“.”
+//    	File storeFile = new File("./public/uploadpic/" + fileName);
+//    	Files.copy(photofile, storeFile);
     	Store s = new Store(cityid, name, address, area, photo, manager, phone);
     	StoreMgr.getInstance().save(s);
     	storeSetting();
@@ -169,7 +183,13 @@ public class Application extends Controller {
     
     //修改门店
     public static void updateStoreToDB(int id, int cityid, String name, String address,
-    		double area, String photo, String manager, String phone) {
+    		double area, File photofile, String photo, String manager, String phone) {
+    	if (photofile!=null) {
+	    	long currentTime = System.currentTimeMillis();
+	    	String fileName = currentTime + photofile.getName();
+	    	photo = fileName;
+	    	Files.copy(photofile, Play.getFile("public/images/" + fileName));
+    	}
     	Store s = new Store(id, cityid, name, address, area, photo, manager, phone);
     	StoreMgr.getInstance().update(s);
     	storeSetting();
@@ -257,7 +277,8 @@ public class Application extends Controller {
     }
     
     //添加员工
-    public static void addEmployeeToDB(String username, String password, String name, String headimage, int sex, String phone, 
+    public static void addEmployeeToDB(String username, String password, String name, 
+    		File headimagefile, int sex, String phone, 
     		int[] identity, int[] authority, int storeid, String introduce) {
     	if (EmployeeMgr.getInstance().hasUser(username)) {
     		renderJSON("登录账号名已经存在，请换一个！");
@@ -302,6 +323,13 @@ public class Application extends Controller {
     			else if (authority[i]==9) dostatistics=1;
     		}
     	}
+    	String headimage = null;
+    	if (headimagefile!=null) {
+    		long currentTime = System.currentTimeMillis();
+	    	String fileName = currentTime + headimagefile.getName();
+	    	headimage = fileName;
+	    	Files.copy(headimagefile, Play.getFile("public/images/" + fileName));
+    	}
     	Employee e = new Employee(username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
     	EmployeeMgr.getInstance().save(e);
     	employeeSetting();
@@ -323,7 +351,8 @@ public class Application extends Controller {
     }
     
     //修改员工
-    public static void updateEmployeeToDB(int id, String username, String password, String name, String headimage, int sex, String phone, 
+    public static void updateEmployeeToDB(int id, String username, String password, String name, 
+    		File headimagefile, String headimage, int sex, String phone, 
     		int[] identity, int[] authority, int storeid, String introduce) {
     	//工作人员必须选择一个门店
     	if (storeid==0) {
@@ -365,26 +394,32 @@ public class Application extends Controller {
     			else if (authority[i]==9) dostatistics=1;
     		}
     	}
+    	if (headimagefile!=null) {
+    		long currentTime = System.currentTimeMillis();
+	    	String fileName = currentTime + headimagefile.getName();
+	    	headimage = fileName;
+	    	Files.copy(headimagefile, Play.getFile("public/images/" + fileName));
+    	}
     	Employee e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
     	EmployeeMgr.getInstance().update(e);
     	employeeSetting();
     }
     
     //返回给员工设置中的第一个combobox使用
-    public static void getThreeKindsEmployee() {
-    	int id;
-    	String name;
-    	String result="[";
-//    	id=0; name="全部工作人员";
+//    public static void getThreeKindsEmployee() {
+//    	int id;
+//    	String name;
+//    	String result="[";
+////    	id=0; name="全部工作人员";
+////    	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"},";
+//    	id=1; name="店长";
 //    	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"},";
-    	id=1; name="店长";
-    	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"},";
-    	id=2; name="财务";
-    	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"},";
-    	id=3; name="教练";
-    	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"}]";
-    	renderJSON(result);
-    }
+//    	id=2; name="财务";
+//    	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"},";
+//    	id=3; name="教练";
+//    	result+="{\"id\":"+id+",\"name\":"+"\""+name+"\""+"}]";
+//    	renderJSON(result);
+//    }
     
     //返回属于某个店铺的所有教练
     public static void getAllCoachByStoreID(int storeid) {
@@ -650,35 +685,39 @@ public class Application extends Controller {
     	FitnessPlanShow sc  = new FitnessPlanShow(s);
     	String parts = sc.parts;
     	String number = sc.number;
-    	String[] str = parts.split(",");
-    	for (String ss : str) {
-    		int temp = Integer.parseInt(ss);
-    		if (temp==1) sc.one=1;
-    		if (temp==2) sc.two=1;
-    		if (temp==3) sc.three=1;
-    		if (temp==4) sc.four=1;
-    		if (temp==5) sc.five=1;
+    	if (parts!=null && !parts.equals("")) {
+	    	String[] str = parts.split(",");
+	    	for (String ss : str) {
+	    		int temp = Integer.parseInt(ss);
+	    		if (temp==1) sc.one=1;
+	    		if (temp==2) sc.two=1;
+	    		if (temp==3) sc.three=1;
+	    		if (temp==4) sc.four=1;
+	    		if (temp==5) sc.five=1;
+	    	}
     	}
-    	str = number.split(",");
-    	for (int i=0; i<str.length; i++) {
-    		String ss = str[i];
-    		if (i==0) sc.geshu1 = Double.parseDouble(ss);
-    		if (i==1) sc.geshu2 = Double.parseDouble(ss);
-    		if (i==2) sc.geshu3 = Double.parseDouble(ss);
-    		if (i==3) sc.geshu4 = Double.parseDouble(ss);
-    		if (i==4) sc.geshu5 = Integer.parseInt(ss);
-    		
-    		if (i==5) sc.fenzhong1 = Double.parseDouble(ss);
-    		if (i==6) sc.fenzhong2 = Double.parseDouble(ss);
-    		if (i==7) sc.fenzhong3 = Double.parseDouble(ss);
-    		if (i==8) sc.fenzhong4 = Double.parseDouble(ss);
-    		if (i==9) sc.fenzhong5 = Integer.parseInt(ss);
-    		
-    		if (i==10) sc.keshu1 = Double.parseDouble(ss);
-    		if (i==11) sc.keshu2 = Double.parseDouble(ss);
-    		if (i==12) sc.keshu3 = Double.parseDouble(ss);
-    		if (i==13) sc.keshu4 = Double.parseDouble(ss);
-    		if (i==14) sc.keshu5 = Integer.parseInt(ss);
+    	if (number!=null) {
+	    	String[] str = number.split(",");
+	    	for (int i=0; i<str.length; i++) {
+	    		String ss = str[i];
+	    		if (i==0) sc.geshu1 = Double.parseDouble(ss);
+	    		if (i==1) sc.geshu2 = Double.parseDouble(ss);
+	    		if (i==2) sc.geshu3 = Double.parseDouble(ss);
+	    		if (i==3) sc.geshu4 = Double.parseDouble(ss);
+	    		if (i==4) sc.geshu5 = Integer.parseInt(ss);
+	    		
+	    		if (i==5) sc.fenzhong1 = Double.parseDouble(ss);
+	    		if (i==6) sc.fenzhong2 = Double.parseDouble(ss);
+	    		if (i==7) sc.fenzhong3 = Double.parseDouble(ss);
+	    		if (i==8) sc.fenzhong4 = Double.parseDouble(ss);
+	    		if (i==9) sc.fenzhong5 = Integer.parseInt(ss);
+	    		
+	    		if (i==10) sc.keshu1 = Double.parseDouble(ss);
+	    		if (i==11) sc.keshu2 = Double.parseDouble(ss);
+	    		if (i==12) sc.keshu3 = Double.parseDouble(ss);
+	    		if (i==13) sc.keshu4 = Double.parseDouble(ss);
+	    		if (i==14) sc.keshu5 = Integer.parseInt(ss);
+	    	}
     	}
     	render(sc);
     }
@@ -738,8 +777,15 @@ public class Application extends Controller {
     }
     
     //添加团操课程
-    public static void addTeamExerciseToDB(String name, String image, double usedtime, int strength,
+    public static void addTeamExerciseToDB(String name, File imagefile, double usedtime, int strength,
     		String parts, String introduce, String notice) {
+    	String image=null;
+    	if (imagefile!=null) {
+    		long currentTime = System.currentTimeMillis();
+	    	String fileName = currentTime + imagefile.getName();
+	    	image = fileName;
+	    	Files.copy(imagefile, Play.getFile("public/images/" + fileName));
+    	}
     	TeamExercise a = new TeamExercise(name, image, usedtime, strength, parts, introduce, notice);
     	TeamExerciseMgr.getInstance().save(a);
     	teamExerciseSetting();
@@ -759,21 +805,30 @@ public class Application extends Controller {
     	TeamExercise s = TeamExerciseMgr.getInstance().findTeamExerciseById(id);
     	TeamExerciseShow sc  = new TeamExerciseShow(s);
     	String parts = sc.parts;
-    	String[] str = parts.split(", ");
-    	for (String ss : str) {
-    		int temp = Integer.parseInt(ss);
-    		if (temp==1) sc.one=1;
-    		if (temp==2) sc.two=1;
-    		if (temp==3) sc.three=1;
-    		if (temp==4) sc.four=1;
-    		if (temp==5) sc.five=1;
+    	if (parts!=null && !parts.equals("")) {
+	    	String[] str = parts.split(", ");
+	    	for (String ss : str) {
+	    		int temp = Integer.parseInt(ss);
+	    		if (temp==1) sc.one=1;
+	    		if (temp==2) sc.two=1;
+	    		if (temp==3) sc.three=1;
+	    		if (temp==4) sc.four=1;
+	    		if (temp==5) sc.five=1;
+	    	}
     	}
     	render(sc);
     }
     
     //修改团操课程
-    public static void updateTeamExerciseToDB(int id, String name, String image, double usedtime, int strength,
+    public static void updateTeamExerciseToDB(int id, String name, File imagefile, String image, 
+    		double usedtime, int strength,
     		String parts, String introduce, String notice) {
+    	if (imagefile!=null) {
+    		long currentTime = System.currentTimeMillis();
+	    	String fileName = currentTime + imagefile.getName();
+	    	image = fileName;
+	    	Files.copy(imagefile, Play.getFile("public/images/" + fileName));
+    	}
     	TeamExercise a = new TeamExercise(id, name, image, usedtime, strength, parts, introduce, notice);
     	TeamExerciseMgr.getInstance().update(a);
     	teamExerciseSetting();
@@ -863,6 +918,8 @@ public class Application extends Controller {
      * ···············--------课程管理2-----------特训班PrivateExercise
      */
     
+    //TODO
+    //关于同一个教练教室不能一个时间段有两个课程
     
     //特训班PrivateExercise设置（展示）页面
     public static void PrivateExerciseSetting() {
@@ -934,7 +991,7 @@ public class Application extends Controller {
     }
     
     //添加特训班
-    public static void addPrivateExerciseToDB(String name, String image, int weeks, int period, 
+    public static void addPrivateExerciseToDB(String name, File imagefile, int weeks, int period, 
     		int num, double price, int storeid, int classroomid, int employeeid, 
     		String classbegintime, String classendtime, 
     		int exerciseweeknum, String exercisebegintime, String exerciseendtime,
@@ -948,6 +1005,13 @@ public class Application extends Controller {
     	}
     	if (employeeid==0) {
     		renderJSON("请选择一个教练");
+    	}
+    	String image=null;
+    	if (imagefile!=null) {
+	    	long currentTime = System.currentTimeMillis();
+	    	String fileName = currentTime + imagefile.getName();
+	    	image = fileName;
+	    	Files.copy(imagefile, Play.getFile("public/images/" + fileName));
     	}
     	PrivateExercise a = new PrivateExercise(name, image, weeks, period, num, 0, price, storeid, classroomid, employeeid, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime, courseintroduce, courseplan, notice, fitstep);
     	PrivateExerciseMgr.getInstance().save(a);
@@ -970,7 +1034,8 @@ public class Application extends Controller {
     }
     
     //修改特训班
-    public static void updatePrivateExerciseToDB(int id, String name, String image, int weeks, int period, 
+    public static void updatePrivateExerciseToDB(int id, String name, File imagefile, String image,
+    		int weeks, 	int period, 
     		int num, int oknum, double price, int storeid, int classroomid, int employeeid, 
     		String classbegintime, String classendtime, 
     		int exerciseweeknum, String exercisebegintime, String exerciseendtime,
@@ -984,6 +1049,12 @@ public class Application extends Controller {
     	}
     	if (employeeid==0) {
     		renderJSON("请选择一个教练");
+    	}
+    	if (imagefile!=null) {
+	    	long currentTime = System.currentTimeMillis();
+	    	String fileName = currentTime + imagefile.getName();
+	    	image = fileName;
+	    	Files.copy(imagefile, Play.getFile("public/images/" + fileName));
     	}
     	PrivateExercise a = new PrivateExercise(id, name, image, weeks, period, num, oknum, price, storeid, classroomid, employeeid, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime, courseintroduce, courseplan, notice, fitstep);
     	PrivateExerciseMgr.getInstance().update(a);
@@ -1125,12 +1196,15 @@ public class Application extends Controller {
     	Map<Integer, PrivateExerciseShow> listPrivateExerciseShow = new HashMap<>();
     	for (BookExercise be : listBookExercise) {
     		Member m = MemberMgr.getInstance().findMemberById(be.memberid);
+    		if (m==null) m = new Member();
     		listMember.add(m);
     		if (be.type==0) {
     			TeamExerciseSchedule tes = TeamExerciseScheduleMgr.getInstance().findTeamExerciseScheduleById(be.exerciseid);
+    			if (tes==null) tes = new TeamExerciseSchedule();
     			TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
     			StoreCity sc = StoreMgr.getInstance().findStoreById(tess.storeid);
-    			listCity.add(sc.cityname);
+    			if (sc==null) listCity.add("");
+    			else listCity.add(sc.cityname);
     			if (sc!=null) tess.storename = sc.name;
     			Classroom c = ClassroomMgr.getInstance().findClassroomById(tess.classroomid);
     			if (c!=null) tess.classroomname = c.name;
@@ -1140,14 +1214,15 @@ public class Application extends Controller {
     			
     		} else if (be.type==1) {
     			PrivateExercise pe = PrivateExerciseMgr.getInstance().findPrivateExerciseById(be.exerciseid);
+    			if (pe==null) pe = new PrivateExercise();
     			PrivateExerciseShow pes = new PrivateExerciseShow(pe);
     			StoreCity sc = StoreMgr.getInstance().findStoreById(pes.storeid);
-    			listCity.add(sc.cityname);
+    			if (sc==null) listCity.add("");
+    			else listCity.add(sc.cityname);
     			if (sc!=null) pes.storename = sc.name;
     			Classroom c = ClassroomMgr.getInstance().findClassroomById(pes.classroomid);
     			if (c!=null) pes.classroomname = c.name; 
     			listPrivateExerciseShow.put(be.id, pes);
-    			
     		}
     	}
     	int number = listBookExercise.size();

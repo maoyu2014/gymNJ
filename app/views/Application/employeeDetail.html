@@ -4,110 +4,123 @@
 <div data-options="region:'center',split:false">
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">员工信息详情</div>
+	<!-- 
 	<br/>
 	<div style="background-color:#e5ffb3;font-size:14px;padding:5px">购卡信息</div>
-	
-#{form @Application.updateEmployeeToDB(e.id)}
-	<div style="margin-left:100px;">
-		
-		<div style="margin:10px;">
-		<span style="font-size:14px;display:inline-block;width:100px">登录账号：</span>
-		<input name="username" class="easyui-textbox" data-options="readonly:true,required:true" value="${e.username}" style="height:32px">
-		</div>
-		
-		<div style="margin:10px;">
-		<span style="font-size:14px;display:inline-block;width:100px">登录密码：</span>
-		<input name="password" class="easyui-textbox" type="password" data-options="required:true" value="${e.password}" style="height:32px">
-		</div>
-		
-		<div style="margin:10px;">
-		<span style="font-size:14px;display:inline-block;width:100px">姓名：</span>
-		<input name="name" class="easyui-textbox" data-options="required:true" value="${e.name}" style="height:32px">
-		</div>
-		
-		<div style="margin:10px">
-		<span style="font-size:14px;display:inline-block;width:100px">头像：</span>
-		<input name="headimage" class="easyui-filebox" data-options="buttonText:'上传图片'" style="height:32px">
-		</div>
-		
-		<div style="margin:10px;">
-		<span style="font-size:14px;display:inline-block;width:100px">性别：</span>
-		#{if e.sex==1}
-		<input type="radio" name="sex" value="1" checked>男
-		#{/if}
-		#{else}
-		<input type="radio" name="sex" value="1">男
-		#{/else}
-		#{if e.sex==2}
-		<input type="radio" name="sex" value="2" checked>女
-		#{/if}
-		#{else}
-		<input type="radio" name="sex" value="2">女
-		#{/else}
-		</div>
-		
-		<div style="margin:10px;">
-		<span style="font-size:14px;display:inline-block;width:100px">电话：</span>
-		<input name="phone" class="easyui-numberbox" data-options="required:true" value="${e.phone}" style="height:32px">
-		</div>
-		
-		<div style="margin:10px;">
-		<span style="font-size:14px;display:inline-block;width:100px">身份：</span>
-		#{if e.ismanager==1}
-		<input type="checkbox" name="identity"  class="identityc" value="1" checked>店长
-		#{/if}
-		#{else}
-		<input type="checkbox" name="identity"  class="identityc" value="1">店长
-		#{/else}
-		#{if e.isfinance==1}
-		<input type="checkbox" name="identity"  class="identityc" value="2" checked>财务
-		#{/if}
-		#{else}
-		<input type="checkbox" name="identity"  class="identityc" value="2">财务
-		#{/else}
-		#{if e.iscoach==1}
-		<input type="checkbox" name="identity"  class="identityc" value="3" checked>教练
-		#{/if}
-		#{else}
-		<input type="checkbox" name="identity"  class="identityc" value="3">教练
-		#{/else}
-		</div>
-		
-		<div style="margin:10px;">
-		<span style="font-size:14px;display:inline-block;width:100px">登录权限：</span>
-		<input type="checkbox" name="authority" value="1">会员管理（限店长）
-		<input type="checkbox" name="authority" value="2">预约管理（限店长）
-		<input type="checkbox" name="authority" value="3">课程管理（限教练）<br><br>
-		<span style="font-size:14px;display:inline-block;width:100px"></span>
-		<input type="checkbox" name="authority" value="4">健身计划（限教练）
-		<input type="checkbox" name="authority" value="5">营销管理（限店长）
-		<input type="checkbox" name="authority" value="6">财务管理（限财务）<br><br>
-		<span style="font-size:14px;display:inline-block;width:100px"></span>
-		<input type="checkbox" name="authority" value="7">员工管理（限店长）
-		<input type="checkbox" name="authority" value="8">门店管理（限店长）
-		<input type="checkbox" name="authority" value="9">报表管理（限店长）
-		</div>
-		
-		<div style="margin:10px;">
-		<span style="font-size:14px;display:inline-block;width:100px">所属门店：</span>
-		<input name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}'" value="${e.storeid}" style="height:32px">
-		</div>
-		
-		<div style="margin:10px">
-		<span style="font-size:14px;display:inline-block;width:100px">个人简介：</span>
-		<textarea name="introduce" rows="8" cols="30">${e.introduce}</textarea>
-		</div>
-		
+	 -->
+	 
+	<table border="0">
+	<tr>
+	<td>
+		#{form @Application.updateEmployeeToDB(e.id), onsubmit:"return check()", enctype:'multipart/form-data'}
 		<div style="margin-left:100px;">
-		<input type="submit" style="width:80px;height:32px" value="确认修改">
+			
+			<div style="margin:10px;">
+			<span style="font-size:14px;display:inline-block;width:100px">登录账号：</span>
+			<input id="username" name="username" class="easyui-textbox" data-options="readonly:true,required:true" value="${e.username}" style="height:32px">
+			</div>
+			
+			<div style="margin:10px;">
+			<span style="font-size:14px;display:inline-block;width:100px">登录密码：</span>
+			<input id="password" name="password" class="easyui-textbox" type="password" data-options="required:true" value="${e.password}" style="height:32px">
+			</div>
+			
+			<div style="margin:10px;">
+			<span style="font-size:14px;display:inline-block;width:100px">姓名：</span>
+			<input id="name" name="name" class="easyui-textbox" data-options="required:true" value="${e.name}" style="height:32px">
+			</div>
+			
+			<div style="margin:10px">
+			<span style="font-size:14px;display:inline-block;width:100px">头像：</span>
+			<input name="headimagefile" class="easyui-filebox" data-options="buttonText:'上传图片'" value="${e.headimage}" style="height:32px">
+			<input name="headimage" type="hidden" value="${e.headimage}" >
+			</div>
+			
+			<div style="margin:10px;">
+			<span style="font-size:14px;display:inline-block;width:100px">性别：</span>
+			#{if e.sex==1}
+			<input type="radio" name="sex" value="1" checked>男
+			#{/if}
+			#{else}
+			<input type="radio" name="sex" value="1">男
+			#{/else}
+			#{if e.sex==2}
+			<input type="radio" name="sex" value="2" checked>女
+			#{/if}
+			#{else}
+			<input type="radio" name="sex" value="2">女
+			#{/else}
+			</div>
+			
+			<div style="margin:10px;">
+			<span style="font-size:14px;display:inline-block;width:100px">电话：</span>
+			<input id="phone" name="phone" class="easyui-textbox" data-options="required:true" value="${e.phone}" style="height:32px">
+			</div>
+			
+			<div style="margin:10px;">
+			<span style="font-size:14px;display:inline-block;width:100px">身份：</span>
+			#{if e.ismanager==1}
+			<input type="checkbox" name="identity"  class="identityc" value="1" checked>店长
+			#{/if}
+			#{else}
+			<input type="checkbox" name="identity"  class="identityc" value="1">店长
+			#{/else}
+			#{if e.isfinance==1}
+			<input type="checkbox" name="identity"  class="identityc" value="2" checked>财务
+			#{/if}
+			#{else}
+			<input type="checkbox" name="identity"  class="identityc" value="2">财务
+			#{/else}
+			#{if e.iscoach==1}
+			<input type="checkbox" name="identity"  class="identityc" value="3" checked>教练
+			#{/if}
+			#{else}
+			<input type="checkbox" name="identity"  class="identityc" value="3">教练
+			#{/else}
+			</div>
+			
+			<div style="margin:10px;">
+			<span style="font-size:14px;display:inline-block;width:100px">登录权限：</span>
+			<input type="checkbox" name="authority" value="1">会员管理（限店长）
+			<input type="checkbox" name="authority" value="2">预约管理（限店长）
+			<input type="checkbox" name="authority" value="3">课程管理（限教练）<br><br>
+			<span style="font-size:14px;display:inline-block;width:100px"></span>
+			<input type="checkbox" name="authority" value="4">健身计划（限教练）
+			<input type="checkbox" name="authority" value="5">营销管理（限店长）
+			<input type="checkbox" name="authority" value="6">财务管理（限财务）<br><br>
+			<span style="font-size:14px;display:inline-block;width:100px"></span>
+			<input type="checkbox" name="authority" value="7">员工管理（限店长）
+			<input type="checkbox" name="authority" value="8">门店管理（限店长）
+			<input type="checkbox" name="authority" value="9">报表管理（限店长）
+			</div>
+			
+			<div style="margin:10px;">
+			<span style="font-size:14px;display:inline-block;width:100px">所属门店：</span>
+			<input id="storeid" name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}'" value="${e.storeid}" style="height:32px">
+			</div>
+			
+			<div style="margin:10px">
+			<span style="font-size:14px;display:inline-block;width:100px">个人简介：</span>
+			<textarea name="introduce" rows="8" cols="30">${e.introduce}</textarea>
+			</div>
+			
+			<div style="margin-left:100px;">
+			<input type="submit" style="width:80px;height:32px" value="确认修改">
+			</div>
+			
 		</div>
-		
-	</div>
-#{/form}
+		#{/form}
+	</td>
+	<td valign="top">
+		<img src="/public/images/${e.headimage}" alt="员工照片" width="200" height="200" style="margin:20px">
+	</td>
+	<tr>
+	</table>
 	
+	<!-- 
 	<br/>
 	<div style="background-color:#e5ffb3;font-size:14px;padding:5px">操课信息</div>
-	
+	 -->
 	
 	
 	
@@ -166,5 +179,20 @@
 			}
 		}
 	});
+	
+	function check() {
+		var v;
+		v = $("#username").val();
+		if (v==null || v=="") { alert("输入不完整！"); return false; }
+		v = $("#password").val();
+		if (v==null || v=="") { alert("输入不完整！"); return false; }
+		v = $("#name").val();
+		if (v==null || v=="") { alert("输入不完整！"); return false; }
+		v = $("#phone").val();
+		if (v==null || v=="") { alert("输入不完整！"); return false; }
+		v = $("#storeid").combobox("getValue"); 
+		if (v==null || v=="") { alert("输入不完整！"); return false; }
+		return true;
+	}
 	</script>
 </div>

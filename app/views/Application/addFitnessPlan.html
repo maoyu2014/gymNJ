@@ -4,7 +4,7 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加健身计划</div>
 	
-#{form @Application.addFitnessPlanToDB()}
+	#{form @Application.addFitnessPlanToDB(), onsubmit:"return check()"}
 	<div style="margin-left:100px;">
 		
 		<div style="margin:20px;">
@@ -18,7 +18,7 @@
 		
 		<div style="margin:20px;">
 		<span style="font-size:14px;display:inline-block;width:100px">健身名字：</span>
-		<input name="name" class="easyui-textbox" data-options="required:true" style="height:32px">
+		<input id="name" name="name" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:20px">
@@ -70,7 +70,16 @@
 		</div>
 		
 	</div>
-#{/form}
+	#{/form}
 	
 	
 </div>
+
+<script>
+function check() {
+	var v;
+	v = $("#name").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	return true;
+}
+</script>

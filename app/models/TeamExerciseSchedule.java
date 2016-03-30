@@ -15,6 +15,8 @@ public class TeamExerciseSchedule {
 	public String begintime;
 	public String endtime;
 	
+	public TeamExerciseSchedule() {}
+	
 	public TeamExerciseSchedule(int id, int storeid, int classroomid,
 			int employeeid, int teamexerciseid, int num, int oknum,
 			String begintime, String endtime) {

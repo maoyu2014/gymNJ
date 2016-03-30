@@ -4,7 +4,7 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">健身计划详情</div>
 	
-#{form @Application.updateFitnessPlanToDB(sc.id)}
+	#{form @Application.updateFitnessPlanToDB(sc.id), onsubmit:"return check()"}
 	<div style="margin-left:100px;">
 		
 		<div style="margin:20px;">
@@ -120,7 +120,16 @@
 		</div>
 		
 	</div>
-#{/form}
+	#{/form}
 	
 	
 </div>
+
+<script>
+function check() {
+	var v;
+	v = $("#name").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	return true;
+}
+</script>

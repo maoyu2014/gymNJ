@@ -4,33 +4,33 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">团购活动详情</div>
 	
-#{form @Application.updateGroupbuyToDB(sc.id)}
+	#{form @Application.updateGroupbuyToDB(sc.id), onsubmit:"return check()"}
 	<div style="margin-left:100px;">
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">团购网站：</span>
-		<input name="groupwebsiteid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllGroupWebsite()}'" value="${sc."groupwebsiteid"}" style="height:32px">
+		<input id="groupwebsiteid" name="groupwebsiteid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllGroupWebsite()}'" value="${sc.groupwebsiteid}" style="height:32px">
 		</div>
 		
 		<div style="margin:10px">
 		<span style="font-size:14px;display:inline-block;width:100px">所属门店：</span>
-		<input name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}'" value="${sc.storeid}" style="height:32px">
+		<input id="storeid" name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}'" value="${sc.storeid}" style="height:32px">
 		</div>
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">团购价格：</span>
-		<input name="price" class="easyui-numberbox" data-options="required:true" value="${sc.price}" style="height:32px">元/
-		<input name="times" class="easyui-numberbox" data-options="required:true" value="${sc.times}" style="height:32px">次
+		<input id="price" name="price" class="easyui-numberbox" data-options="required:true" value="${sc.price}" style="height:32px">元/
+		<input id="times" name="times" class="easyui-numberbox" data-options="required:true" value="${sc.times}" style="height:32px">次
 		</div>
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">开始时间：</span>
-		<input name="starttime" class="easyui-datetimebox" data-options="required:true,showSeconds:false,editable:false" value="${sc.starttime}" style="height:32px">
+		<input id="starttime" name="starttime" class="easyui-datetimebox" data-options="required:true,showSeconds:false,editable:false" value="${sc.starttime}" style="height:32px">
 		</div>
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">结束时间：</span>
-		<input name="endtime" class="easyui-datetimebox" data-options="required:true,showSeconds:false,editable:false" value="${sc.endtime}" style="height:32px">
+		<input id="endtime" name="endtime" class="easyui-datetimebox" data-options="required:true,showSeconds:false,editable:false" value="${sc.endtime}" style="height:32px">
 		</div>
 		
 		<div style="margin:10px">
@@ -50,5 +50,23 @@
 	</div>
 #{/form}
 	
-	
 </div>
+
+<script>
+function check() {
+	var v;
+	v = $("#groupwebsiteid").combobox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#storeid").combobox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#starttime").datetimebox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#endtime").datetimebox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#price").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#times").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	return true;
+}
+</script>
