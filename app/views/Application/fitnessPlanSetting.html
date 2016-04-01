@@ -6,11 +6,7 @@
 	
 	
 	<div style="margin:20px">
-	    <a href="@{Application.addFitnessPlan()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:120px;height:32px;">增加健身计划</a>
-	</div>
-	
-	<div style="margin:20px">
-        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:false">
 	        <thead>
 	            <tr>
 	                <th data-options="field:'style',width:100">热身健身</th>
@@ -18,23 +14,30 @@
 	            </tr>
 	        </thead>
 	        <tbody>
-	        #{list items:lists, as:'FitnessPlan'}
-	        	#{if FitnessPlan.style==1}
+	        %{
+	        	int num=0;
+	        }%
+	        #{list items:list1, as:'FitnessPlan'}
 	        	<tr>
-		            <td>${FitnessPlan.name}</td>
+		            <td>${++num} : ${FitnessPlan.name}</td>
 		            <td>
 		            	<a href="@{Application.fitnessPlanDetail(FitnessPlan.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
 		            	<a href="@{Application.deleteFitnessPlan(FitnessPlan.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
 		            </td>
 		        </tr>
-		        #{/if}
 	        #{/list}
+	        <tr>
+	        	<td>
+	        		<a href="@{Application.addFitnessPlan(1)}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:120px;margin-left:400px;">增加项目</a>
+	        	</td>
+	        	<td></td>
+	        </tr>
 	        </tbody>
 	    </table>
     </div>
   
   	<div style="margin:20px">
-        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:false">
 	        <thead>
 	            <tr>
 	                <th data-options="field:'style',width:100">器械健身</th>
@@ -42,23 +45,28 @@
 	            </tr>
 	        </thead>
 	        <tbody>
-	        #{list items:lists, as:'FitnessPlan'}
-	        	#{if FitnessPlan.style==2}
+	        %{ num=0; }%
+	        #{list items:list2, as:'FitnessPlan'}
 	        	<tr>
-		            <td>${FitnessPlan.name}</td>
+		            <td>${++num} : ${FitnessPlan.name}</td>
 		            <td>
 		            	<a href="@{Application.fitnessPlanDetail(FitnessPlan.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
 		            	<a href="@{Application.deleteFitnessPlan(FitnessPlan.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
 		            </td>
 		        </tr>
-		        #{/if}
 	        #{/list}
+	        <tr>
+	        	<td>
+	        		<a href="@{Application.addFitnessPlan(2)}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:120px;margin-left:400px;">增加项目</a>
+	        	</td>
+	        	<td></td>
+	        </tr>
 	        </tbody>
 	    </table>
     </div>
     
     <div style="margin:20px">
-        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:false">
 	        <thead>
 	            <tr>
 	                <th data-options="field:'style',width:100">团操健身</th>
@@ -66,17 +74,22 @@
 	            </tr>
 	        </thead>
 	        <tbody>
-	        #{list items:lists, as:'FitnessPlan'}
-	        	#{if FitnessPlan.style==3}
+	        %{ num=0; }%
+	        #{list items:list3, as:'FitnessPlanShow'}
 	        	<tr>
-		            <td>${FitnessPlan.name}</td>
+		            <td>${++num} : ${FitnessPlanShow.teamexercisename}</td>
 		            <td>
-		            	<a href="@{Application.fitnessPlanDetail(FitnessPlan.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-		            	<a href="@{Application.deleteFitnessPlan(FitnessPlan.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            	<a href="@{Application.fitnessPlanDetail2(FitnessPlanShow.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{Application.deleteFitnessPlan(FitnessPlanShow.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
 		            </td>
 		        </tr>
-		        #{/if}
 	        #{/list}
+	        <tr>
+	        	<td>
+	        		<a href="@{Application.addFitnessPlan2(3)}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:120px;margin-left:400px;">增加项目</a>
+	        	</td>
+	        	<td></td>
+	        </tr>
 	        </tbody>
 	    </table>
     </div>

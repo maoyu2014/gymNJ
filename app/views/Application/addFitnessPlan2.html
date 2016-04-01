@@ -10,24 +10,13 @@
 		<div style="margin:20px;">
 		<span style="font-size:14px;display:inline-block;width:100px">计划类别：</span>
 		<select name="style" class="easyui-combobox" data-options="disabled:true,readonly:false" style="height:32px;width:100px;">
-			#{if style==1}
-			<option value="1" selected>热身健身</option>
-			#{/if}
-			#{else}
-			<option value="1">热身健身</option>
-			#{/else}
-			#{if style==2}
-			<option value="2" selected>器械健身</option>
-			#{/if}
-			#{else}
-			<option value="2">器械健身</option>
-			#{/else}
+		    <option value="3">团操健身</option>
 		</select>
 		</div>
 		
 		<div style="margin:20px;">
-		<span style="font-size:14px;display:inline-block;width:100px">健身名字：</span>
-		<input id="name" name="name" class="easyui-textbox" data-options="required:true" style="height:32px">
+		<span style="font-size:14px;display:inline-block;width:100px">选择团操：</span>
+		<input id="name" name="name" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllTeamExerciseScheduleAsJson()}',prompt:'团操名称、门店、教室、教练'" style="width:350px;height:32px">
 		</div>
 		
 		<div style="margin:20px">
@@ -36,14 +25,6 @@
 		<input type="radio" name="fitsex" value="2">女
 		</div>
 		
-		<div style="margin:20px;">
-		<span style="font-size:14px;display:inline-block;width:100px">锻炼部位：</span>
-		<input type="checkbox" name="parts"  value="1">全身 
-		<input type="checkbox" name="parts"  value="2">臂力 
-		<input type="checkbox" name="parts"  value="3">胸部 
-		<input type="checkbox" name="parts"  value="4">腹部 
-		<input type="checkbox" name="parts"  value="5">腿部 
-		</div> 
 		
 		<div style="margin:20px;">
 		<span style="font-size:14px;display:inline-block;width:100px">数量：</span>
@@ -87,7 +68,7 @@
 <script>
 function check() {
 	var v;
-	v = $("#name").val();
+	v = $("#name").combobox("getValue");
 	if (v==null || v=="") { alert("输入不完整！"); return false; }
 	return true;
 }

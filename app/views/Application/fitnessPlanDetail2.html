@@ -32,8 +32,8 @@
 		</div>
 		
 		<div style="margin:20px;">
-		<span style="font-size:14px;display:inline-block;width:100px">健身名字：</span>
-		<input id="name" name="name" class="easyui-textbox" data-options="required:true" value="${sc.name}" style="height:32px">
+		<span style="font-size:14px;display:inline-block;width:100px">选择团操：</span>
+		<input id="name" name="name" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllTeamExerciseScheduleAsJson()}',prompt:'团操名称、门店、教室、教练'" value="${sc.name}" style="width:350px;height:32px">
 		</div>
 		
 		<div style="margin:20px">
@@ -51,40 +51,6 @@
 		<input type="radio" name="fitsex" value="2">女
 		#{/else}
 		</div>
-		
-		<div style="margin:20px;">
-		<span style="font-size:14px;display:inline-block;width:100px">锻炼部位：</span>
-		#{if sc.one==1}
-		<input type="checkbox" name="parts"  value="1" checked>全身 
-		#{/if}
-		#{else}
-		<input type="checkbox" name="parts"  value="1">全身 
-		#{/else}
-		#{if sc.two==1}
-		<input type="checkbox" name="parts"  value="2" checked>臂力 
-		#{/if}
-		#{else}
-		<input type="checkbox" name="parts"  value="2">臂力 
-		#{/else}
-		#{if sc.three==1}
-		<input type="checkbox" name="parts"  value="3" checked>胸部 
-		#{/if}
-		#{else}
-		<input type="checkbox" name="parts"  value="3">胸部 
-		#{/else}
-		#{if sc.four==1}
-		<input type="checkbox" name="parts"  value="4" checked>腹部 
-		#{/if}
-		#{else}
-		<input type="checkbox" name="parts"  value="4">腹部 
-		#{/else}
-		#{if sc.five==1}
-		<input type="checkbox" name="parts"  value="5" checked>腿部 
-		#{/if}
-		#{else}
-		<input type="checkbox" name="parts"  value="5">腿部 
-		#{/else}
-		</div> 
 		
 		<div style="margin:20px;">
 		<span style="font-size:14px;display:inline-block;width:100px">数量：</span>
@@ -113,7 +79,6 @@
 		<input name="keshu5" class="easyui-numberbox" data-options="required:true,showSeconds:false" value="${sc.keshu5}" style="width:60px;height:32px">课
 		</div>
 		</div>
-		
 		
 		<div style="margin-left:100px;">
 		<input type="submit" style="width:80px;height:32px">

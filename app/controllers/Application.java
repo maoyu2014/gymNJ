@@ -641,12 +641,36 @@ public class Application extends Controller {
     //健身计划设置(展示)页面
     public static void fitnessPlanSetting() {
     	List<FitnessPlan> lists = FitnessPlanMgr.getInstance().getAllFitnessPlan();
-        render(lists);
+    	List<FitnessPlan> list1 = new ArrayList<>();
+    	List<FitnessPlan> list2 = new ArrayList<>();
+    	List<FitnessPlanShow> list3 = new ArrayList<>();
+    	for (FitnessPlan fp : lists) {
+    		if (fp.style==1) list1.add(fp);
+    		else if (fp.style==2) list2.add(fp);
+    		else if (fp.style==3) {
+    			FitnessPlanShow fps = new FitnessPlanShow(fp);
+    			TeamExerciseSchedule tes = TeamExerciseScheduleMgr.getInstance().findTeamExerciseScheduleById(Integer.parseInt(fps.name));
+    			if (tes!=null) {
+    				TeamExercise te = TeamExerciseMgr.getInstance().findTeamExerciseById(tes.teamexerciseid);
+    				if (te!=null) {
+    					fps.teamexercisename = te.name;
+    				}
+    			}
+    			list3.add(fps);
+    		}
+    	}
+    	int num1 = list1.size(), num2 = list2.size(), num3 = list3.size();
+        render(list1,list2,list3,num1,num2,num3);
     }
     
-    //添加健身计划页面
-    public static void addFitnessPlan() {
-        render();
+    //添加健身计划页面  种类1
+    public static void addFitnessPlan(int style) {
+        render(style);
+    }
+    
+    //添加健身计划页面  种类2
+    public static void addFitnessPlan2(int style) {
+        render(style);
     }
     
     //添加健身计划
@@ -654,6 +678,7 @@ public class Application extends Controller {
     		double geshu1, double geshu2, double geshu3, double geshu4, int geshu5,
     		double fenzhong1, double fenzhong2, double fenzhong3, double fenzhong4, int fenzhong5,
     		double keshu1, double keshu2, double keshu3, double keshu4, int keshu5) {
+    	System.out.println("style= "+style);
     	String ans_parts = "";
     	String number = "";
     	if (parts!=null) {
@@ -679,7 +704,7 @@ public class Application extends Controller {
     		renderText("删除失败");
     }
     
-    //健身计划详情(修改)页面
+    //健身计划详情(修改)  页面1
     public static void fitnessPlanDetail(int id) {
     	FitnessPlan s = FitnessPlanMgr.getInstance().findFitnessPlanById(id);
     	FitnessPlanShow sc  = new FitnessPlanShow(s);
@@ -696,6 +721,37 @@ public class Application extends Controller {
 	    		if (temp==5) sc.five=1;
 	    	}
     	}
+    	if (number!=null) {
+	    	String[] str = number.split(",");
+	    	for (int i=0; i<str.length; i++) {
+	    		String ss = str[i];
+	    		if (i==0) sc.geshu1 = Double.parseDouble(ss);
+	    		if (i==1) sc.geshu2 = Double.parseDouble(ss);
+	    		if (i==2) sc.geshu3 = Double.parseDouble(ss);
+	    		if (i==3) sc.geshu4 = Double.parseDouble(ss);
+	    		if (i==4) sc.geshu5 = Integer.parseInt(ss);
+	    		
+	    		if (i==5) sc.fenzhong1 = Double.parseDouble(ss);
+	    		if (i==6) sc.fenzhong2 = Double.parseDouble(ss);
+	    		if (i==7) sc.fenzhong3 = Double.parseDouble(ss);
+	    		if (i==8) sc.fenzhong4 = Double.parseDouble(ss);
+	    		if (i==9) sc.fenzhong5 = Integer.parseInt(ss);
+	    		
+	    		if (i==10) sc.keshu1 = Double.parseDouble(ss);
+	    		if (i==11) sc.keshu2 = Double.parseDouble(ss);
+	    		if (i==12) sc.keshu3 = Double.parseDouble(ss);
+	    		if (i==13) sc.keshu4 = Double.parseDouble(ss);
+	    		if (i==14) sc.keshu5 = Integer.parseInt(ss);
+	    	}
+    	}
+    	render(sc);
+    }
+    
+    //健身计划详情(修改)  页面2
+    public static void fitnessPlanDetail2(int id) {
+    	FitnessPlan s = FitnessPlanMgr.getInstance().findFitnessPlanById(id);
+    	FitnessPlanShow sc  = new FitnessPlanShow(s);
+    	String number = sc.number;
     	if (number!=null) {
 	    	String[] str = number.split(",");
 	    	for (int i=0; i<str.length; i++) {
@@ -912,6 +968,26 @@ public class Application extends Controller {
     	teamExerciseSetting();
     }
     
+    //获得所有团操排期的可读性结果
+    public static void getAllTeamExerciseScheduleAsJson() {
+    	List<TeamExerciseSchedule> listss = TeamExerciseScheduleMgr.getInstance().getAllTeamExerciseSchedule();
+    	List<TeamExerciseScheduleJson> listtesj = new ArrayList<>();
+    	for (TeamExerciseSchedule tes : listss) {
+    		TeamExerciseScheduleJson tesj = new TeamExerciseScheduleJson();
+    		tesj.id = tes.id;
+    		tesj.name="";
+    		TeamExercise t = TeamExerciseMgr.getInstance().findTeamExerciseById(tes.teamexerciseid);
+    		if (t!=null) tesj.name += t.name+"、";
+    		StoreCity s = StoreMgr.getInstance().findStoreById(tes.storeid);
+    		if (s!=null) tesj.name += s.name+"、";
+    		Classroom c = ClassroomMgr.getInstance().findClassroomById(tes.classroomid);
+    		if (c!=null) tesj.name += c.name+"、";
+    		Employee e = EmployeeMgr.getInstance().findEmployeeById(tes.employeeid);
+    		if (e!=null) tesj.name += e.name;
+    		listtesj.add(tesj);
+    	}
+    	renderJSON(listtesj);
+    }
     
     
     /*
@@ -1189,7 +1265,7 @@ public class Application extends Controller {
     
     //BookExercise预约设置（展示）页面
     public static void BookExerciseSetting() {
-    	List<BookExercise> listBookExercise = BookExerciseMgr.getInstance().getAllBookExercise();
+    	List<BookExercise> listBookExercise = BookExerciseMgr.getInstance().getAllActiveBookExercise();
     	List<Member> listMember = new ArrayList<>();
     	List<String> listCity = new ArrayList<>();
     	Map<Integer, TeamExerciseScheduleShow> listTeamExerciseScheduleShow = new HashMap<>();
