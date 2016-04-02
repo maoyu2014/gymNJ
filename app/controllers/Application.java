@@ -39,6 +39,10 @@ public class Application extends Controller {
     public static void index() {
         render();
     }
+    //首页图片
+    public static void indexpic() {
+    	render();
+    }
     
 	/*
 	 * 权限管理

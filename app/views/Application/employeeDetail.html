@@ -1,7 +1,19 @@
-#{extends 'main.html' /}
+<!DOCTYPE html>
 
-
-<div data-options="region:'center',split:false">
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+    
+<body>
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">员工信息详情</div>
 	<!-- 
@@ -122,74 +134,75 @@
 	<br/>
 	<div style="background-color:#e5ffb3;font-size:14px;padding:5px">操课信息</div>
 	 -->
+</body>
 	
 	
-	
-	
-	<script>
+<script>
+var identity = document.getElementsByName("identity"); 
+for (i=0; i<identity.length; i++){  
+	if (identity[i].checked){  
+		value = identity[i].value;
+		if (value==1) one();
+		else if (value==2) two();
+		else if (value==3) three();
+	}
+}
+function one() {
+	var authority = document.getElementsByName("authority"); 
+	authority[0].checked=true;
+	authority[1].checked=true;
+	authority[4].checked=true;
+	authority[6].checked=true;
+	authority[7].checked=true;
+	authority[8].checked=true;
+}
+function two() {
+	var authority = document.getElementsByName("authority"); 
+	authority[5].checked=true;
+}
+function three() {
+	var authority = document.getElementsByName("authority"); 
+	authority[2].checked=true;
+	authority[3].checked=true;
+}
+$("input[name='identity']").change(function(){
 	var identity = document.getElementsByName("identity"); 
+	var authority = document.getElementsByName("authority"); 
+	for (i=0; i<authority.length; i++){  
+		authority[i].checked=false;
+	}
+	var value;
 	for (i=0; i<identity.length; i++){  
 		if (identity[i].checked){  
 			value = identity[i].value;
-			if (value==1) one();
-			else if (value==2) two();
-			else if (value==3) three();
-		}
-	}
-	function one() {
-		var authority = document.getElementsByName("authority"); 
-		authority[0].checked=true;
-		authority[1].checked=true;
-		authority[4].checked=true;
-		authority[6].checked=true;
-		authority[7].checked=true;
-		authority[8].checked=true;
-	}
-	function two() {
-		var authority = document.getElementsByName("authority"); 
-		authority[5].checked=true;
-	}
-	function three() {
-		var authority = document.getElementsByName("authority"); 
-		authority[2].checked=true;
-		authority[3].checked=true;
-	}
-	$("input[name='identity']").change(function(){
-		var identity = document.getElementsByName("identity"); 
-		var authority = document.getElementsByName("authority"); 
-		for (i=0; i<authority.length; i++){  
-			authority[i].checked=false;
-		}
-		var value;
-		for (i=0; i<identity.length; i++){  
-			if (identity[i].checked){  
-				value = identity[i].value;
-				if (value==1) {
-					authority[0].checked=true;
-					authority[1].checked=true;
-					authority[4].checked=true;
-					authority[6].checked=true;
-					authority[7].checked=true;
-					authority[8].checked=true;
-				} else if (value==2) {
-					authority[5].checked=true;
-				} else if (value==3) {
-					authority[2].checked=true;
-					authority[3].checked=true;
-				}
+			if (value==1) {
+				authority[0].checked=true;
+				authority[1].checked=true;
+				authority[4].checked=true;
+				authority[6].checked=true;
+				authority[7].checked=true;
+				authority[8].checked=true;
+			} else if (value==2) {
+				authority[5].checked=true;
+			} else if (value==3) {
+				authority[2].checked=true;
+				authority[3].checked=true;
 			}
 		}
-	});
-	
-	function check() {
-		var v;
-		v = $("#name").val();
-		if (v==null || v=="") { alert("输入不完整！"); return false; }
-		v = $("#phone").val();
-		if (v==null || v=="") { alert("输入不完整！"); return false; }
-		v = $("#storeid").combobox("getValue"); 
-		if (v==null || v=="") { alert("输入不完整！"); return false; }
-		return true;
 	}
-	</script>
-</div>
+});
+
+function check() {
+	var v;
+	v = $("#name").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#phone").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#storeid").combobox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	return true;
+}
+</script>
+
+
+</html>

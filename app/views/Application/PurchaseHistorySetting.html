@@ -1,12 +1,26 @@
-#{extends 'main.html' /}
 
-<div data-options="region:'center',split:false">
+<!DOCTYPE html>
+
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+    
+<body>
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">财务收入</div>
 	
 	<div style="margin-top:20px;margin-left:300px;width:300px;height:120px;border:0px solid;">
-		<div style="background-color:#1a1a1a;height:50%;border:0px solid;font-size:25px;text-align:center;color:white;padding:10px">现金额度</div>
-		<div style="background-color:#a6a6a6;height:50%;border:0px solid;font-size:30px;text-align:center;padding:10px">￥${feesum.format('000.00')}元</div>
+		<div style="background-color:#1a1a1a;height:30%;border:0px solid;font-size:25px;text-align:center;color:white;padding:10px">现金额度</div>
+		<div style="background-color:#a6a6a6;height:30%;border:0px solid;font-size:30px;text-align:center;padding:10px">￥${feesum.format('000.00')}元</div>
 	</div>
 	
 	<div style="margin:20px">
@@ -38,6 +52,7 @@
 	            </tr>
 	        </thead>
 	        <tbody>
+	        #{if number>0}
 	        #{list items:0..number-1, as:'i'}
 	        	<tr>
 		            <td>${listMemberShow[i].name}</td>
@@ -53,6 +68,7 @@
 		            </td>
 		        </tr>
 	        #{/list}
+	        #{/if}
 	        </tbody>
 	    </table>
     </div>
@@ -61,4 +77,7 @@
     	共${number}条记录
 	</div>
 	
-</div>
+</body>
+
+
+</html>

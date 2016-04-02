@@ -1,6 +1,19 @@
-#{extends 'main.html' /}
+<!DOCTYPE html>
 
-<div data-options="region:'center',split:false">
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+    
+<body>
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">门店公告设置</div>
 	
@@ -47,4 +60,6 @@
     	共${number}条记录
 	</div>
 	
-</div>
+</body>
+
+</html>
