@@ -2,28 +2,52 @@
 
 <html>
     <head>
-    
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>健身俱乐部</title>
+        <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        #{get 'moreStyles' /}
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+		#{get 'moreScripts' /}
     </head>
     
     <body style="background-color:#99ddff">
     
-    <div style="margin:250px;">
-    #{form @Application.check()}
+    <h1 style="">健身俱乐部登录</h1>
+    <div style="margin:100px;">
+    #{form @Application.check(), onsubmit:"return check()"}
     	<div style="margin:20px;">
-		<span style="font-size:14px;display:inline-block;width:100px">用户名：</span>
-		<input name="username" class="easyui-textbox" data-options="required:true" style="height:32px">
+		<span style="font-size:20px;display:inline-block;width:100px">用户名：</span>
+		<input id="username" name="username" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin:20px;">
-		<span style="font-size:14px;display:inline-block;width:100px">密码：</span>
-		<input name="password" class="easyui-textbox" type="password" data-options="required:true" style="height:32px">
+		<span style="font-size:20px;display:inline-block;width:100px">密码：</span>
+		<input id="password" name="password" class="easyui-textbox" type="password" data-options="required:true" style="height:32px">
 		</div>
 		
 		<div style="margin-left:100px;margin-top:30px">
-		<input type="submit" style="width:100px;height:50px" value="登录">
+		<input type="submit" style="width:100px;height:40px" value="登录">
 		</div>
     #{/form}
     </div>
     
     </body>
+    
 </html>
+
+<script>
+function check() {
+	var v;
+	v = $("#username").val();
+	if (v=="") { alert("输入不完整！"); return false; }
+	v = $("#password").val();
+	if (v=="") { alert("输入不完整！"); return false; }
+	return true;
+}
+</script>

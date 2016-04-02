@@ -16,6 +16,7 @@ import utils.EmployeeMgr;
 import utils.FitnessPlanMgr;
 import utils.GroupWebsiteMgr;
 import utils.GroupbuyMgr;
+import utils.Md5_Utils;
 import utils.MemberMgr;
 import utils.PrivateExerciseMgr;
 import utils.PurchaseHistoryMgr;
@@ -56,9 +57,13 @@ public class Application extends Controller {
     
     //判断能否登录，能登录的话保存session
     public static void check(String username, String password) {
+    	if (username.length()==0 || password.length()==0) {
+    		renderJSON("请输入用户名或者密码！");
+    	}
+    	String md5password = Md5_Utils.getMD5String(password);
     	if (EmployeeMgr.getInstance().hasUser(username)) {
     		Employee e = EmployeeMgr.getInstance().findEmployeeByUsername(username);
-    		if (e.password.equals(password)) {
+    		if (e.password.equals(md5password)) {
     			session.put("user", e.toString());
     			index();
     		} else {
@@ -287,6 +292,8 @@ public class Application extends Controller {
     	if (storeid==0) {
     		renderJSON("请选择一个门店!!!");
     	}
+    	String md5password = Md5_Utils.getMD5String(password);
+    	
     	int ismanager = 0;
     	int isfinance = 0;
     	int iscoach = 0;
@@ -330,7 +337,7 @@ public class Application extends Controller {
 	    	headimage = fileName;
 	    	Files.copy(headimagefile, Play.getFile("public/images/" + fileName));
     	}
-    	Employee e = new Employee(username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
+    	Employee e = new Employee(username, md5password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
     	EmployeeMgr.getInstance().save(e);
     	employeeSetting();
     }
@@ -351,13 +358,17 @@ public class Application extends Controller {
     }
     
     //修改员工
-    public static void updateEmployeeToDB(int id, String username, String password, String name, 
-    		File headimagefile, String headimage, int sex, String phone, 
+    public static void updateEmployeeToDB(int id, String username, String newpassword, String password, 
+    		String name, File headimagefile, String headimage, int sex, String phone, 
     		int[] identity, int[] authority, int storeid, String introduce) {
     	//工作人员必须选择一个门店
     	if (storeid==0) {
     		renderJSON("请选择一个门店!!!");
     	}
+    	String md5password;
+    	if (newpassword==null || newpassword.length()==0) md5password=password;
+    	else md5password= Md5_Utils.getMD5String(newpassword);
+    	
     	int ismanager = 0;
     	int isfinance = 0;
     	int iscoach = 0;
@@ -372,6 +383,7 @@ public class Application extends Controller {
     	int dostore=0;
     	int dostatistics=0;
     	
+//    	if (identity==null) System.out.println("identity is null");
     	if (identity!=null) {
     		int length = identity.length;
     		for (int i=0; i<length; i++) {
@@ -400,7 +412,7 @@ public class Application extends Controller {
 	    	headimage = fileName;
 	    	Files.copy(headimagefile, Play.getFile("public/images/" + fileName));
     	}
-    	Employee e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
+    	Employee e = new Employee(id,username, md5password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
     	EmployeeMgr.getInstance().update(e);
     	employeeSetting();
     }

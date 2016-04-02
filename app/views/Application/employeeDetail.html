@@ -21,8 +21,9 @@
 			</div>
 			
 			<div style="margin:10px;">
-			<span style="font-size:14px;display:inline-block;width:100px">登录密码：</span>
-			<input id="password" name="password" class="easyui-textbox" type="password" data-options="required:true" value="${e.password}" style="height:32px">
+			<span style="font-size:14px;display:inline-block;width:100px">新密码：</span>
+			<input id="newpassword" name="newpassword" class="easyui-textbox" type="password" data-options="" style="height:32px">(如需修改密码，请输入新密码，否则请留空)
+			<input id="password" name="password" type="hidden" value="${e.password}"> 
 			</div>
 			
 			<div style="margin:10px;">
@@ -182,10 +183,6 @@
 	
 	function check() {
 		var v;
-		v = $("#username").val();
-		if (v==null || v=="") { alert("输入不完整！"); return false; }
-		v = $("#password").val();
-		if (v==null || v=="") { alert("输入不完整！"); return false; }
 		v = $("#name").val();
 		if (v==null || v=="") { alert("输入不完整！"); return false; }
 		v = $("#phone").val();
