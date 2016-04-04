@@ -52,16 +52,16 @@
 		<div style="margin:20px">
 		<span style="font-size:14px;display:inline-block;width:100px">适合人群：</span>
 		#{if sc.fitsex==1}
-		<input type="radio" name="fitsex" value="1" checked>男
+		<input type="radio" name="fitsex" value="1" checked required>男
 		#{/if}
 		#{else}
-		<input type="radio" name="fitsex" value="1">男
+		<input type="radio" name="fitsex" value="1" required>男
 		#{/else}
 		#{if sc.fitsex==2}
-		<input type="radio" name="fitsex" value="2" checked>女
+		<input type="radio" name="fitsex" value="2" checked required>女
 		#{/if}
 		#{else}
-		<input type="radio" name="fitsex" value="2">女
+		<input type="radio" name="fitsex" value="2" required>女
 		#{/else}
 		</div>
 		

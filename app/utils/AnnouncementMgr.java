@@ -147,6 +147,61 @@ public class AnnouncementMgr {
 		}
 	}
 	
+	public List<Announcement> searchAnnouncement(int astoreid, String astarttime,  String announcementname) {
+		List<Announcement> list = new ArrayList<Announcement>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		try {
+			String sql = "select * from announcement";
+			boolean flag = false;
+			if (astoreid!=0) {
+				if (!flag) {
+					sql += " where storeid = " + astoreid;
+					flag = true;
+				} else {
+					sql += " and storeid = " + astoreid;
+				}
+			}
+			if (astarttime!=null && astarttime.length()>0) {
+				if (!flag) {
+					sql+=" where starttime >= '" + astarttime + "'";
+					flag = true;
+				} else {
+					sql+=" and starttime >= '" + astarttime + "'";
+				}
+			}
+			if (announcementname!=null && announcementname.length()>0) {
+				if (!flag) {
+					sql+=" where name like '%" + announcementname + "%'";
+					flag = true;
+				} else {
+					sql+=" and name like '%" + announcementname + "%'";
+				}
+			}
+//			System.out.println(sql);
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id=rs.getInt("id");
+				String name=rs.getString("name");
+				int storeid=rs.getInt("storeid");
+				String starttime=rs.getString("starttime");
+				String endtime=rs.getString("endtime");
+				String content=rs.getString("content");
+				int employeeid=rs.getInt("employeeid");
+				Announcement an = new Announcement(id, name, storeid, starttime, endtime, content, employeeid);
+				list.add(an);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return list;
+	}
+	
 	/*
 	public boolean hasMember(String pengid) {
 		Connection conn = DB.getConn();

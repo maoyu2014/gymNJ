@@ -86,6 +86,62 @@ public class GroupbuyMgr {
 		return list;
 	}
 	
+	public List<Groupbuy> serachGroupbuy(int agroupwebsiteid, int astoreid, String astarttime) {
+		List<Groupbuy> list = new ArrayList<Groupbuy>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		try {
+			String sql = "select * from groupbuy";
+			boolean flag = false;
+			if (agroupwebsiteid!=0) {
+				if (!flag) {
+					sql += " where groupwebsiteid = " + agroupwebsiteid;
+					flag = true;
+				} else {
+					sql += " and groupwebsiteid = " + agroupwebsiteid;
+				}
+			}
+			if (astoreid!=0) {
+				if (!flag) {
+					sql += " where storeid = " + astoreid;
+					flag = true;
+				} else {
+					sql += " and storeid = " + astoreid;
+				}
+			}
+			if (astarttime!=null && astarttime.length()>0) {
+				if (!flag) {
+					sql+=" where starttime >= '" + astarttime + "'";
+					flag = true;
+				} else {
+					sql+=" and starttime >= '" + astarttime + "'";
+				}
+			}
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				int groupwebsiteid = rs.getInt("groupwebsiteid");
+				int storeid = rs.getInt("storeid");
+				double price = rs.getDouble("price");
+				double times = rs.getDouble("times");
+				String starttime = rs.getString("starttime");
+				String endtime = rs.getString("endtime");
+				String introduce = rs.getString("introduce");
+				String weburl = rs.getString("weburl");
+				Groupbuy an = new Groupbuy(id, groupwebsiteid, storeid, price, times, starttime, endtime, introduce, weburl);
+				list.add(an);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return list;
+	}
+	
 	public boolean deleteGroupbuy(int id) {
 		boolean flag = false;
 		Connection conn = DB.getConn();

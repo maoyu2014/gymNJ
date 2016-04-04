@@ -18,15 +18,19 @@
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">团购活动设置</div>
 	
 	<div style="margin:20px">
-		<input name="groupwebsiteid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllGroupWebsite()}',prompt:'请选择一个网站'" style="height:32px">
-		<select name="status" class="easyui-combobox" style="height:32px;width:100px;">
+		#{form @Application.groupbuySearch()}
+		<input name="groupwebsiteid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllGroupWebsite()}',prompt:'请选择一个网站'" style="width:120px;height:32px">
+		<input name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="height:32px">
+		<input name="astarttime" class="easyui-datebox" data-options="required:true,showSeconds:false,editable:false,prompt:'请选择开始时间'" style="height:32px">
+		<select name="astatus" class="easyui-combobox" style="height:32px;width:100px;">
 			<option value="0">全部状态</option>
 			<option value="1">进行中</option>
 		    <option value="2">已发布</option>
 		    <option value="3">已结束</option>
 		</select>
-		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px;height:32px">搜索</a>        
+		<input type="submit" style="width:80px;height:32px" value="搜索">    
 	    <a href="@{Application.addGroupbuy()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;position:absolute;right:20px;">增加团购</a>
+		#{/form}
 	</div>
 	
 	<div style="margin:20px">

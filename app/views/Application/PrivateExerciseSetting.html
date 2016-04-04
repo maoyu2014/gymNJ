@@ -19,6 +19,7 @@
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">特训班设置</div>
 	
 	<div style="margin:20px">
+		#{form @Application.PrivateExerciseSearch()}
 		<input name="storeid" class="easyui-combobox" data-options="
 			valueField:'id',
 			textField:'name',
@@ -29,15 +30,17 @@
 	            $('#employeeidq').combobox('reload', url);
         	}" style="height:32px">
 		<input id="employeeidq" name="employeeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',prompt:'请选择一个教练'" style="height:32px">
-		<select name="status" class="easyui-combobox" style="height:32px;width:100px;">
+		<select name="astatus" class="easyui-combobox" style="height:32px;width:100px;">
 			<option value="0">全部状态</option>
 			<option value="1">已发布</option>
 		    <option value="2">报名中</option>
 		    <option value="3">开课中</option>
 		    <option value="4">已结束</option>
 		</select>
-		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px;height:32px">搜索</a>        
+		<input name="privateexercisename" class="easyui-textbox" data-options="prompt:'搜索特训班名称关键字'" style="height:32px">
+		<input type="submit" style="width:80px;height:32px" value="搜索">       
 	    <a href="@{Application.addPrivateExercise()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;position:absolute;right:20px;">加特训班</a>
+		#{/form}
 	</div>
 	
 	<div style="margin:20px">

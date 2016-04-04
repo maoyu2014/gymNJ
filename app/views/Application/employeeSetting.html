@@ -18,6 +18,7 @@
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">员工设置</div>
 	
 	<div style="margin:20px">
+		#{form @Application.employeeSearch()}
 		<input name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="height:32px">
 	    <select name="classtype" class="easyui-combobox" style="height:32px;width:120px;">
 			<option value="0">全部员工</option>
@@ -26,8 +27,9 @@
 		    <option value="3">教练</option>
 		</select>
 	    <input name="employeename" class="easyui-textbox" data-options="prompt:'搜索工作人员名称关键字'" style="height:32px">
-		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px;height:32px">搜索</a>        
+		<input type="submit" style="width:80px;height:32px" value="搜索">       
 	    <a href="@{Application.addEmployee()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;position:absolute;right:20px;">增加人员</a>
+		#{/form}
 	</div>
 	
 	<div style="margin:20px">

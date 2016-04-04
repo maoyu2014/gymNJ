@@ -26,6 +26,8 @@ import utils.TeamExerciseMgr;
 import utils.TeamExerciseScheduleMgr;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import models.*;
@@ -202,6 +204,13 @@ public class Application extends Controller {
     	Store s = new Store(id, cityid, name, address, area, photo, manager, phone);
     	StoreMgr.getInstance().update(s);
     	storeSetting();
+    }
+    
+    //门店搜索功能
+    public static void storeSearch(int cityid, String storename) {
+    	List<StoreCity> listsc = StoreMgr.getInstance().searchStore(cityid, storename);
+    	int number = listsc.size();
+        render("Application/storeSetting.html", listsc,number);
     }
     
     /*
@@ -437,6 +446,20 @@ public class Application extends Controller {
 //    	renderJSON(result);
 //    }
     
+    //搜索员工
+    public static void employeeSearch(int storeid, int classtype, String employeename) {
+    	List<Employee> list = EmployeeMgr.getInstance().searchEmployee(storeid, classtype, employeename);
+    	List<EmployeeShow> liste = new ArrayList<>();
+    	for (Employee em : list) {
+    		EmployeeShow es = new EmployeeShow(em);
+    		StoreCity s = StoreMgr.getInstance().findStoreById(em.storeid);
+    		if (s!=null) es.storename = s.name;
+    		liste.add(es);
+    	}
+    	int number = liste.size();
+        render("Application/employeeSetting.html", liste, number);
+    }
+    
     //返回属于某个店铺的所有教练
     public static void getAllCoachByStoreID(int storeid) {
     	List<Employee> list = EmployeeMgr.getInstance().getAllEmployeeByStoreID(storeid);
@@ -498,6 +521,58 @@ public class Application extends Controller {
     	}
     	int number = listad.size();
         render(listad,number);
+    }
+    
+    //搜索门店公告
+    public static void announcementSearch(int storeid, String astarttime, int astatus, String announcementname) {
+    	List<Announcement> lista = AnnouncementMgr.getInstance().searchAnnouncement(storeid, astarttime, announcementname);
+    	List<AnnouncementShow> listad = new ArrayList<>();
+    	for (Announcement aa : lista) {
+    		//TODO 时间问题需要更加详细的考虑
+    		String starttime = aa.starttime;
+    		if (starttime!=null && starttime.length()>0) {
+	    		starttime = starttime.substring(0, 4)+starttime.substring(5, 7)+starttime.substring(8, 10)+
+	    				starttime.substring(11, 13)+starttime.substring(14, 16);
+    		}
+    		String endtime = aa.endtime;
+    		if (endtime!=null && endtime.length()>0) {
+	    		endtime = endtime.substring(0, 4)+endtime.substring(5, 7)+endtime.substring(8, 10)+
+	    				endtime.substring(11, 13)+endtime.substring(14, 16);
+    		}
+    		Calendar calendar = new GregorianCalendar();
+    		String nowtime = ""+calendar.get(Calendar.YEAR);
+    		int month = calendar.get(Calendar.MONTH)+1; 
+    		if (month<10) nowtime+="0"+month;
+    		else nowtime += month;
+    		int day = calendar.get(Calendar.DAY_OF_MONTH);
+    		if (day<10) nowtime+="0"+day;
+    		else nowtime+=day;
+    		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+    		if (hour<10) nowtime+="0"+hour;
+    		else nowtime+=hour;
+    		int minutes = calendar.get(Calendar.MINUTE);
+    		if (minutes<10) nowtime+="0"+minutes;
+    		else nowtime+=minutes;
+    		String status = "已发布";
+    		if (nowtime.compareTo(starttime)>0 && nowtime.compareTo(endtime)<0) 
+    			status="进行中";
+    		if (nowtime.compareTo(endtime)>0)
+    			status="已结束";
+    		if ( astatus==0 || astatus==1 && status.equals("进行中") || 
+    				astatus==2 && status.equals("已发布") || 
+    				astatus==3 && status.equals("已结束") ) {
+	    		AnnouncementShow as = new AnnouncementShow(aa);
+	    		as.status = status;
+	    		//
+	    		StoreCity s = StoreMgr.getInstance().findStoreById(aa.storeid);
+	    		if (s!=null) as.storename = s.name; 
+	    		Employee e = EmployeeMgr.getInstance().findEmployeeById(aa.employeeid);
+	    		if (e!=null ) as.employeename = e.name;
+	    		listad.add(as);
+    		}
+    	}
+    	int number = listad.size();
+        render("Application/announcementSetting.html", listad,number);
     }
     
     //添加门店公告页面
@@ -598,6 +673,59 @@ public class Application extends Controller {
     	}
     	int number = lists.size();
         render(lists,number);
+    }
+    
+    //团购搜索
+    public static void groupbuySearch(int groupwebsiteid, int storeid, String astarttime, int astatus) {
+    	List<Groupbuy> list = GroupbuyMgr.getInstance().serachGroupbuy(groupwebsiteid,storeid,astarttime);
+    	List<GroupbuyShow> lists = new ArrayList<>();
+    	for (Groupbuy aa : list) {
+    		//TODO 时间问题需要更加详细的考虑
+    		String starttime = aa.starttime;
+    		if (starttime!=null && starttime.length()>0) {
+	    		starttime = starttime.substring(0, 4)+starttime.substring(5, 7)+starttime.substring(8, 10)+
+	    				starttime.substring(11, 13)+starttime.substring(14, 16);
+    		}
+    		String endtime = aa.endtime;
+    		if (endtime!=null && endtime.length()>0) {
+	    		endtime = endtime.substring(0, 4)+endtime.substring(5, 7)+endtime.substring(8, 10)+
+	    				endtime.substring(11, 13)+endtime.substring(14, 16);
+    		}
+    		Calendar calendar = new GregorianCalendar();
+    		String nowtime = ""+calendar.get(Calendar.YEAR);
+    		int month = calendar.get(Calendar.MONTH)+1; 
+    		if (month<10) nowtime+="0"+month;
+    		else nowtime += month;
+    		int day = calendar.get(Calendar.DAY_OF_MONTH);
+    		if (day<10) nowtime+="0"+day;
+    		else nowtime+=day;
+    		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+    		if (hour<10) nowtime+="0"+hour;
+    		else nowtime+=hour;
+    		int minutes = calendar.get(Calendar.MINUTE);
+    		if (minutes<10) nowtime+="0"+minutes;
+    		else nowtime+=minutes;
+    		String status = "已发布";
+    		if (nowtime.compareTo(starttime)>0 && nowtime.compareTo(endtime)<0) 
+    			status="进行中";
+    		if (nowtime.compareTo(endtime)>0)
+    			status="已结束";
+    		if ( astatus==0 || astatus==1 && status.equals("进行中") || 
+    				astatus==2 && status.equals("已发布") || 
+    				astatus==3 && status.equals("已结束") ) {
+	    		//---
+	    		GroupbuyShow as = new GroupbuyShow(aa);
+	    		as.status = status;
+	    		//
+	    		StoreCity s = StoreMgr.getInstance().findStoreById(aa.storeid);
+	    		if (s!=null) as.storename = s.name;
+	    		GroupWebsite g = GroupWebsiteMgr.getInstance().findGroupWebsiteById(aa.groupwebsiteid);
+	    		if (g!=null) as.groupwebsitename = g.name;
+	    		lists.add(as);
+    		}
+    	}
+    	int number = lists.size();
+        render("Application/groupbuySetting.html",lists,number);
     }
     
     //添加团购活动页面
@@ -823,7 +951,9 @@ public class Application extends Controller {
     
     //团操课程TeamExercise			设置(展示)页面
     //团课排期TeamExerciseSchedule	设置（展示）页面
-    //公用的，有两个tab
+    //课程表周展示
+    //课程表月展示
+    //公用的，有4个tab
     public static void teamExerciseSetting() {
     	List<TeamExercise> lists = TeamExerciseMgr.getInstance().getAllTeamExercise();
     	List<TeamExerciseSchedule> listss = TeamExerciseScheduleMgr.getInstance().getAllTeamExerciseSchedule();
@@ -840,7 +970,97 @@ public class Application extends Controller {
     		if (t!=null) tess.teamexercisename = t.name;
     		listtt.add(tess);
     	}
-    	render(lists, listtt);
+    	//周课表
+    	Map<Integer, List<TeamExerciseScheduleShow> > mapweek = new HashMap<>();
+    	for (int i=1; i<=7; i++) mapweek.put(i, new ArrayList<>());
+    	Calendar calendar =  Calendar.getInstance();
+    	int[] dir = new int[] {0,7,1,2,3,4,5,6};
+    	int x  =calendar.get(Calendar.DAY_OF_WEEK);
+    	int xx = dir[x];
+    	
+    	calendar.add(Calendar.DAY_OF_YEAR, -xx+1);
+		String mybegintime = ""+calendar.get(Calendar.YEAR)+"-";
+		int month = calendar.get(Calendar.MONTH)+1; 
+		if (month<10) mybegintime+="0"+month+"-";
+		else mybegintime += month+"-";
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		if (day<10) mybegintime+="0"+day;
+		else mybegintime+=day;
+//		System.out.println(mybegintime);
+		
+		calendar.add(Calendar.DAY_OF_MONTH, 6);
+		String myendtime = ""+calendar.get(Calendar.YEAR)+"-";
+		month = calendar.get(Calendar.MONTH)+1; 
+		if (month<10) myendtime+="0"+month+"-";
+		else myendtime += month+"-";
+		day = calendar.get(Calendar.DAY_OF_MONTH);
+		if (day<10) myendtime+="0"+day;
+		else myendtime+=day;
+//		System.out.println(myendtime);
+		
+		for (TeamExerciseSchedule tes : listss) {
+    		String strday = tes.begintime.substring(0, 10);
+    		if (strday.compareTo(mybegintime)>=0 && strday.compareTo(myendtime)<=0) {
+    			TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
+				try {
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+					Date date = dateFormat.parse(strday);
+					calendar.setTime(date); 
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}  
+				x  =calendar.get(Calendar.DAY_OF_WEEK);
+		    	xx = dir[x];
+        		StoreCity s = StoreMgr.getInstance().findStoreById(tes.storeid);
+        		if (s!=null) tess.storename = s.name;
+        		Employee e = EmployeeMgr.getInstance().findEmployeeById(tes.employeeid);
+        		if (e!=null) tess.employeename = e.name;
+        		Classroom c = ClassroomMgr.getInstance().findClassroomById(tes.classroomid);
+        		if (c!=null) tess.classroomname = c.name;
+        		TeamExercise t = TeamExerciseMgr.getInstance().findTeamExerciseById(tes.teamexerciseid);
+        		if (t!=null) tess.teamexercisename = t.name;
+        		mapweek.get(xx).add(tess);
+    		}
+    	}
+		//月课表
+		Map<Integer, List<TeamExerciseScheduleShow> > mapmonth = new HashMap<>();
+		for (int i=1; i<=35; i++) mapmonth.put(i, new ArrayList<>());	//35是为了配合前台5行7列
+    	calendar =  Calendar.getInstance();
+    	mybegintime = ""+calendar.get(Calendar.YEAR)+"-";
+    	myendtime = ""+calendar.get(Calendar.YEAR)+"-";
+    	month = calendar.get(Calendar.MONTH)+1; 
+    	if (month<10) mybegintime+="0"+month+"-"; else mybegintime += month+"-";
+    	if (month<10) myendtime+="0"+month+"-"; else myendtime += month+"-";
+    	mybegintime+="01";
+    	myendtime+="31";
+    	
+    	try {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+			Date date = dateFormat.parse(mybegintime);
+			calendar.setTime(date); 
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}  
+		x  =calendar.get(Calendar.DAY_OF_WEEK);
+		int num = dir[x];
+    	for (TeamExerciseSchedule tes : listss) {
+    		String strday = tes.begintime.substring(0, 10);
+    		if (strday.compareTo(mybegintime)>=0 && strday.compareTo(myendtime)<=0) {
+    			TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
+    			xx = Integer.parseInt(strday.substring(8, 10));
+        		StoreCity s = StoreMgr.getInstance().findStoreById(tes.storeid);
+        		if (s!=null) tess.storename = s.name;
+        		Employee e = EmployeeMgr.getInstance().findEmployeeById(tes.employeeid);
+        		if (e!=null) tess.employeename = e.name;
+        		Classroom c = ClassroomMgr.getInstance().findClassroomById(tes.classroomid);
+        		if (c!=null) tess.classroomname = c.name;
+        		TeamExercise t = TeamExerciseMgr.getInstance().findTeamExerciseById(tes.teamexerciseid);
+        		if (t!=null) tess.teamexercisename = t.name;
+        		mapmonth.get(xx).add(tess);
+    		}
+    	}
+    	
+    	render(lists, listtt, mapweek, mapmonth, num);
     }
     
     //添加团操课程页面
@@ -924,6 +1144,115 @@ public class Application extends Controller {
 //        render(lists);
 //    }
     
+    //搜索团操排期
+    public static void TeamExerciseScheduleSearch(int storeid, int employeeid) {
+    	List<TeamExercise> lists = TeamExerciseMgr.getInstance().getAllTeamExercise();
+    	List<TeamExerciseSchedule> listss = TeamExerciseScheduleMgr.getInstance().searchTeamExerciseSchedule(storeid,employeeid);
+    	List<TeamExerciseScheduleShow> listtt = new ArrayList<>();
+    	for (TeamExerciseSchedule tes : listss) {
+    		TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
+    		StoreCity s = StoreMgr.getInstance().findStoreById(tes.storeid);
+    		if (s!=null) tess.storename = s.name;
+    		Employee e = EmployeeMgr.getInstance().findEmployeeById(tes.employeeid);
+    		if (e!=null) tess.employeename = e.name;
+    		Classroom c = ClassroomMgr.getInstance().findClassroomById(tes.classroomid);
+    		if (c!=null) tess.classroomname = c.name;
+    		TeamExercise t = TeamExerciseMgr.getInstance().findTeamExerciseById(tes.teamexerciseid);
+    		if (t!=null) tess.teamexercisename = t.name;
+    		listtt.add(tess);
+    	}
+    	//周课表
+    	Map<Integer, List<TeamExerciseScheduleShow> > mapweek = new HashMap<>();
+    	for (int i=1; i<=7; i++) mapweek.put(i, new ArrayList<>());
+    	Calendar calendar =  Calendar.getInstance();
+    	int[] dir = new int[] {0,7,1,2,3,4,5,6};
+    	int x  =calendar.get(Calendar.DAY_OF_WEEK);
+    	int xx = dir[x];
+    	
+    	calendar.add(Calendar.DAY_OF_YEAR, -xx+1);
+		String mybegintime = ""+calendar.get(Calendar.YEAR)+"-";
+		int month = calendar.get(Calendar.MONTH)+1; 
+		if (month<10) mybegintime+="0"+month+"-";
+		else mybegintime += month+"-";
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		if (day<10) mybegintime+="0"+day;
+		else mybegintime+=day;
+//		System.out.println(mybegintime);
+		
+		calendar.add(Calendar.DAY_OF_MONTH, 6);
+		String myendtime = ""+calendar.get(Calendar.YEAR)+"-";
+		month = calendar.get(Calendar.MONTH)+1; 
+		if (month<10) myendtime+="0"+month+"-";
+		else myendtime += month+"-";
+		day = calendar.get(Calendar.DAY_OF_MONTH);
+		if (day<10) myendtime+="0"+day;
+		else myendtime+=day;
+//		System.out.println(myendtime);
+		
+		for (TeamExerciseSchedule tes : listss) {
+    		String strday = tes.begintime.substring(0, 10);
+    		if (strday.compareTo(mybegintime)>=0 && strday.compareTo(myendtime)<=0) {
+    			TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
+				try {
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+					Date date = dateFormat.parse(strday);
+					calendar.setTime(date); 
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}  
+				x  =calendar.get(Calendar.DAY_OF_WEEK);
+		    	xx = dir[x];
+        		StoreCity s = StoreMgr.getInstance().findStoreById(tes.storeid);
+        		if (s!=null) tess.storename = s.name;
+        		Employee e = EmployeeMgr.getInstance().findEmployeeById(tes.employeeid);
+        		if (e!=null) tess.employeename = e.name;
+        		Classroom c = ClassroomMgr.getInstance().findClassroomById(tes.classroomid);
+        		if (c!=null) tess.classroomname = c.name;
+        		TeamExercise t = TeamExerciseMgr.getInstance().findTeamExerciseById(tes.teamexerciseid);
+        		if (t!=null) tess.teamexercisename = t.name;
+        		mapweek.get(xx).add(tess);
+    		}
+    	}
+		//月课表
+		Map<Integer, List<TeamExerciseScheduleShow> > mapmonth = new HashMap<>();
+		for (int i=1; i<=35; i++) mapmonth.put(i, new ArrayList<>());	//35是为了配合前台5行7列
+    	calendar =  Calendar.getInstance();
+    	mybegintime = ""+calendar.get(Calendar.YEAR)+"-";
+    	myendtime = ""+calendar.get(Calendar.YEAR)+"-";
+    	month = calendar.get(Calendar.MONTH)+1; 
+    	if (month<10) mybegintime+="0"+month+"-"; else mybegintime += month+"-";
+    	if (month<10) myendtime+="0"+month+"-"; else myendtime += month+"-";
+    	mybegintime+="01";
+    	myendtime+="31";
+    	
+    	try {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+			Date date = dateFormat.parse(mybegintime);
+			calendar.setTime(date); 
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}  
+		x  =calendar.get(Calendar.DAY_OF_WEEK);
+		int num = dir[x];
+    	for (TeamExerciseSchedule tes : listss) {
+    		String strday = tes.begintime.substring(0, 10);
+    		if (strday.compareTo(mybegintime)>=0 && strday.compareTo(myendtime)<=0) {
+    			TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
+    			xx = Integer.parseInt(strday.substring(8, 10));
+        		StoreCity s = StoreMgr.getInstance().findStoreById(tes.storeid);
+        		if (s!=null) tess.storename = s.name;
+        		Employee e = EmployeeMgr.getInstance().findEmployeeById(tes.employeeid);
+        		if (e!=null) tess.employeename = e.name;
+        		Classroom c = ClassroomMgr.getInstance().findClassroomById(tes.classroomid);
+        		if (c!=null) tess.classroomname = c.name;
+        		TeamExercise t = TeamExerciseMgr.getInstance().findTeamExerciseById(tes.teamexerciseid);
+        		if (t!=null) tess.teamexercisename = t.name;
+        		mapmonth.get(xx).add(tess);
+    		}
+    	}
+    	render("Application/teamExerciseSetting.html", lists, listtt, mapweek, mapmonth, num);
+    }
+    
     //添加团操排期页面
     public static void addTeamExerciseSchedule() {
         render();
@@ -943,6 +1272,9 @@ public class Application extends Controller {
     	}
     	if (teamexerciseid==0) {
     		renderJSON("必须选择一个课程");
+    	}
+    	if (! begintime.substring(0, 10).equals(endtime.substring(0, 10)) ) {
+    		renderJSON("必须是同一天的不同时间段，不能跨天!");
     	}
     	TeamExerciseSchedule a = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime, endtime);
     	TeamExerciseScheduleMgr.getInstance().save(a);
@@ -978,6 +1310,9 @@ public class Application extends Controller {
     	}
     	if (teamexerciseid==0) {
     		renderJSON("必须选择一个课程");
+    	}
+    	if (! begintime.substring(0, 10).equals(endtime.substring(0, 10)) ) {
+    		renderJSON("必须是同一天的不同时间段，不能跨天!");
     	}
     	TeamExerciseSchedule a = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime);
     	TeamExerciseScheduleMgr.getInstance().update(a);
@@ -1075,6 +1410,63 @@ public class Application extends Controller {
     	}
     	int number = lists.size();
     	render(lists, number);
+    }
+    
+    //搜索特训班
+    public static void PrivateExerciseSearch(int storeid, int employeeid, int astatus, String privateexercisename) {
+    	List<PrivateExercise> list = PrivateExerciseMgr.getInstance().searchPrivateExercise(storeid, employeeid, privateexercisename);
+    	List<PrivateExerciseShow> lists = new ArrayList<>();
+    	for (PrivateExercise p : list) {
+    		PrivateExerciseShow ps = new PrivateExerciseShow(p);
+    		StoreCity s = StoreMgr.getInstance().findStoreById(p.storeid);
+    		if (s!=null) ps.storename = s.name;
+    		Employee e = EmployeeMgr.getInstance().findEmployeeById(p.employeeid);
+    		if (e!=null) ps.employeename = e.name;
+    		Classroom c = ClassroomMgr.getInstance().findClassroomById(p.classroomid);
+    		if (c!=null) ps.classroomname = c.name;
+    		
+    		String signbegintime = ps.signbegintime;
+    		String signendtime = ps.signendtime;
+    		String classbegintime = ps.classbegintime;
+    		String classendtime = ps.classendtime;
+    		if (signbegintime!=null && signbegintime.length()>0) {
+	    		signbegintime = signbegintime.substring(0, 4)+signbegintime.substring(5, 7)
+	    				+signbegintime.substring(8, 10);
+    		}
+    		if (signendtime!=null && signbegintime.length()>0) {
+	    		signendtime = signendtime.substring(0, 4)+signendtime.substring(5, 7)
+	    				+signendtime.substring(8, 10);
+    		}
+    		if (classbegintime!=null && signbegintime.length()>0) {
+	    		classbegintime = classbegintime.substring(0, 4)+classbegintime.substring(5, 7)
+	    				+classbegintime.substring(8, 10);
+    		}
+    		if (classendtime!=null && signbegintime.length()>0) {
+	    		classendtime = classendtime.substring(0, 4)+classendtime.substring(5, 7)
+	    				+classendtime.substring(8, 10);
+    		}
+    		Calendar calendar = new GregorianCalendar();
+    		String nowtime = ""+calendar.get(Calendar.YEAR);
+    		int month = calendar.get(Calendar.MONTH)+1; 
+    		if (month<10) nowtime+="0"+month;
+    		else nowtime += month;
+    		int day = calendar.get(Calendar.DAY_OF_MONTH);
+    		if (day<10) nowtime+="0"+day;
+    		else nowtime+=day;
+    		String status = "已发布";
+    		if (nowtime.compareTo(signbegintime)>0 ) status="报名中";
+    		if (nowtime.compareTo(classbegintime)>=0 ) status="开课中";
+    		if (nowtime.compareTo(classendtime)>0 ) status="已结束";
+    		if (astatus==0 || astatus==1 && status.equals("已发布") || 
+    				astatus==2 && status.equals("报名中") ||
+    				astatus==3 && status.equals("开课中") ||
+    				astatus==4 && status.equals("已结束") ) {
+	    		ps.status = status;
+	    		lists.add(ps);
+    		}
+    	}
+    	int number = lists.size();
+    	render("Application/PrivateExerciseSetting.html", lists, number);
     }
     
     //添加特训班页面
@@ -1366,19 +1758,39 @@ public class Application extends Controller {
     	double feesum=0.0;
     	for (PurchaseHistory ph : listPurchaseHistory) {
     		feesum+=ph.fee;
-    		if (ph.isprivate==1) ph.notice="私教课程";
+    		if (ph.carttype==1) ph.carttypename="月卡";
+    		else if (ph.carttype==2) ph.carttypename="季卡";
+    		else if (ph.carttype==3) ph.carttypename="半年卡";
+    		else if (ph.carttype==4) ph.carttypename="年卡";
     		if (ph.purchasetype==1) ph.purchasetypename="微信支付";
+    		if (ph.isprivate==1) ph.carttypename="私教课程";
     		Member m = MemberMgr.getInstance().findMemberById(ph.memberid);
     		MemberShow ms = new MemberShow(m);
-    		if (ms.cardtype==0) ms.cardtypename="非会员";
-    		else if (ms.cardtype==1) ms.cardtypename="月卡";
-    		else if (ms.cardtype==2) ms.cardtypename="季卡";
-    		else if (ms.cardtype==3) ms.cardtypename="半年卡";
-    		else if (ms.cardtype==4) ms.cardtypename="年卡";
     		listMemberShow.add(ms);
     	}
     	int number = listPurchaseHistory.size();
     	render(listPurchaseHistory, listMemberShow, number, feesum);
+    }
+    
+    //财务搜索
+    public static void PurchaseHistorySearch(int cardtype, String starttime, String endtime) {
+    	List<PurchaseHistory> listPurchaseHistory = PurchaseHistoryMgr.getInstance().searchPurchaseHistory(cardtype, starttime, endtime);
+    	List<MemberShow> listMemberShow = new ArrayList<>();
+    	double feesum=0.0;
+    	for (PurchaseHistory ph : listPurchaseHistory) {
+    		feesum+=ph.fee;
+    		if (ph.carttype==1) ph.carttypename="月卡";
+    		else if (ph.carttype==2) ph.carttypename="季卡";
+    		else if (ph.carttype==3) ph.carttypename="半年卡";
+    		else if (ph.carttype==4) ph.carttypename="年卡";
+    		if (ph.purchasetype==1) ph.purchasetypename="微信支付";
+    		if (ph.isprivate==1) ph.carttypename="私教课程";
+    		Member m = MemberMgr.getInstance().findMemberById(ph.memberid);
+    		MemberShow ms = new MemberShow(m);
+    		listMemberShow.add(ms);
+    	}
+    	int number = listPurchaseHistory.size();
+    	render("Application/PurchaseHistorySetting.html", listPurchaseHistory, listMemberShow, number, feesum);
     }
     
 // 后台不需要添加BookExercise，BookExercise在手机端添加

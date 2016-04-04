@@ -88,6 +88,56 @@ public class TeamExerciseScheduleMgr {
 		return list;
 	}
 	
+	public List<TeamExerciseSchedule> searchTeamExerciseSchedule(int astoreid, int aemployeeid) {
+		List<TeamExerciseSchedule> list = new ArrayList<TeamExerciseSchedule>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		try {
+			String sql = "select * from TeamExerciseSchedule";
+			boolean flag = false;
+			if (astoreid!=0) {
+				if (!flag) {
+					sql += " where storeid = " + astoreid;
+					flag = true;
+				} else {
+					sql += " and storeid = " + astoreid;
+				}
+			}
+			if (aemployeeid!=0) {
+				if (!flag) {
+					sql += " where employeeid = " + aemployeeid;
+					flag = true;
+				} else {
+					sql += " and employeeid = " + aemployeeid;
+				}
+			}
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				int storeid = rs.getInt("storeid");
+				int classroomid = rs.getInt("classroomid");
+				int employeeid = rs.getInt("employeeid");
+				int teamexerciseid = rs.getInt("teamexerciseid");
+				
+				int num = rs.getInt("num");
+				int oknum = rs.getInt("oknum");
+				
+				String begintime = rs.getString("begintime");
+				String endtime = rs.getString("endtime");
+				TeamExerciseSchedule an = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime);
+				list.add(an);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return list;
+	}
+	
 	public boolean deleteTeamExerciseSchedule(int id) {
 		boolean flag = false;
 		Connection conn = DB.getConn();

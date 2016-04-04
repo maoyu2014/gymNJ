@@ -151,6 +151,55 @@ public class StoreMgr {
 		}
 	}
 	
+	
+	public List<StoreCity> searchStore(int acityid, String storename) {
+		List<StoreCity> list = new ArrayList<StoreCity>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		try {
+			String sql = "select store.id as id, cityid, store.name as name, city.name as cityname, address, area, photo, manager, phone from store inner join city on store.cityid = city.id ";
+			boolean flag = false;
+			if (acityid!=0) {
+				if (!flag) {
+					sql += " where cityid = " + acityid;
+					flag = true;
+				} else {
+					sql += " and cityid = " + acityid;
+				}
+			}
+			if (storename!=null && storename.length()>0) {
+				if (!flag) {
+					sql+= " where store.name like '%" + storename + "%'";
+					flag = true;
+				} else {
+					sql+= " and store.name like '%" + storename + "%'";
+				}
+			}
+//			System.out.println(sql);
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				int cityid = rs.getInt("cityid");
+				String name = rs.getString("name");
+				String cityname = rs.getString("cityname");
+				String address = rs.getString("address");;
+				double area = rs.getDouble("area");
+				String photo = rs.getString("photo");
+				String manager = rs.getString("manager");
+				String phone = rs.getString("phone");	
+				StoreCity m  = new StoreCity(id, cityid, name, cityname, address, area, photo, manager, phone);	
+				list.add(m);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return list;
+	}
 	/*
 	public boolean hasMember(String pengid) {
 		Connection conn = DB.getConn();

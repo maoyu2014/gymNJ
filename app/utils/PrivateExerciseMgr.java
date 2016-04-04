@@ -112,6 +112,75 @@ public class PrivateExerciseMgr {
 		return list;
 	}
 	
+	public List<PrivateExercise> searchPrivateExercise(int astoreid, int aemployeeid, String privateexercisename) {
+		List<PrivateExercise> list = new ArrayList<PrivateExercise>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		try {
+			String sql = "select * from PrivateExercise";
+			boolean flag = false;
+			if (astoreid!=0) {
+				if (!flag) {
+					sql += " where storeid = " + astoreid;
+					flag = true;
+				} else {
+					sql += " and storeid = " + astoreid;
+				}
+			}
+			if (aemployeeid!=0) {
+				if (!flag) {
+					sql += " where employeeid = " + aemployeeid;
+					flag = true;
+				} else {
+					sql += " and employeeid = " + aemployeeid;
+				}
+			}
+			if (privateexercisename!=null && privateexercisename.length()>0) {
+				if (!flag) {
+					sql+=" where name like '%" + privateexercisename + "%'";
+					flag = true;
+				} else {
+					sql+=" and name like '%" + privateexercisename + "%'";
+				}
+			}
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				String image = rs.getString("image");
+				int weeks = rs.getInt("weeks");
+				int period = rs.getInt("period");
+				int num = rs.getInt("num");
+				int oknum = rs.getInt("oknum");
+				double price = rs.getDouble("price");
+				int storeid = rs.getInt("storeid");
+				int classroomid = rs.getInt("classroomid");
+				int employeeid = rs.getInt("employeeid");
+				String classbegintime = rs.getString("classbegintime");		//开课时间
+				String classendtime = rs.getString("classendtime");
+				int exerciseweeknum = rs.getInt("exerciseweeknum");				//训练时间是礼拜几
+				String exercisebegintime = rs.getString("exercisebegintime");	//训练时间是几时几分
+				String exerciseendtime = rs.getString("exerciseendtime");
+				String signbegintime = rs.getString("signbegintime");		//报名时间
+				String signendtime = rs.getString("signendtime");
+				String courseintroduce = rs.getString("courseintroduce");	//课程介绍
+				String courseplan = rs.getString("courseplan");	//课程安排，中间用等于号分割
+				String notice = rs.getString("notice");		//注意事项
+				String fitstep = rs.getString("fitstep");		//健身步骤，中间用等于号分割
+				PrivateExercise an = new PrivateExercise(id, name, image, weeks, period, num, oknum, price, storeid, classroomid, employeeid, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime, courseintroduce, courseplan, notice, fitstep);
+				list.add(an);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return list;
+	}
+	
 	public boolean deletePrivateExercise(int id) {
 		boolean flag = false;
 		Connection conn = DB.getConn();

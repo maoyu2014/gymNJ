@@ -325,6 +325,90 @@ public class EmployeeMgr {
 		return list;
 	}
 	
+	public List<Employee> searchEmployee(int astoreid, int classtype, String employeename) {
+		List<Employee> list = new ArrayList<Employee>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		try {
+			String sql = "select * from employee ";
+			boolean flag = false;
+			if (astoreid!=0) {
+				if (!flag) {
+					sql += " where storeid = " + astoreid;
+					flag = true;
+				} else {
+					sql += " and storeid = " + astoreid;
+				}
+			}
+			if (classtype==1) {
+				if (!flag) {
+					sql+= " where ismanager = 1";
+					flag = true;
+				} else {
+					sql+= " and ismanager = 1";
+				}
+			} else if (classtype==2) {
+				if (!flag) {
+					sql+= " where isfinance = 1";
+					flag = true;
+				} else {
+					sql+= " and isfinance = 1";
+				}
+			} else if (classtype==3) {
+				if (!flag) {
+					sql+= " where iscoach = 1";
+					flag = true;
+				} else {
+					sql+= " and iscoach = 1";
+				}
+			}
+			if (employeename!=null && employeename.length()>0) {
+				if (!flag) {
+					sql+=" where name like '%" + employeename + "%'";
+					flag = true;
+				} else {
+					sql+=" and name like '%" + employeename + "%'";
+				}
+			}
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String username = rs.getString("username");
+				String password = rs.getString("password");
+				String name = rs.getString("name");
+				String headimage = rs.getString("headimage");
+				int sex = rs.getInt("sex");			
+				String phone = rs.getString("phone");
+				
+				int ismanager = rs.getInt("ismanager");
+				int isfinance = rs.getInt("isfinance");
+				int iscoach = rs.getInt("iscoach");
+				
+				int domember = rs.getInt("domember");
+				int doappointment = rs.getInt("doappointment");
+				int docourse = rs.getInt("docourse");
+				int doplan = rs.getInt("doplan");
+				int domarkte = rs.getInt("domarkte");
+				int dofinance = rs.getInt("dofinance");
+				int doemployee = rs.getInt("doemployee");
+				int dostore = rs.getInt("dostore");
+				int dostatistics = rs.getInt("dostatistics");
+				
+				int storeid = rs.getInt("storeid");
+				String introduce = rs.getString("introduce");
+				Employee e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
+				list.add(e);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return list;
+	}
 	
 	/*
 	

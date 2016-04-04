@@ -14,6 +14,7 @@ public class PurchaseHistory {
 	
 	//额外展示使用
 	public String notice;
+	public String carttypename;
 	public String purchasetypename;
 	
 	public PurchaseHistory(int id, String orderid, int memberid, int carttype,
