@@ -151,6 +151,34 @@ public class BookExerciseMgr {
 		return an;
 	}
 	
+	public List<BookExercise> findActiveBookExerciseByMemberId(int mid) {
+		List<BookExercise> list = new ArrayList<BookExercise>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		BookExercise an = null;
+		try {
+			String sql = "select * from BookExercise where status = 1 and memberid = " + mid;
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				int memberid = rs.getInt("memberid");
+				int type = rs.getInt("type");
+				int exerciseid = rs.getInt("exerciseid");
+				String booktime = rs.getString("booktime");
+				an = new BookExercise(id, memberid, type, exerciseid, booktime);
+				list.add(an);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return list;
+	}
+	
 	public List<BookExercise> findBookExerciseByMemberId(int mid) {
 		List<BookExercise> list = new ArrayList<BookExercise>();
 		Connection conn = DB.getConn();

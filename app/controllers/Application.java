@@ -970,7 +970,7 @@ public class Application extends Controller {
     		if (t!=null) tess.teamexercisename = t.name;
     		listtt.add(tess);
     	}
-    	//周课表
+    	//周课表 同样代码有两份
     	Map<Integer, List<TeamExerciseScheduleShow> > mapweek = new HashMap<>();
     	for (int i=1; i<=7; i++) mapweek.put(i, new ArrayList<>());
     	Calendar calendar =  Calendar.getInstance();
@@ -1022,7 +1022,7 @@ public class Application extends Controller {
         		mapweek.get(xx).add(tess);
     		}
     	}
-		//月课表
+		//月课表 同样代码有两份
 		Map<Integer, List<TeamExerciseScheduleShow> > mapmonth = new HashMap<>();
 		for (int i=1; i<=35; i++) mapmonth.put(i, new ArrayList<>());	//35是为了配合前台5行7列
     	calendar =  Calendar.getInstance();
@@ -1137,6 +1137,7 @@ public class Application extends Controller {
      * ···············--------课程管理1-----------团操排期TeamExerciseSchedule
      */
     
+    
     //这里的展示跟团操课程一起展示
     //团操排期设置(展示)页面
 //    public static void TeamExerciseScheduleSetting() {
@@ -1161,7 +1162,7 @@ public class Application extends Controller {
     		if (t!=null) tess.teamexercisename = t.name;
     		listtt.add(tess);
     	}
-    	//周课表
+    	//周课表 同样代码有两份
     	Map<Integer, List<TeamExerciseScheduleShow> > mapweek = new HashMap<>();
     	for (int i=1; i<=7; i++) mapweek.put(i, new ArrayList<>());
     	Calendar calendar =  Calendar.getInstance();
@@ -1213,7 +1214,7 @@ public class Application extends Controller {
         		mapweek.get(xx).add(tess);
     		}
     	}
-		//月课表
+		//月课表 同样代码有两份
 		Map<Integer, List<TeamExerciseScheduleShow> > mapmonth = new HashMap<>();
 		for (int i=1; i<=35; i++) mapmonth.put(i, new ArrayList<>());	//35是为了配合前台5行7列
     	calendar =  Calendar.getInstance();
@@ -1253,6 +1254,8 @@ public class Application extends Controller {
     	render("Application/teamExerciseSetting.html", lists, listtt, mapweek, mapmonth, num);
     }
     
+    //TODO
+    //关于同一个教练教室不能一个时间段有两个课程
     //添加团操排期页面
     public static void addTeamExerciseSchedule() {
         render();
@@ -1345,8 +1348,6 @@ public class Application extends Controller {
      * ···············--------课程管理2-----------特训班PrivateExercise
      */
     
-    //TODO
-    //关于同一个教练教室不能一个时间段有两个课程
     
     //特训班PrivateExercise设置（展示）页面
     public static void PrivateExerciseSetting() {
@@ -1545,6 +1546,10 @@ public class Application extends Controller {
     	PrivateExerciseSetting();
     }
     
+    public static void getAllPrivateExerciseJSON() {
+    	List<PrivateExercise> list = PrivateExerciseMgr.getInstance().getAllPrivateExercise();
+    	renderJSON(list);
+    }
     
     
     /*
@@ -1580,6 +1585,36 @@ public class Application extends Controller {
     	}
     	int number = lists.size();
     	render(lists, number);
+    }
+    
+    //搜索会员
+    public static void MemberSearch(int acityid, int acardtype, String keyname) {
+    	List<Member> list = MemberMgr.getInstance().searchMember(acityid, acardtype, keyname);
+    	List<MemberShow> lists = new ArrayList<>();
+    	for (Member p : list) {
+    		MemberShow ps = new MemberShow(p);
+    		City s = CityMgr.getInstance().findCityById(p.cityid);
+    		if (s!=null) {
+    			ps.cityname = s.name;
+    		}
+    		if (ps.fingerprint==1) ps.fingerprinttype="已录入";
+    		else ps.fingerprinttype="未录入";
+    		if (ps.cardtype==0) ps.cardtypename="非会员";
+    		else if (ps.cardtype==1) ps.cardtypename="月卡";
+    		else if (ps.cardtype==2) ps.cardtypename="季卡";
+    		else if (ps.cardtype==3) ps.cardtypename="半年卡";
+    		else if (ps.cardtype==4) ps.cardtypename="年卡";
+    		// 入场密码
+    		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(ps.id);
+    		if (cp!=null) {
+    			Calendar calendar = Calendar.getInstance();  
+    			int hour = calendar.get(Calendar.HOUR_OF_DAY);
+    			ps.comeinpassword  = cp.arr[hour];
+    		}
+    		lists.add(ps);
+    	}
+    	int number = lists.size();
+    	render("Application/MemberSetting.html", lists, number);
     }
     
 // 后台不需要添加会员，会员在手机端添加
@@ -1639,13 +1674,21 @@ public class Application extends Controller {
 			sc.comeinpassword  = cp.arr[hour];
 		}
 		//团操课程，特训课程展示
-		List<BookExercise> listbe = BookExerciseMgr.getInstance().findBookExerciseByMemberId(sc.id);
-		List<TeamExercise> listte = new ArrayList<>();
+		List<BookExercise> listbe = BookExerciseMgr.getInstance().findActiveBookExerciseByMemberId(sc.id);
+		List<TeamExerciseScheduleShow> listtes = new ArrayList<>();
 		List<PrivateExerciseShow> listpe = new ArrayList<>();
 		for (BookExercise be : listbe) {
 			if (be.type==0) {
-				TeamExercise te = TeamExerciseMgr.getInstance().findTeamExerciseById(be.exerciseid);
-				if (te!=null) listte.add(te);
+				//注意这里的be.exerciseid是团操排期表的id
+				TeamExerciseSchedule tes = TeamExerciseScheduleMgr.getInstance().findTeamExerciseScheduleById(be.exerciseid);
+				if (tes!=null) {
+					TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
+					TeamExercise te = TeamExerciseMgr.getInstance().findTeamExerciseById(tes.teamexerciseid);
+					if (te!=null) tess.teamexercisename = te.name;
+					Employee e = EmployeeMgr.getInstance().findEmployeeById(tes.employeeid);
+		    		if (e!=null) tess.employeename = e.name;
+					listtes.add(tess);
+				}
 			} else if (be.type==1) {
 				PrivateExercise pe = PrivateExerciseMgr.getInstance().findPrivateExerciseById(be.exerciseid);
 				if (pe!=null) {
@@ -1656,7 +1699,7 @@ public class Application extends Controller {
 				}
 			}
 		}
-		render(sc, listte, listpe);
+		render(sc, listtes, listpe);
     }
    
 // 后台也不需要修改会员
@@ -1667,7 +1710,7 @@ public class Application extends Controller {
     
     
     /*
-     * ···············--------预约管理-------------1预约团操和私教BookExercise
+     * ···············--------预约管理-------------1,预约团操和私教BookExercise
      */
     
     
@@ -1675,7 +1718,6 @@ public class Application extends Controller {
     public static void BookExerciseSetting() {
     	List<BookExercise> listBookExercise = BookExerciseMgr.getInstance().getAllActiveBookExercise();
     	List<Member> listMember = new ArrayList<>();
-    	List<String> listCity = new ArrayList<>();
     	Map<Integer, TeamExerciseScheduleShow> listTeamExerciseScheduleShow = new HashMap<>();
     	Map<Integer, PrivateExerciseShow> listPrivateExerciseShow = new HashMap<>();
     	for (BookExercise be : listBookExercise) {
@@ -1687,30 +1729,71 @@ public class Application extends Controller {
     			if (tes==null) tes = new TeamExerciseSchedule();
     			TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
     			StoreCity sc = StoreMgr.getInstance().findStoreById(tess.storeid);
-    			if (sc==null) listCity.add("");
-    			else listCity.add(sc.cityname);
     			if (sc!=null) tess.storename = sc.name;
-    			Classroom c = ClassroomMgr.getInstance().findClassroomById(tess.classroomid);
-    			if (c!=null) tess.classroomname = c.name;
+//    			Classroom c = ClassroomMgr.getInstance().findClassroomById(tess.classroomid);
+//    			if (c!=null) tess.classroomname = c.name;
+    			Employee e = EmployeeMgr.getInstance().findEmployeeById(tess.employeeid);
+    			if (e!=null) tess.employeename = e.name;
     			TeamExercise te = TeamExerciseMgr.getInstance().findTeamExerciseById(tess.teamexerciseid);
     			if (te!=null) tess.teamexercisename = te.name;
     			listTeamExerciseScheduleShow.put(be.id, tess);
-    			
     		} else if (be.type==1) {
     			PrivateExercise pe = PrivateExerciseMgr.getInstance().findPrivateExerciseById(be.exerciseid);
     			if (pe==null) pe = new PrivateExercise();
     			PrivateExerciseShow pes = new PrivateExerciseShow(pe);
     			StoreCity sc = StoreMgr.getInstance().findStoreById(pes.storeid);
-    			if (sc==null) listCity.add("");
-    			else listCity.add(sc.cityname);
     			if (sc!=null) pes.storename = sc.name;
-    			Classroom c = ClassroomMgr.getInstance().findClassroomById(pes.classroomid);
-    			if (c!=null) pes.classroomname = c.name; 
+//    			Classroom c = ClassroomMgr.getInstance().findClassroomById(pes.classroomid);
+//    			if (c!=null) pes.classroomname = c.name; 
+    			Employee e = EmployeeMgr.getInstance().findEmployeeById(pes.employeeid);
+    			if (e!=null) pes.employeename = e.name;
     			listPrivateExerciseShow.put(be.id, pes);
     		}
     	}
     	int number = listBookExercise.size();
-    	render(listBookExercise, listMember, listCity, listPrivateExerciseShow, listTeamExerciseScheduleShow, number);
+    	render(listBookExercise, listMember, listPrivateExerciseShow, listTeamExerciseScheduleShow, number);
+    }
+    
+    //搜索BookExercise预约设置（展示）页面
+    //TODO
+    public static void BookExerciseSearch(int storeid, int teamexercisescheduleid, int privateexerciseid,
+    		String keyname, String starttime, String endtime) {
+    	List<BookExercise> listBookExercise = BookExerciseMgr.getInstance().getAllActiveBookExercise();
+    	List<Member> listMember = new ArrayList<>();
+    	Map<Integer, TeamExerciseScheduleShow> listTeamExerciseScheduleShow = new HashMap<>();
+    	Map<Integer, PrivateExerciseShow> listPrivateExerciseShow = new HashMap<>();
+    	for (BookExercise be : listBookExercise) {
+    		Member m = MemberMgr.getInstance().findMemberById(be.memberid);
+    		if (m==null) m = new Member();
+    		listMember.add(m);
+    		if (be.type==0) {
+    			TeamExerciseSchedule tes = TeamExerciseScheduleMgr.getInstance().findTeamExerciseScheduleById(be.exerciseid);
+    			if (tes==null) tes = new TeamExerciseSchedule();
+    			TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
+    			StoreCity sc = StoreMgr.getInstance().findStoreById(tess.storeid);
+    			if (sc!=null) tess.storename = sc.name;
+//    			Classroom c = ClassroomMgr.getInstance().findClassroomById(tess.classroomid);
+//    			if (c!=null) tess.classroomname = c.name;
+    			Employee e = EmployeeMgr.getInstance().findEmployeeById(tess.employeeid);
+    			if (e!=null) tess.employeename = e.name;
+    			TeamExercise te = TeamExerciseMgr.getInstance().findTeamExerciseById(tess.teamexerciseid);
+    			if (te!=null) tess.teamexercisename = te.name;
+    			listTeamExerciseScheduleShow.put(be.id, tess);
+    		} else if (be.type==1) {
+    			PrivateExercise pe = PrivateExerciseMgr.getInstance().findPrivateExerciseById(be.exerciseid);
+    			if (pe==null) pe = new PrivateExercise();
+    			PrivateExerciseShow pes = new PrivateExerciseShow(pe);
+    			StoreCity sc = StoreMgr.getInstance().findStoreById(pes.storeid);
+    			if (sc!=null) pes.storename = sc.name;
+//    			Classroom c = ClassroomMgr.getInstance().findClassroomById(pes.classroomid);
+//    			if (c!=null) pes.classroomname = c.name; 
+    			Employee e = EmployeeMgr.getInstance().findEmployeeById(pes.employeeid);
+    			if (e!=null) pes.employeename = e.name;
+    			listPrivateExerciseShow.put(be.id, pes);
+    		}
+    	}
+    	int number = listBookExercise.size();
+    	render(listBookExercise, listMember, listPrivateExerciseShow, listTeamExerciseScheduleShow, number);
     }
     
 // 后台不需要添加BookExercise，BookExercise在手机端添加

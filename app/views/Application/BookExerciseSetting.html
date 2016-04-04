@@ -18,13 +18,16 @@
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">预约团操/特训班设置</div>
 	
 	<div style="margin:20px">
-		<input name="store" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="width:120px;height:32px">
-		<select name="classtype" class="easyui-combobox" style="height:32px;width:120px;">
-			<option value="0">全部课程种类</option>
-			<option value="1">团操</option>
-		    <option value="2">特训班</option>
-		</select>
-		<input name="exerciseclass" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'',prompt:'请选择一个课程'" style="width:120px;height:32px">	
+		#{form @Application.BookExerciseSearch()}
+		<input id="storeid" name="storeid" class="easyui-combobox" data-options="
+			editable:false,
+			valueField:'id',
+			textField:'name',
+			url:'@{Application.getAllStore()}',
+			prompt:'请选择一个门店'"  style="width:120px;height:32px">
+		<input id="teamexercisescheduleid" name="teamexercisescheduleid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{Application.getAllTeamExerciseScheduleAsJson()}',prompt:'选择一个团操:名称、门店、教室、教练'" style="width:350px;height:32px">
+		<input id="privateexerciseid" name="privateexerciseid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{Application.getAllPrivateExerciseJSON()}',prompt:'选择一个私教课程'" style="height:32px">
+		<!-- 
 		<select name="status" class="easyui-combobox" style="height:32px;width:80px;">
 			<option value="0">全部状态</option>
 			<option value="1">待定</option>
@@ -33,25 +36,35 @@
 		    <option value="4">待定</option>
 		    <option value="0">待定</option>
 		</select>
-		<input name="keyname" class="easyui-textbox" data-options="prompt:'搜姓名、手机、微信号'" style="width:150px;height:32px">
-		<input name="starttime" class="easyui-datebox" data-options="editable:false" style="width:120px;height:32px">-至-
-		<input name="endtime" class="easyui-datebox" data-options="editable:false" style="width:120px;height:32px">
-		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:60px;height:32px">搜索</a>        
+		 -->
+		<input name="keyname" class="easyui-textbox" data-options="prompt:'姓名、手机号关键字'" style="width:150px;height:32px">
+		<br/><br/>预约时间区间
+		<input name="starttime" class="easyui-datebox" data-options="editable:false,prompt:'开始时间'" style="width:120px;height:32px">-至-
+		<input name="endtime" class="easyui-datebox" data-options="editable:false,prompt:'结束时间'" style="width:120px;height:32px">
+		<input type="submit" style="width:80px;height:32px" value="搜索">     
+		#{/form}
 	</div>
 	
 	<div style="margin:20px">
         <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
 	        <thead>
 	            <tr>
-	                <th data-options="field:'name',width:80">会员</th>
+	                <th data-options="field:'name1',width:80">会员名</th>
+	                <!-- 
+	                <th data-options="field:'name2',width:80">微信名</th>
+	                 -->
+	                <th data-options="field:'phone',width:80">手机</th>
 	                <th data-options="field:'booktime',width:120">预约时间</th>
-	                <th data-options="field:'cityname',width:100">城市</th>
-	                <th data-options="field:'storename',width:100">门店</th>
+	                <th data-options="field:'type',width:60">性质</th>
+	                <th data-options="field:'storename',width:80">门店</th>
+	                <!-- 
 	                <th data-options="field:'classroomname',width:100">教室</th>
+	                 -->
+	                <th data-options="field:'employeename',width:80">教练</th>
 	                <th data-options="field:'exercisename',width:100">课程</th>
 	                <th data-options="field:'begintime',width:100">上课时间</th>
-	                <th data-options="field:'status',width:100">状态</th>
-	                <th data-options="field:'operation',width:100">操作</th>
+	                <th data-options="field:'status',width:80">状态</th>
+	                <th data-options="field:'operation',width:80">操作</th>
 	            </tr>
 	        </thead>
 	        <tbody>
@@ -59,8 +72,19 @@
 	        #{list items:0..number-1, as:'i'}
 	        	<tr>
 		            <td>${listMember[i].name}</td>
+		            <!-- 
+		            <td>${listMember[i].wechatname}</td>
+		            -->
+		            <td>${listMember[i].phone}</td>
 		            <td>${listBookExercise[i].booktime}</td>
-		            <td>${listCity[i]}</td>          
+		            <td>
+		            #{if listBookExercise[i].type==0}
+		            	团操
+		            #{/if}
+		            #{else}
+		            	私教
+		            #{/else}
+		            </td>
 		            <td>
 		            #{if listBookExercise[i].type==0}
 		            	${listTeamExerciseScheduleShow.get(listBookExercise[i].id).storename}
@@ -69,12 +93,22 @@
 		            	${listPrivateExerciseShow.get(listBookExercise[i].id).storename}
 		            #{/else}
 		            </td>
+		            <!-- 
 		            <td>
 		            #{if  listBookExercise[i].type==0}
 		            	${listTeamExerciseScheduleShow.get(listBookExercise[i].id).classroomname}
 		            #{/if}
 		            #{else}
 		            	${listPrivateExerciseShow.get(listBookExercise[i].id).classroomname}
+		            #{/else}
+					</td>
+					-->
+					<td>
+		            #{if  listBookExercise[i].type==0}
+		            	${listTeamExerciseScheduleShow.get(listBookExercise[i].id).employeename}
+		            #{/if}
+		            #{else}
+		            	${listPrivateExerciseShow.get(listBookExercise[i].id).employeename}
 		            #{/else}
 					</td>
 		            <td>
@@ -93,7 +127,7 @@
 		            	${listPrivateExerciseShow.get(listBookExercise[i].id).classbegintime}
 		            #{/else}
 		            </td>
-		            <td>状态</td>
+		            <td>这待做</td>
 		            <td>
 		            	<a href="@{Application.deleteBookExercise(listBookExercise[i].id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
 		            </td>

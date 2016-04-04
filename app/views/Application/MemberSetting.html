@@ -18,8 +18,9 @@
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">会员设置</div>
 	
 	<div style="margin:20px">
-		<input name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="height:32px">
-		<select name="cardtype" class="easyui-combobox" style="height:32px;width:100px;">
+		#{form @Application.MemberSearch()}
+		<input name="acityid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{Application.getAllCity()}',prompt:'请选择一个城市'" style="width:120px;height:32px">
+		<select name="acardtype" class="easyui-combobox" style="height:32px;width:100px;">
 			<option value="5">全部卡种类</option>
 			<option value="1">月卡</option>
 		    <option value="2">季卡</option>
@@ -27,8 +28,9 @@
 		    <option value="4">年卡</option>
 		    <option value="0">非会员</option>	<!-- 这里特殊，0是非会员，所以全部种类用了5 -->
 		</select>
-		<input name="keyname" class="easyui-textbox" data-options="prompt:'搜姓名、手机、微信号'" style="height:32px">
-		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px;height:32px">搜索</a>        
+		<input name="keyname" class="easyui-textbox" data-options="prompt:'搜姓名、微信名、手机号'" style="height:32px">
+		<input type="submit" style="width:80px;height:32px" value="搜索">        
+		#{/form}
 	</div>
 	
 	<div style="margin:20px">
