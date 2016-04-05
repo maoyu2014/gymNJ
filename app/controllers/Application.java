@@ -113,6 +113,31 @@ public class Application extends Controller {
     	return maps;
 	}
     
+    //店长权限
+    @Before(only={"storeSetting","employeeSetting","announcementSetting","groupbuySetting","MemberSetting","BookExerciseSetting"})
+    public static void ismanager() {
+    	//这里再次判断，防止用户直接拼url而不是从首页进去
+    	//主要是因为，这个before居然会先于checkAuthentification执行，所以没办法啊，只能手动加
+    	if (session.get("user") == null) login();	
+    	int ismanager = (int) parseSession().get("ismanager");
+    	if (ismanager==0) renderJSON("对不起，您没有权限！");
+    }
+    
+    //财务权限
+    @Before(only={"PurchaseHistorySetting"})
+    public static void isfinance() {
+    	if (session.get("user") == null) login();
+    	int isfinance = (int) parseSession().get("isfinance");
+    	if (isfinance==0) renderJSON("对不起，您没有权限！");
+    }
+    
+    //教练权限
+    @Before(only={"fitnessPlanSetting","teamExerciseSetting","PrivateExerciseSetting"})
+    public static void iscoach() {
+    	if (session.get("user") == null) login();
+    	int iscoach = (int) parseSession().get("iscoach");
+    	if (iscoach==0) renderJSON("对不起，您没有权限！");
+    }
     	
     /*
      * ·························城市city
@@ -998,10 +1023,9 @@ public class Application extends Controller {
 		else myendtime+=day;
 //		System.out.println(myendtime);
 		
-		for (TeamExerciseSchedule tes : listss) {
-    		String strday = tes.begintime.substring(0, 10);
+		for (TeamExerciseScheduleShow tess : listtt) {
+    		String strday = tess.begintime.substring(0, 10);
     		if (strday.compareTo(mybegintime)>=0 && strday.compareTo(myendtime)<=0) {
-    			TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
 				try {
 					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
 					Date date = dateFormat.parse(strday);
@@ -1011,14 +1035,6 @@ public class Application extends Controller {
 				}  
 				x  =calendar.get(Calendar.DAY_OF_WEEK);
 		    	xx = dir[x];
-        		StoreCity s = StoreMgr.getInstance().findStoreById(tes.storeid);
-        		if (s!=null) tess.storename = s.name;
-        		Employee e = EmployeeMgr.getInstance().findEmployeeById(tes.employeeid);
-        		if (e!=null) tess.employeename = e.name;
-        		Classroom c = ClassroomMgr.getInstance().findClassroomById(tes.classroomid);
-        		if (c!=null) tess.classroomname = c.name;
-        		TeamExercise t = TeamExerciseMgr.getInstance().findTeamExerciseById(tes.teamexerciseid);
-        		if (t!=null) tess.teamexercisename = t.name;
         		mapweek.get(xx).add(tess);
     		}
     	}
@@ -1043,19 +1059,10 @@ public class Application extends Controller {
 		}  
 		x  =calendar.get(Calendar.DAY_OF_WEEK);
 		int num = dir[x];
-    	for (TeamExerciseSchedule tes : listss) {
-    		String strday = tes.begintime.substring(0, 10);
+    	for (TeamExerciseScheduleShow tess : listtt) {
+    		String strday = tess.begintime.substring(0, 10);
     		if (strday.compareTo(mybegintime)>=0 && strday.compareTo(myendtime)<=0) {
-    			TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
     			xx = Integer.parseInt(strday.substring(8, 10));
-        		StoreCity s = StoreMgr.getInstance().findStoreById(tes.storeid);
-        		if (s!=null) tess.storename = s.name;
-        		Employee e = EmployeeMgr.getInstance().findEmployeeById(tes.employeeid);
-        		if (e!=null) tess.employeename = e.name;
-        		Classroom c = ClassroomMgr.getInstance().findClassroomById(tes.classroomid);
-        		if (c!=null) tess.classroomname = c.name;
-        		TeamExercise t = TeamExerciseMgr.getInstance().findTeamExerciseById(tes.teamexerciseid);
-        		if (t!=null) tess.teamexercisename = t.name;
         		mapmonth.get(xx).add(tess);
     		}
     	}
@@ -1190,10 +1197,9 @@ public class Application extends Controller {
 		else myendtime+=day;
 //		System.out.println(myendtime);
 		
-		for (TeamExerciseSchedule tes : listss) {
-    		String strday = tes.begintime.substring(0, 10);
+		for (TeamExerciseScheduleShow tess : listtt) {
+    		String strday = tess.begintime.substring(0, 10);
     		if (strday.compareTo(mybegintime)>=0 && strday.compareTo(myendtime)<=0) {
-    			TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
 				try {
 					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
 					Date date = dateFormat.parse(strday);
@@ -1203,14 +1209,6 @@ public class Application extends Controller {
 				}  
 				x  =calendar.get(Calendar.DAY_OF_WEEK);
 		    	xx = dir[x];
-        		StoreCity s = StoreMgr.getInstance().findStoreById(tes.storeid);
-        		if (s!=null) tess.storename = s.name;
-        		Employee e = EmployeeMgr.getInstance().findEmployeeById(tes.employeeid);
-        		if (e!=null) tess.employeename = e.name;
-        		Classroom c = ClassroomMgr.getInstance().findClassroomById(tes.classroomid);
-        		if (c!=null) tess.classroomname = c.name;
-        		TeamExercise t = TeamExerciseMgr.getInstance().findTeamExerciseById(tes.teamexerciseid);
-        		if (t!=null) tess.teamexercisename = t.name;
         		mapweek.get(xx).add(tess);
     		}
     	}
@@ -1235,19 +1233,10 @@ public class Application extends Controller {
 		}  
 		x  =calendar.get(Calendar.DAY_OF_WEEK);
 		int num = dir[x];
-    	for (TeamExerciseSchedule tes : listss) {
-    		String strday = tes.begintime.substring(0, 10);
+    	for (TeamExerciseScheduleShow tess : listtt) {
+    		String strday = tess.begintime.substring(0, 10);
     		if (strday.compareTo(mybegintime)>=0 && strday.compareTo(myendtime)<=0) {
-    			TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
     			xx = Integer.parseInt(strday.substring(8, 10));
-        		StoreCity s = StoreMgr.getInstance().findStoreById(tes.storeid);
-        		if (s!=null) tess.storename = s.name;
-        		Employee e = EmployeeMgr.getInstance().findEmployeeById(tes.employeeid);
-        		if (e!=null) tess.employeename = e.name;
-        		Classroom c = ClassroomMgr.getInstance().findClassroomById(tes.classroomid);
-        		if (c!=null) tess.classroomname = c.name;
-        		TeamExercise t = TeamExerciseMgr.getInstance().findTeamExerciseById(tes.teamexerciseid);
-        		if (t!=null) tess.teamexercisename = t.name;
         		mapmonth.get(xx).add(tess);
     		}
     	}
@@ -1755,20 +1744,25 @@ public class Application extends Controller {
     }
     
     //搜索BookExercise预约设置（展示）页面
-    //TODO
     public static void BookExerciseSearch(int storeid, int teamexercisescheduleid, int privateexerciseid,
     		String keyname, String starttime, String endtime) {
-    	List<BookExercise> listBookExercise = BookExerciseMgr.getInstance().getAllActiveBookExercise();
+    	List<BookExercise> PrelistBookExercise = BookExerciseMgr.getInstance().searchActiveBookExercise(teamexercisescheduleid, privateexerciseid, starttime, endtime);
+    	List<BookExercise> listBookExercise = new ArrayList<>();
     	List<Member> listMember = new ArrayList<>();
     	Map<Integer, TeamExerciseScheduleShow> listTeamExerciseScheduleShow = new HashMap<>();
     	Map<Integer, PrivateExerciseShow> listPrivateExerciseShow = new HashMap<>();
-    	for (BookExercise be : listBookExercise) {
+    	for (BookExercise be : PrelistBookExercise) {
     		Member m = MemberMgr.getInstance().findMemberById(be.memberid);
-    		if (m==null) m = new Member();
-    		listMember.add(m);
+    		if (keyname!=null && keyname.length()>0) {
+    			if (m==null) continue;
+    			if (!m.name.contains(keyname) && !m.phone.contains(keyname)) continue;
+    		}
     		if (be.type==0) {
     			TeamExerciseSchedule tes = TeamExerciseScheduleMgr.getInstance().findTeamExerciseScheduleById(be.exerciseid);
-    			if (tes==null) tes = new TeamExerciseSchedule();
+    			if (storeid!=0) {
+    				if (tes==null) continue;
+    				if (tes.storeid!=storeid) continue;
+    			}
     			TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
     			StoreCity sc = StoreMgr.getInstance().findStoreById(tess.storeid);
     			if (sc!=null) tess.storename = sc.name;
@@ -1778,10 +1772,15 @@ public class Application extends Controller {
     			if (e!=null) tess.employeename = e.name;
     			TeamExercise te = TeamExerciseMgr.getInstance().findTeamExerciseById(tess.teamexerciseid);
     			if (te!=null) tess.teamexercisename = te.name;
+    			listBookExercise.add(be);
+    			listMember.add(m);
     			listTeamExerciseScheduleShow.put(be.id, tess);
     		} else if (be.type==1) {
     			PrivateExercise pe = PrivateExerciseMgr.getInstance().findPrivateExerciseById(be.exerciseid);
-    			if (pe==null) pe = new PrivateExercise();
+    			if (storeid!=0) {
+    				if (pe==null) continue;
+    				if (pe.storeid!=storeid) continue;
+    			}
     			PrivateExerciseShow pes = new PrivateExerciseShow(pe);
     			StoreCity sc = StoreMgr.getInstance().findStoreById(pes.storeid);
     			if (sc!=null) pes.storename = sc.name;
@@ -1789,11 +1788,13 @@ public class Application extends Controller {
 //    			if (c!=null) pes.classroomname = c.name; 
     			Employee e = EmployeeMgr.getInstance().findEmployeeById(pes.employeeid);
     			if (e!=null) pes.employeename = e.name;
+    			listBookExercise.add(be);
+    			listMember.add(m);
     			listPrivateExerciseShow.put(be.id, pes);
     		}
     	}
     	int number = listBookExercise.size();
-    	render(listBookExercise, listMember, listPrivateExerciseShow, listTeamExerciseScheduleShow, number);
+    	render("Application/BookExerciseSetting.html", listBookExercise, listMember, listPrivateExerciseShow, listTeamExerciseScheduleShow, number);
     }
     
 // 后台不需要添加BookExercise，BookExercise在手机端添加

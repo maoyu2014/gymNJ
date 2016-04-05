@@ -108,6 +108,46 @@ public class BookExerciseMgr {
 		return list;
 	}
 	
+	public List<BookExercise> searchActiveBookExercise(int teamexercisescheduleid, int privateexerciseid, String starttime, String endtime) {
+		List<BookExercise> list = new ArrayList<BookExercise>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		try {
+			String sql = "select * from BookExercise where status = 1 ";
+			if (teamexercisescheduleid!=0) {
+				sql += " and type = 0 and exerciseid = " + teamexercisescheduleid;
+			}
+			if (privateexerciseid!=0) {
+				sql += " and type = 1 and exerciseid = " + privateexerciseid;
+			}
+			if (starttime!=null && starttime.length()>0) {
+				sql += " and booktime >= '" + starttime + "'";
+			}
+			if (endtime!=null && endtime.length()>0) {
+				endtime+=" 23:59:59";
+				sql += " and booktime <= '" + endtime + "'";
+			}
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				int memberid = rs.getInt("memberid");
+				int type = rs.getInt("type");
+				int exerciseid = rs.getInt("exerciseid");
+				String booktime = rs.getString("booktime");
+				BookExercise an = new BookExercise(id, memberid, type, exerciseid, booktime);
+				list.add(an);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return list;
+	}
+	
 	public boolean deleteBookExercise(int aid) {
 		boolean flag = false;
 		Connection conn = DB.getConn();
