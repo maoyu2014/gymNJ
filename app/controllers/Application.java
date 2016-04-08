@@ -24,6 +24,7 @@ import utils.PwdToHardMgr;
 import utils.StoreMgr;
 import utils.TeamExerciseMgr;
 import utils.TeamExerciseScheduleMgr;
+import utils.UserInOutInfoFromHardMgr;
 
 import java.io.File;
 import java.text.ParseException;
@@ -34,6 +35,7 @@ import models.*;
 import models.front.CheckTm;
 import models.front.InnerPwd;
 import models.front.PwdToHard;
+import models.front.UserInfoFromHard;
 
 public class Application extends Controller {
 
@@ -51,7 +53,7 @@ public class Application extends Controller {
 	 */
 	
     //在所有功能前检查是否是已经登录的
-    @Before(unless={"login","check","getPwdInfoList","getCheckTm"})
+    @Before(unless={"login","check","getPwdInfoList","getCheckTm","userInOutInfoSndToServer"})
     public static void checkAuthentification() {
     	if (session.get("user") == null) login();
     }
@@ -1963,6 +1965,24 @@ public class Application extends Controller {
 		
 		ct.SysTm = today;
 		renderJSON(ct);
+    }
+    
+    
+    /*
+     * 硬件传递过来进用户出门的数据
+     */
+    public static void userInOutInfoSndToServer(String deviceId, int userid, int inOutType, String inOutTm) {
+    	UserInfoFromHard uifh = new UserInfoFromHard();
+    	uifh.datatype = "userInOutInfoSndToServer";
+    	if (deviceId==null || deviceId.length()!=12 || inOutTm==null || inOutTm.length()!=19 ||
+    			(inOutType!=0 && inOutType!=1) ) {
+    		uifh.state="0001";
+    		renderJSON(uifh);
+    	}
+    	InOutInfo e = new InOutInfo(deviceId, userid, inOutType, inOutTm);
+    	UserInOutInfoFromHardMgr.getInstance().save(e);
+    	uifh.state="0000";
+    	renderJSON(uifh);
     }
     
     
