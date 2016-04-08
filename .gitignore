@@ -8,4 +8,6 @@
 /eclipse
 .classpath
 .project
-  
+
+/public/images
+/app/utils/DB.java
