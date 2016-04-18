@@ -134,7 +134,8 @@ public class PwdToHardMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		Map<String, Object> map = new HashMap<>();
-		boolean flag = false;
+//		boolean flag = false;
+		String lastupdatetime = null;
 		List<InnerPwd> list = new ArrayList<>();
 		InnerPwd an = null;
 		try {
@@ -167,14 +168,13 @@ public class PwdToHardMgr {
 				int hour21 = rs.getInt("hour21"); String h21 = String.valueOf(hour21);
 				int hour22 = rs.getInt("hour22"); String h22 = String.valueOf(hour22);
 				int hour23 = rs.getInt("hour23"); String h23 = String.valueOf(hour23);
-				if (!flag) {
-					String updateTime = rs.getString("updateTime");
-					flag = true;
-					map.put("updateTime", updateTime);
-				}
+				String updateTime = rs.getString("updateTime");
+				if (lastupdatetime==null) lastupdatetime = updateTime;
+				else if (updateTime.compareTo(lastupdatetime)>0) lastupdatetime = updateTime;
 				an = new InnerPwd(userid, cdate, h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19, h20, h21, h22, h23);
 				list.add(an);
 			}
+			map.put("updateTime", lastupdatetime);
 			map.put("list", list);
 		} catch (SQLException eee) {
 			eee.printStackTrace();
