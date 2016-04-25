@@ -61,7 +61,7 @@ public class TeamExerciseScheduleMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select * from TeamExerciseSchedule";
+			String sql = "select * from TeamExerciseSchedule order by begintime desc";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");

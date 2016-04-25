@@ -1068,8 +1068,9 @@ public class Application extends Controller {
         		mapmonth.get(xx).add(tess);
     		}
     	}
-    	
-    	render(lists, listtt, mapweek, mapmonth, num);
+    	int aaa = lists.size();
+    	int bbb = listtt.size();
+    	render(lists, listtt, aaa, bbb, mapweek, mapmonth, num);
     }
     
     //添加团操课程页面
