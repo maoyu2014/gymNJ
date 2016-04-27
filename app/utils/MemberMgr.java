@@ -234,25 +234,21 @@ public class MemberMgr {
 		return an;
 	}
 	
-//	public void update(Member e) {
-//		Connection conn = DB.getConn();
-//		String sql = "update Member set name = ?, storeid = ?, starttime = ?, endtime = ?, content = ?, employeeid = ?  where id = " +e.id;
-//		PreparedStatement pstmt = DB.getPstmt(conn, sql);
-//		try {
-//			pstmt.setString(1, e.name);
-//			pstmt.setInt(2, e.storeid);
-//			pstmt.setString(3, e.starttime);
-//			pstmt.setString(4, e.endtime);
-//			pstmt.setString(5, e.content);
-//			pstmt.setInt(6, e.employeeid);
-//			pstmt.executeUpdate();
-//		} catch (SQLException eee) {
-//			eee.printStackTrace();
-//		} finally {
-//			DB.close(pstmt);
-//			DB.close(conn);
-//		}
-//	}
+	public void updateDeaddate(int aid, int acardtype, String adeaddate) {
+		Connection conn = DB.getConn();
+		String sql = "update Member set cardtype = ? , deaddate = ?  where id = " +aid;
+		PreparedStatement pstmt = DB.getPstmt(conn, sql);
+		try {
+			pstmt.setInt(1, acardtype);
+			pstmt.setString(2, adeaddate);
+			pstmt.executeUpdate();
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+	}
 	
 	
 	

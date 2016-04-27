@@ -12,6 +12,7 @@ import utils.BookExerciseMgr;
 import utils.CityMgr;
 import utils.ClassroomMgr;
 import utils.ComeInPasswordMgr;
+import utils.DeadtimeLogMgr;
 import utils.EmployeeMgr;
 import utils.FitnessPlanMgr;
 import utils.GroupWebsiteMgr;
@@ -141,6 +142,35 @@ public class Application extends Controller {
     	if (iscoach==0) renderJSON("对不起，您没有权限！");
     }
     	
+    /*
+     * 公用方法
+     */
+    private static String getCurrentTimeSecond() {
+    	Calendar calendar = Calendar.getInstance();  
+		String updatetime = ""+calendar.get(Calendar.YEAR)+"-";
+		int month = calendar.get(Calendar.MONTH)+1; 
+		if (month<10) updatetime+="0"+month+"-"; else updatetime += month+"-";
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		if (day<10) updatetime+="0"+day+" "; else updatetime+=day+" ";
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		if (hour<10) updatetime+="0"+hour+":"; else updatetime+=hour+":";
+		int minutes = calendar.get(Calendar.MINUTE);
+		if (minutes<10) updatetime+="0"+minutes+":"; else updatetime+=minutes+":";
+		int seconds = calendar.get(Calendar.SECOND);
+		if (seconds<10) updatetime+="0"+seconds; else updatetime+=seconds;
+		return updatetime;
+    }
+    
+    private static String getCurrentDay() {
+    	Calendar calendar = Calendar.getInstance();  
+		String cdate = ""+calendar.get(Calendar.YEAR)+"-";
+		int month = calendar.get(Calendar.MONTH)+1; 
+		if (month<10) cdate+="0"+month+"-"; else cdate += month+"-";
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		if (day<10) cdate+="0"+day+" "; else cdate+=day+" ";
+    	return cdate;
+    }
+    
     /*
      * ·························城市city
      */
@@ -310,6 +340,13 @@ public class Application extends Controller {
     		EmployeeShow es = new EmployeeShow(em);
     		StoreCity s = StoreMgr.getInstance().findStoreById(em.storeid);
     		if (s!=null) es.storename = s.name;
+    		// 入场密码
+    		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(es.id);
+    		if (cp!=null) {
+    			Calendar calendar = Calendar.getInstance();  
+    			int hour = calendar.get(Calendar.HOUR_OF_DAY);
+    			es.comeinpassword  = cp.arr[hour];
+    		}
     		liste.add(es);
     	}
     	int number = liste.size();
@@ -379,10 +416,31 @@ public class Application extends Controller {
     	}
     	Employee e = new Employee(username, md5password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
     	EmployeeMgr.getInstance().save(e);
+    	//给新的员工立刻生成今日密码
+    	GeneratePasswordToNewEmployee();
     	employeeSetting();
     }
     
-    //删除员工
+    //给新的员工立刻生成今日密码
+    private static void GeneratePasswordToNewEmployee() {
+    	int a = 100000;
+		int b = 999999;
+		Random rand = new Random();
+		int[] arr = new int[24];
+		int temp = rand.nextInt(b-a)+a;
+		for (int k=0; k<24; k++) arr[k] = temp;
+		
+		String updatetime = getCurrentTimeSecond();
+		String cdate = getCurrentDay();
+		int employeeid=EmployeeMgr.getInstance().getNewestEmployeeID();
+		if (employeeid!=-1) {
+			ComeInPasswordMgr.getInstance().save(employeeid, cdate, arr, updatetime);
+		} else {
+			System.out.println("没获取到最新EmployeeID");
+		}
+	}
+    
+	//删除员工
     public static void deleteEmployee(int id) {
     	boolean flag = EmployeeMgr.getInstance().deleteEmployee(id);
     	if (flag) 
@@ -481,6 +539,13 @@ public class Application extends Controller {
     		EmployeeShow es = new EmployeeShow(em);
     		StoreCity s = StoreMgr.getInstance().findStoreById(em.storeid);
     		if (s!=null) es.storename = s.name;
+    		// 入场密码
+    		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(es.id);
+    		if (cp!=null) {
+    			Calendar calendar = Calendar.getInstance();  
+    			int hour = calendar.get(Calendar.HOUR_OF_DAY);
+    			es.comeinpassword  = cp.arr[hour];
+    		}
     		liste.add(es);
     	}
     	int number = liste.size();
@@ -1619,7 +1684,53 @@ public class Application extends Controller {
 //    public static void addMemberToDB() {
 //    	
 //    }
-
+    
+    //修改会员deaddate页面
+	public static void modifyMemberDeaddate(int aid) {
+		Member m = MemberMgr.getInstance().findMemberById(aid);
+		String cardtypename = "undefined";
+		if (m.cardtype==0) cardtypename="非会员";
+		else if (m.cardtype==1) cardtypename="月卡";
+		else if (m.cardtype==2) cardtypename="季卡";
+		else if (m.cardtype==3) cardtypename="半年卡";
+		else if (m.cardtype==4) cardtypename="年卡";
+		List<DeadtimeLog> list = DeadtimeLogMgr.getInstance().findDeadtimeLogByMemberId(aid);
+		render(m, cardtypename, list);
+	}
+	
+	//保存被修改的会员deaddate和卡类型
+	public static void modifyMemberDeaddateToDB(int aid, String deaddate, int acardtype) {
+		String today = getCurrentDay();
+		if (acardtype==0 && deaddate.compareTo(today)>0) {
+			renderText("选择非会员，则到期时间必须小于等于今天!");
+		}
+		MemberMgr.getInstance().updateDeaddate(aid, acardtype, deaddate);
+		String updatetime = getCurrentTimeSecond();
+		String employeename = (String) parseSession().get("username");
+		DeadtimeLog dl = new DeadtimeLog(aid, updatetime, acardtype, deaddate, employeename);
+		DeadtimeLogMgr.getInstance().save(dl);
+		
+		if (acardtype != 0 && deaddate.compareTo(today) > 0) {
+			ComeInPassword flag = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(aid);
+			if (flag==null) GeneratePasswordToAMember(aid);
+		}
+		modifyMemberDeaddate(aid);
+	}
+    
+	//给修改过的会员且同时没有当日密码的生成密码
+	private static void GeneratePasswordToAMember(int memberid) {
+    	int a = 100000;
+		int b = 999999;
+		Random rand = new Random();
+		int[] arr = new int[24];
+		int temp = rand.nextInt(b-a)+a;
+		for (int k=0; k<24; k++) arr[k] = temp;
+		
+		String updatetime = getCurrentTimeSecond();
+		String cdate = getCurrentDay();
+		ComeInPasswordMgr.getInstance().save(memberid, cdate, arr, updatetime);
+	}
+	
 	//删除Member
     public static void deleteMember(int id) {
     	boolean flag = MemberMgr.getInstance().deleteMember(id);
@@ -1665,6 +1776,10 @@ public class Application extends Controller {
 			int hour = calendar.get(Calendar.HOUR_OF_DAY);
 			sc.comeinpassword  = cp.arr[hour];
 		}
+		//到店状态 
+		List<String> listIn = UserInOutInfoFromHardMgr.getInstance().getMemberInInfo(sc.id);
+		List<String> listOut = UserInOutInfoFromHardMgr.getInstance().getMemberOutInfo(sc.id);
+		int inOutTmNum = Math.max(listIn.size(),listOut.size());
 		//团操课程，特训课程展示
 		List<BookExercise> listbe = BookExerciseMgr.getInstance().findActiveBookExerciseByMemberId(sc.id);
 		List<TeamExerciseScheduleShow> listtes = new ArrayList<>();
@@ -1686,12 +1801,12 @@ public class Application extends Controller {
 				if (pe!=null) {
 					PrivateExerciseShow pes = new PrivateExerciseShow(pe);
 					Employee e = EmployeeMgr.getInstance().findEmployeeById(pes.employeeid);
-					pes.employeename = e.name;
+					if (e!=null) pes.employeename = e.name;
 					listpe.add(pes);
 				}
 			}
 		}
-		render(sc, listtes, listpe);
+		render(sc, listIn, listOut, inOutTmNum, listtes, listpe);
     }
    
 // 后台也不需要修改会员

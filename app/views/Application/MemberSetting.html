@@ -50,6 +50,7 @@
 	        </thead>
 	        <tbody>
 	        #{list items:lists, as:'MemberShow'}
+	        	#{if MemberShow.openid != "baojieayi"}
 	        	<tr>
 		            <td>${MemberShow.name}</td>
 		            <td>${MemberShow.wechatname}</td>
@@ -62,15 +63,17 @@
 		            <td>
 		            	<a href="@{Application.MemberDetail(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
 		            	<a href="@{Application.deleteMember(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            	<a href="@{Application.modifyMemberDeaddate(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
 		            </td>
 		        </tr>
+		        #{/if}
 	        #{/list}
 	        </tbody>
 	    </table>
     </div>
     
     <div style="margin:20px;font-size:15px;font-weight:600;">
-    	共${number}条记录
+    	共${number-1}条记录
 	</div>
 	
 </body>

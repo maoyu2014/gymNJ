@@ -156,7 +156,7 @@
 		    
 			<div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">到店状态</div>
 			<div style="margin:10px">
-		        <table class="easyui-datagrid" data-options="fitColumns:false,singleSelect:true,striped:true,rownumbers:false">
+		        <table class="easyui-datagrid" data-options="fitColumns:false,singleSelect:true,striped:true,rownumbers:true">
 			        <thead>
 			            <tr>
 			                <th data-options="field:'daodian',width:150">到店</th>
@@ -164,10 +164,21 @@
 			            </tr>
 			        </thead>
 			        <tbody>
+			        	#{if inOutTmNum > 0}
+			        	#{list items:0..inOutTmNum-1, as:'i'}
 			        	<tr>
-				            <td>${sc.cardtypename}</td>
-				            <td>${sc.deaddate}</td>
+				            <td>#{if i < listIn.size()}
+				            	${listIn.get(i)}
+				            	#{/if}
+				            </td>
+				            <td>
+				            	#{if i < listOut.size()}
+				            	${listOut.get(i)}
+				            	#{/if}
+				            </td>
 				        </tr>
+				        #{/list}
+				        #{/if}
 			        </tbody>
 			    </table>
 		    </div>

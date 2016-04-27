@@ -30,6 +30,7 @@ public class EmployeeShow {
 	public String storename;
 	public String introduce;
 	
+	public int comeinpassword;
 	
 	public EmployeeShow(int id, String username, String password, String name,
 			String headimage, int sex, String phone, int ismanager,

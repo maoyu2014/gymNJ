@@ -5,7 +5,7 @@ public class InOutInfo {
 	public int id;
 	public String deviceid;
 	public int memberid;
-	public int inOutType;
+	public int inOutType;		//0:进 1:出
 	public String inOutTm;
 	
 	public InOutInfo(int id, String deviceid, int memberid, int inOutType, String inOutTm) {

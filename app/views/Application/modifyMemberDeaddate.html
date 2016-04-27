@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+    
+<body>
+
+	<div class="easyui-layout" data-options="fit:true">
+		
+		<div data-options="region:'west',title:'个人信息',collapsible:false" style="width:50%;">
+			<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">会员详情</div>
+			<div style="margin-left:100px;">
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">姓名：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${m.name}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">微信名称：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${m.wechatname}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">电话：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${m.phone}" style="">
+				</div>
+				
+			</div>
+		</div>
+		
+		<div data-options="region:'center',title:'可编辑信息'" style="">
+			<div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">购卡信息</div>
+			<div style="margin:10px">
+		        <table class="easyui-datagrid" data-options="fitColumns:false,singleSelect:true,striped:true,rownumbers:true">
+			        <thead>
+			            <tr>
+			                <th data-options="field:'cardtypename',width:150">卡类型</th>
+			                <th data-options="field:'deaddate',width:150">到期时间</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        	<tr>
+				            <td>${cardtypename}</td>
+				            <td>${m.deaddate}</td>
+				        </tr>
+			        </tbody>
+			    </table>
+		    </div>
+		    
+		    #{form @Application.modifyMemberDeaddateToDB(m.id), onsubmit:"return check()"}
+		    <div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">修改到期时间</div>
+			<div style="margin:10px;">
+			<span style="font-size:14px;display:inline-block;width:100px">修改卡类型：</span>
+			<select name="acardtype" class="easyui-combobox" style="height:32px;width:100px;">
+				<option value="1">月卡</option>
+			    <option value="2">季卡</option>
+			    <option value="3">半年卡</option>
+			    <option value="4">年卡</option>
+			    <option value="0">非会员</option>	<!-- 这里特殊，0是非会员，所以全部种类用了5 -->
+			</select>
+			</div>
+			
+			<div style="margin:10px;">
+			<span style="font-size:14px;display:inline-block;width:100px">到期时间：</span>
+			<input id="deaddate" name="deaddate" class="easyui-datetimebox" data-options="editable:false" style="height:32px"><b>(请谨慎操作)</b>
+			</div>
+			
+			<div style="margin:10px;">
+			<input type="submit" style="width:80px;height:32px">
+			</div>
+			#{/form}
+			
+			<div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">修改日志记录</div>
+			<div style="margin:10px">
+		        <table class="easyui-datagrid" data-options="fitColumns:false,singleSelect:true,striped:true,rownumbers:true">
+			        <thead>
+			            <tr>
+			                <th data-options="field:'operatetime',width:150">操作时间</th>
+			                <th data-options="field:'deadtime',width:150">修改后的时间</th>
+			                <th data-options="field:'who',width:150">操作人</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        	#{list items:list, as:'DeadtimeLog'}
+			        	<tr>
+				            <td>${DeadtimeLog.updatetime}</td>
+				            <td>${DeadtimeLog.deadtime}</td>
+				            <td>${DeadtimeLog.employeename}</td>
+				        </tr>
+				        #{/list}
+			        </tbody>
+			    </table>
+		    </div>
+		    
+		</div>
+		
+	</div>
+	
+</body>
+
+<script>
+function check() {
+	var v;
+	v = $("#deaddate").datetimebox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	return true;
+}
+</script>
+
+</html>

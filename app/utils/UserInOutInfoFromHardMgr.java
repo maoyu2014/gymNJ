@@ -83,6 +83,65 @@ public class UserInOutInfoFromHardMgr {
 		return list;
 	}
 	
+	//0是进 
+	public List<String> getMemberInInfo(int amemberid) {
+//		List<InOutInfo> list = new ArrayList<InOutInfo>();
+		List<String> list = new ArrayList<>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		try {
+			String sql = "select inOutTm from InOutInfo where memberId = " + amemberid + " and inOutType = 0 order by inOutTm";
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+//				int id = rs.getInt("id");
+//				String deviceid = rs.getString("deviceid");
+//				int memberid = rs.getInt("memberid");
+//				int inOutType = rs.getInt("inOutType");
+				String inOutTm = rs.getString("inOutTm");
+//				InOutInfo an = new InOutInfo(id, deviceid, memberid, inOutType, inOutTm);
+				list.add(inOutTm);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return list;
+	}
+	
+	//1是出 
+	public List<String> getMemberOutInfo(int amemberid) {
+//		List<InOutInfo> list = new ArrayList<InOutInfo>();
+		List<String> list = new ArrayList<>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		try {
+			String sql = "select inOutTm from InOutInfo where memberId = " + amemberid + " and inOutType = 1 order by inOutTm";
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+//				int id = rs.getInt("id");
+//				String deviceid = rs.getString("deviceid");
+//				int memberid = rs.getInt("memberid");
+//				int inOutType = rs.getInt("inOutType");
+				String inOutTm = rs.getString("inOutTm");
+//				InOutInfo an = new InOutInfo(id, deviceid, memberid, inOutType, inOutTm);
+				list.add(inOutTm);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return list;
+	}
+		
+	
 //	public boolean deleteMember(int id) {
 //		boolean flag = false;
 //		Connection conn = DB.getConn();

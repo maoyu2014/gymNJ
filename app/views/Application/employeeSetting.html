@@ -42,6 +42,7 @@
 	                <th data-options="field:'phone',width:100">电话</th>
 	                <th data-options="field:'identity',width:80">身份</th>
 	                <th data-options="field:'storename',width:100">所属门店</th>
+	                <th data-options="field:'password',width:100">入场密码</th>
 	                <th data-options="field:'authority',width:100">登录权限</th>
 	                <th data-options="field:'operation',width:80">操作</th>
 	            </tr>
@@ -72,10 +73,13 @@
 		            #{/if}
 		            </td>
 		            <td>${employee.storename}</td>
+		            <td>${employee.comeinpassword}</td>
 		            <td>权限保密</td>
 		            <td>
 		            	<a href="@{Application.employeeDetail(employee.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	#{if employee.ismanager==0}
 		            	<a href="@{Application.deleteEmployee(employee.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            	#{/if}
 		            </td>
 		        </tr>
 	        #{/list}

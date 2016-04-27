@@ -111,6 +111,28 @@ public class EmployeeMgr {
 		return list;
 	}
 	
+	public int getNewestEmployeeID() {
+		int ans=-1;
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		try {
+			String sql = "select id from employee order by id desc";
+			rs = DB.executeQuery(stmt, sql);
+			if (rs.next()) {
+				int id = rs.getInt("id");
+				ans = id;
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(conn);
+			DB.close(stmt);
+			DB.close(rs);
+		}
+		return ans;
+	}
+	
 	public boolean deleteEmployee(int id) {
 		boolean flag = false;
 		Connection conn = DB.getConn();
@@ -409,6 +431,7 @@ public class EmployeeMgr {
 		}
 		return list;
 	}
+	
 	
 	/*
 	
