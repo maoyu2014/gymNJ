@@ -308,24 +308,28 @@ public class Application extends Controller {
     	storeDetail(storeid);
     }
     
-    //返回属于某个店铺的所有'团操'教室
+    //返回属于某个店铺的所有'团操'教室  。。现在修改成返回某个门店的教师，前台就不用改了
     public static void getAllTuanClassroomByStoreId(int storeid) {
     	List<Classroom> list = ClassroomMgr.getInstance().getAllClassroomByStoreId(storeid);
+    	/*
     	List<Classroom> lists = new ArrayList<>();
     	for (Classroom c: list) {
     		if (c.usage==1) lists.add(c);
     	}
-    	renderJSON(lists);
+    	*/
+    	renderJSON(list);
     }
     
-    //返回属于某个店铺的所有'私教'教室
+    //返回属于某个店铺的所有'私教'教室。。现在修改成返回某个门店的教师，前台就不用改了
     public static void getAllPrivateClassroomByStoreId(int storeid) {
     	List<Classroom> list = ClassroomMgr.getInstance().getAllClassroomByStoreId(storeid);
+    	/*
     	List<Classroom> lists = new ArrayList<>();
     	for (Classroom c: list) {
     		if (c.usage==2) lists.add(c);
     	}
-    	renderJSON(lists);
+    	*/
+    	renderJSON(list);
     }
     
     /*
@@ -1536,7 +1540,7 @@ public class Application extends Controller {
     public static void addPrivateExerciseToDB(String name, File imagefile, int weeks, int period, 
     		int num, double price, int storeid, int classroomid, int employeeid, 
     		String classbegintime, String classendtime, 
-    		int exerciseweeknum, String exercisebegintime, String exerciseendtime,
+    		String exerciseweeknum, String exercisebegintime, String exerciseendtime,
     		String signbegintime, String signendtime,
     		String courseintroduce, String courseplan, String notice, String fitstep) {
     	if (storeid==0) {
@@ -1580,7 +1584,7 @@ public class Application extends Controller {
     		int weeks, 	int period, 
     		int num, int oknum, double price, int storeid, int classroomid, int employeeid, 
     		String classbegintime, String classendtime, 
-    		int exerciseweeknum, String exercisebegintime, String exerciseendtime,
+    		String exerciseweeknum, String exercisebegintime, String exerciseendtime,
     		String signbegintime, String signendtime,
     		String courseintroduce, String courseplan, String notice, String fitstep) {
     	if (storeid==0) {

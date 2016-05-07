@@ -18,7 +18,7 @@ public class PrivateExercise {
 	
 	public String classbegintime;		//开课时间
 	public String classendtime;
-	public int exerciseweeknum;				//训练时间是礼拜几
+	public String exerciseweeknum;				//训练时间是礼拜几几几
 	public String exercisebegintime;	//训练时间是几时几分
 	public String exerciseendtime;
 	public String signbegintime;		//报名时间
@@ -35,7 +35,7 @@ public class PrivateExercise {
 	public PrivateExercise(int id, String name, String image, int weeks,
 			int period, int num, int oknum, double price, int storeid,
 			int classroomid, int employeeid, String classbegintime,
-			String classendtime, int exerciseweeknum, String exercisebegintime,
+			String classendtime, String exerciseweeknum, String exercisebegintime,
 			String exerciseendtime, String signbegintime, String signendtime,
 			String courseintroduce, String courseplan, String notice,
 			String fitstep) {
@@ -68,7 +68,7 @@ public class PrivateExercise {
 	public PrivateExercise(String name, String image, int weeks,
 			int period, int num, int oknum, double price, int storeid,
 			int classroomid, int employeeid, String classbegintime,
-			String classendtime, int exerciseweeknum, String exercisebegintime,
+			String classendtime, String exerciseweeknum, String exercisebegintime,
 			String exerciseendtime, String signbegintime, String signendtime,
 			String courseintroduce, String courseplan, String notice,
 			String fitstep) {

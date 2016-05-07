@@ -15,7 +15,7 @@ public class PrivateExerciseShow {
 	public int employeeid;
 	public String classbegintime;		//开课时间
 	public String classendtime;
-	public int exerciseweeknum;				//训练时间是礼拜几
+	public String exerciseweeknum;				//训练时间是礼拜几
 	public String exercisebegintime;	//训练时间是几时几分
 	public String exerciseendtime;
 	public String signbegintime;		//报名时间

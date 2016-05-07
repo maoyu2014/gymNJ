@@ -50,7 +50,7 @@ public class PrivateExerciseMgr {
 			pstmt.setInt(10, e.employeeid);
 			pstmt.setString(11, e.classbegintime);
 			pstmt.setString(12, e.classendtime);
-			pstmt.setInt(13, e.exerciseweeknum);
+			pstmt.setString(13, e.exerciseweeknum);
 			pstmt.setString(14, e.exercisebegintime);
 			pstmt.setString(15, e.exerciseendtime);
 			pstmt.setString(16, e.signbegintime);
@@ -90,7 +90,7 @@ public class PrivateExerciseMgr {
 				int employeeid = rs.getInt("employeeid");
 				String classbegintime = rs.getString("classbegintime");		//开课时间
 				String classendtime = rs.getString("classendtime");
-				int exerciseweeknum = rs.getInt("exerciseweeknum");				//训练时间是礼拜几
+				String exerciseweeknum = rs.getString("exerciseweeknum");				//训练时间是礼拜几几几
 				String exercisebegintime = rs.getString("exercisebegintime");	//训练时间是几时几分
 				String exerciseendtime = rs.getString("exerciseendtime");
 				String signbegintime = rs.getString("signbegintime");		//报名时间
@@ -159,7 +159,7 @@ public class PrivateExerciseMgr {
 				int employeeid = rs.getInt("employeeid");
 				String classbegintime = rs.getString("classbegintime");		//开课时间
 				String classendtime = rs.getString("classendtime");
-				int exerciseweeknum = rs.getInt("exerciseweeknum");				//训练时间是礼拜几
+				String exerciseweeknum = rs.getString("exerciseweeknum");				//训练时间是礼拜几几几
 				String exercisebegintime = rs.getString("exercisebegintime");	//训练时间是几时几分
 				String exerciseendtime = rs.getString("exerciseendtime");
 				String signbegintime = rs.getString("signbegintime");		//报名时间
@@ -221,7 +221,7 @@ public class PrivateExerciseMgr {
 				int employeeid = rs.getInt("employeeid");
 				String classbegintime = rs.getString("classbegintime");		//开课时间
 				String classendtime = rs.getString("classendtime");
-				int exerciseweeknum = rs.getInt("exerciseweeknum");				//训练时间是礼拜几
+				String exerciseweeknum = rs.getString("exerciseweeknum");				//训练时间是礼拜几
 				String exercisebegintime = rs.getString("exercisebegintime");	//训练时间是几时几分
 				String exerciseendtime = rs.getString("exerciseendtime");
 				String signbegintime = rs.getString("signbegintime");		//报名时间
@@ -259,7 +259,7 @@ public class PrivateExerciseMgr {
 			pstmt.setInt(10, e.employeeid);
 			pstmt.setString(11, e.classbegintime);
 			pstmt.setString(12, e.classendtime);
-			pstmt.setInt(13, e.exerciseweeknum);
+			pstmt.setString(13, e.exerciseweeknum);
 			pstmt.setString(14, e.exercisebegintime);
 			pstmt.setString(15, e.exerciseendtime);
 			pstmt.setString(16, e.signbegintime);

@@ -79,7 +79,8 @@
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">训练时间：</span>
-		每周：<input id="exerciseweeknum" name="exerciseweeknum" class="easyui-numberspinner" data-options="required:true,editable:false,min:1,max:7," style="width:80px;height:32px">
+		每周：<input id="exerciseweeknum" name="exerciseweeknum" class="easyui-textbox" data-options="required:true" style="width:200px;height:32px"><br/><br/>
+		<span style="font-size:14px;display:inline-block;width:100px"></span>
 		几点几分：<input id="exercisebegintime" name="exercisebegintime" class="easyui-timespinner" data-options="required:true,editable:false" style="width:100px;height:32px">--至--
 		几点几分：<input id="exerciseendtime" name="exerciseendtime" class="easyui-timespinner" data-options="required:true,editable:false" style="width:100px;height:32px">
 		</div>
@@ -169,7 +170,7 @@ function check() {
 	if (v==null || v=="") { alert("输入不完整！"); return false; }
 	v = $("#classendtime").datebox("getValue"); 
 	if (v==null || v=="") { alert("输入不完整！"); return false; }
-	v = $("#exerciseweeknum").numberspinner("getValue"); 
+	v = $("#exerciseweeknum").val(); 
 	if (v==null || v=="") { alert("输入不完整！"); return false; }
 	v = $("#exercisebegintime").timespinner("getValue"); 
 	if (v==null || v=="") { alert("输入不完整！"); return false; }
