@@ -103,15 +103,16 @@
 		
 		<div style="margin:10px">
 		<span style="font-size:14px;display:inline-block;width:100px">课程简介：</span>
-		<textarea id="courseintroduce" name="courseintroduce" rows="8" cols="30">${sc.courseintroduce}</textarea>
+		<textarea id="courseintroduce" name="courseintroduce" rows="8" cols="50">${sc.courseintroduce}</textarea>
 		</div>
 		
+		<!-- 
 		<div id="ddffgg" style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">课程安排：</span>
 		<textarea id="courseplan" name="courseplan" rows="8" cols="30">${sc.courseplan}</textarea>
 		</div>
 		
-		<!-- 
+		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px"></span>
 		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="height:32px" onclick="addcourseplan()">添加课程安排</a>
@@ -197,8 +198,6 @@ function check() {
 	v = $("#signendtime").datebox("getValue"); 
 	if (v==null || v=="") { alert("输入不完整！"); return false; }
 	v = $("#courseintroduce").val();
-	if (v==null || v=="") { alert("输入不完整！"); return false; }
-	v = $("#courseplan").val();
 	if (v==null || v=="") { alert("输入不完整！"); return false; }
 	return true;
 }

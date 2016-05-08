@@ -1464,7 +1464,7 @@ public class Application extends Controller {
 //    		System.out.println(classendtime);
 //    		System.out.println(nowtime);
     		String status = "已发布";
-    		if (nowtime.compareTo(signbegintime)>0 ) status="报名中";
+    		if (nowtime.compareTo(signbegintime)>=0 ) status="报名中";
     		if (nowtime.compareTo(classbegintime)>=0 ) status="开课中";
     		if (nowtime.compareTo(classendtime)>0 ) status="已结束";
     		ps.status = status;
