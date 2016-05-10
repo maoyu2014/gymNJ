@@ -40,6 +40,9 @@ public class MemberShow {
 	public String exercisehzvalue;
 	public String distancevalue;
 	
+	public MemberShow() {
+	}
+	
 	public MemberShow(Member gg) {
 		this.id = gg.id;
 		this.openid = gg.openid;

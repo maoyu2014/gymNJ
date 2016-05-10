@@ -167,7 +167,15 @@ public class Application extends Controller {
 		int month = calendar.get(Calendar.MONTH)+1; 
 		if (month<10) cdate+="0"+month+"-"; else cdate += month+"-";
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
-		if (day<10) cdate+="0"+day+" "; else cdate+=day+" ";
+		if (day<10) cdate+="0"+day; else cdate+=day;
+    	return cdate;
+    }
+    
+    private static String getCurrentMonth() {
+    	Calendar calendar = Calendar.getInstance();  
+		String cdate = ""+calendar.get(Calendar.YEAR)+"-";
+		int month = calendar.get(Calendar.MONTH)+1; 
+		if (month<10) cdate+="0"+month; else cdate += month;
     	return cdate;
     }
     
@@ -1052,7 +1060,8 @@ public class Application extends Controller {
     //公用的，有4个tab
     public static void teamExerciseSetting() {
     	List<TeamExercise> lists = TeamExerciseMgr.getInstance().getAllTeamExercise();
-    	List<TeamExerciseSchedule> listss = TeamExerciseScheduleMgr.getInstance().getAllTeamExerciseSchedule();
+    	String yearmonth = getCurrentMonth();
+    	List<TeamExerciseSchedule> listss = TeamExerciseScheduleMgr.getInstance().getAllTeamExerciseScheduleByYearMonth(yearmonth);
     	List<TeamExerciseScheduleShow> listtt = new ArrayList<>();
     	for (TeamExerciseSchedule tes : listss) {
     		TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
@@ -1747,6 +1756,9 @@ public class Application extends Controller {
     //Member详情(修改)页面
     public static void MemberDetail(int id) {
     	Member m = MemberMgr.getInstance().findMemberById(id);
+    	if (m==null) {
+    		renderText("改会员已经被删除，数据库不存在该会员");
+    	}
     	MemberShow sc = new MemberShow(m);
     	City s = CityMgr.getInstance().findCityById(m.cityid);
 		if (s!=null) {
@@ -1971,7 +1983,12 @@ public class Application extends Controller {
     		if (ph.purchasetype==1) ph.purchasetypename="微信支付";
     		if (ph.isprivate==1) ph.carttypename="私教课程";
     		Member m = MemberMgr.getInstance().findMemberById(ph.memberid);
-    		MemberShow ms = new MemberShow(m);
+    		MemberShow ms = null;
+    		if (m==null) {
+    			ms = new MemberShow();
+    		} else {
+    			ms = new MemberShow(m);
+    		}
     		listMemberShow.add(ms);
     	}
     	int number = listPurchaseHistory.size();

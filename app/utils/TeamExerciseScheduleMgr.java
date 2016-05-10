@@ -10,14 +10,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import models.Announcement;
-import models.City;
-import models.Employee;
-import models.FitnessPlan;
-import models.Store;
-import models.StoreCity;
-import models.TeamExercise;
 import models.TeamExerciseSchedule;
+
 
 
 public class TeamExerciseScheduleMgr {
@@ -81,9 +75,42 @@ public class TeamExerciseScheduleMgr {
 		} catch (SQLException eee) {
 			eee.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return list;
+	}
+	
+	public List<TeamExerciseSchedule> getAllTeamExerciseScheduleByYearMonth(String yearmonth) {
+		List<TeamExerciseSchedule> list = new ArrayList<TeamExerciseSchedule>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		try {
+			String sql = "select * from TeamExerciseSchedule where begintime like '%" + yearmonth + "%' order by begintime desc";
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				int storeid = rs.getInt("storeid");
+				int classroomid = rs.getInt("classroomid");
+				int employeeid = rs.getInt("employeeid");
+				int teamexerciseid = rs.getInt("teamexerciseid");
+				
+				int num = rs.getInt("num");
+				int oknum = rs.getInt("oknum");
+				
+				String begintime = rs.getString("begintime");
+				String endtime = rs.getString("endtime");
+				TeamExerciseSchedule an = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime);
+				list.add(an);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return list;
 	}

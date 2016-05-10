@@ -48,7 +48,7 @@
 		            <td>${storecity.phone}</td>
 		            <td>
 		            	<a href="@{Application.storeDetail(storecity.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-		            	<a href="@{Application.deleteStore(storecity.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            	<a href="@{Application.deleteStore(storecity.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
 		            </td>
 		        </tr>
 	        #{/list}
@@ -61,4 +61,16 @@
 	</div>
 
 </body>
+
+<script>
+function confirmdelete(){
+	var gnl=confirm("信息一旦删除就没有了，你真的确定要删除吗?"); 
+	if (gnl==true){ 
+		return true; 
+	} else {
+		return false;
+	}
+}
+</script>
+
 </html>

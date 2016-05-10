@@ -62,7 +62,7 @@
 		            <td>${MemberShow.cardtypename}</td>
 		            <td>
 		            	<a href="@{Application.MemberDetail(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-		            	<a href="@{Application.deleteMember(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            	<a href="@{Application.deleteMember(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
 		            	<a href="@{Application.modifyMemberDeaddate(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
 		            </td>
 		        </tr>
@@ -78,5 +78,15 @@
 	
 </body>
 
+<script>
+function confirmdelete(){
+	var gnl=confirm("信息一旦删除就没有了，你真的确定要删除吗?"); 
+	if (gnl==true){ 
+		return true; 
+	} else {
+		return false;
+	}
+}
+</script>
 
 </html>

@@ -148,6 +148,9 @@
 			      	</tbody>
 			    </table>
 			</div>
+			<div style="margin:20px;font-size:15px;font-weight:600;">
+		    	---
+			</div>
 		</div>
 		
 		<div title="团操排期" data-options="selected:true" >
@@ -195,7 +198,7 @@
 				            <td>${TeamExerciseScheduleShow.oknum}/${TeamExerciseScheduleShow.num}</td>
 				            <td>
 				            	<a href="@{Application.TeamExerciseScheduleDetail(TeamExerciseScheduleShow.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-				            	<a href="@{Application.deleteTeamExerciseSchedule(TeamExerciseScheduleShow.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+				            	<a href="@{Application.deleteTeamExerciseSchedule(TeamExerciseScheduleShow.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
 				            </td>
 				        </tr>
 			        #{/list}
@@ -232,7 +235,7 @@
 				            <td>${TeamExercise.usedtime}</td>
 				            <td>
 				            	<a href="@{Application.teamExerciseDetail(TeamExercise.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-				            	<a href="@{Application.deleteTeamExercise(TeamExercise.id)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+				            	<a href="@{Application.deleteTeamExercise(TeamExercise.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
 				            </td>
 				        </tr>
 			        #{/list}
@@ -250,16 +253,25 @@
 	    
 	</div>
   
-	<script type="text/javascript">
-        $(function(){
-            var tabs = $('#tt').tabs().tabs('tabs');
-            for(var i=0; i<tabs.length; i++){
-                tabs[i].panel('options').tab.unbind().bind('mouseenter',{index:i},function(e){
-                    $('#tt').tabs('select', e.data.index);
-                });
-            }
+<script type="text/javascript">
+$(function(){
+    var tabs = $('#tt').tabs().tabs('tabs');
+    for(var i=0; i<tabs.length; i++){
+        tabs[i].panel('options').tab.unbind().bind('mouseenter',{index:i},function(e){
+            $('#tt').tabs('select', e.data.index);
         });
-    </script>
+    }
+});
+
+function confirmdelete(){
+	var gnl=confirm("信息一旦删除就没有了，你真的确定要删除吗?"); 
+	if (gnl==true){ 
+		return true; 
+	} else {
+		return false;
+	}
+}
+</script>
     
 </body>
 </html>

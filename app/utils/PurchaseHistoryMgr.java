@@ -72,7 +72,7 @@ public class PurchaseHistoryMgr {
 				int purchasetype = rs.getInt("purchasetype");	//购买方式,1代表微信支付，目前就做微信支付
 				int isprivate = rs.getInt("isprivate");	//0表示购买会员，1表示购买私教课付费
 				int bookid = rs.getInt("bookid");
-				PurchaseHistory an = new PurchaseHistory(bookid, orderid, memberid, carttype, fee, purchasetime, purchasetype, isprivate, bookid);
+				PurchaseHistory an = new PurchaseHistory(id, orderid, memberid, carttype, fee, purchasetime, purchasetype, isprivate, bookid);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -138,7 +138,7 @@ public class PurchaseHistoryMgr {
 				int purchasetype = rs.getInt("purchasetype");	//购买方式,1代表微信支付，目前就做微信支付
 				int isprivate = rs.getInt("isprivate");	//0表示购买会员，1表示购买私教课付费
 				int bookid = rs.getInt("bookid");
-				PurchaseHistory an = new PurchaseHistory(bookid, orderid, memberid, carttype, fee, purchasetime, purchasetype, isprivate, bookid);
+				PurchaseHistory an = new PurchaseHistory(id, orderid, memberid, carttype, fee, purchasetime, purchasetype, isprivate, bookid);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
