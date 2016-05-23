@@ -38,6 +38,7 @@
 	        <thead>
 	            <tr>
 	                <th data-options="field:'name',width:80">姓名</th>
+	                <th data-options="field:'id',width:50">ID</th>
 	                <th data-options="field:'wechatname',width:100">微信名</th>
 	                <th data-options="field:'phone',width:100">电话</th>
 	                <th data-options="field:'fingerprinttype',width:100">指纹录入</th>
@@ -53,6 +54,7 @@
 	        	#{if MemberShow.openid != "baojieayi"}
 	        	<tr>
 		            <td>${MemberShow.name}</td>
+		            <td>${MemberShow.id}</td>
 		            <td>${MemberShow.wechatname}</td>
 		            <td>${MemberShow.phone}</td>          
 		            <td>${MemberShow.fingerprinttype}</td>
