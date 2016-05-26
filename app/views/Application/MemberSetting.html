@@ -15,7 +15,7 @@
     
 <body>
 
-	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">会员设置</div>
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">会员信息</div>
 	
 	<div style="margin:20px">
 		#{form @Application.MemberSearch()}
@@ -50,7 +50,7 @@
 	            </tr>
 	        </thead>
 	        <tbody>
-	        #{list items:lists, as:'MemberShow'}
+	        #{list items:list, as:'MemberShow'}
 	        	#{if MemberShow.openid != "baojieayi"}
 	        	<tr>
 		            <td>${MemberShow.name}</td>
@@ -64,8 +64,10 @@
 		            <td>${MemberShow.cardtypename}</td>
 		            <td>
 		            	<a href="@{Application.MemberDetail(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-		            	<a href="@{Application.deleteMember(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
 		            	<a href="@{Application.modifyMemberDeaddate(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
+		            	<!--
+		            	<a href="@{Application.deleteMember(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a> 
+		            	 -->
 		            </td>
 		        </tr>
 		        #{/if}

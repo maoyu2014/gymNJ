@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+         
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+
+<body>
+
+<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">团操排期</div>
+		
+<div title="团操排期" data-options="selected:true" >
+	<div style="margin:20px">
+		#{form @Application.TeamExerciseScheduleSearch()}
+		<input id="storeid" name="storeid" class="easyui-combobox" data-options="
+			editable:false,
+			valueField:'id',
+			textField:'name',
+			url:'@{Application.getAllStore()}',
+			prompt:'请选择一个门店',
+			onSelect: function(record){
+	            url = '@{Application.getAllCoachByStoreID()}?storeid=' + record.id;
+	            $('#employeeidq').combobox('reload', url);
+        	}"  style="height:32px">
+		<input id="employeeidq" name="employeeid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',prompt:'请选择一个教练'" style="height:32px">
+		<select name="yearmonth" class="easyui-combobox" style="height:32px;width:120px;">
+			<option value="">全部年月</option>
+			<option value="2016-03">2016年03月</option>
+			<option value="2016-04">2016年04月</option>
+			<option value="2016-05">2016年05月</option>
+		    <option value="2016-06">2016年06月</option>
+		    <option value="2016-07">2016年07月</option>
+			<option value="2016-08">2016年08月</option>
+			<option value="2016-09">2016年09月</option>
+		    <option value="2016-10">2016年10月</option>
+		    <option value="2016-11">2016年11月</option>
+			<option value="2016-12">2016年12月</option>
+			<option value="2017-01">2017年01月</option>
+		    <option value="2017-02">2017年02月</option>
+		</select>
+		<input type="submit" style="width:80px;height:32px" value="搜索">    
+		<a href="@{Application.addTeamExerciseSchedule()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:120px;height:32px;margin-left:450px;">增加团操排期</a>
+		#{/form}
+	</div>
+	
+	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'teamexercisename',width:80">课程名称</th>
+	                <th data-options="field:'employeename',width:80">教练</th>
+	                <th data-options="field:'storename',width:80">门店</th>
+	                <th data-options="field:'classroomname',width:80">教室</th>
+	                <th data-options="field:'begintime',width:80">开始时间</th>
+	                <th data-options="field:'endtime',width:80">结束时间</th>
+	                <th data-options="field:'oknum_num',width:80">预约人数</th>
+	                <th data-options="field:'operation',width:80">操作</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        #{list items:list, as:'TeamExerciseSchedule'}
+	        	<tr>
+		            <td>${TeamExerciseSchedule.teamexercisename}</td>
+		            <td>${TeamExerciseSchedule.employeename}</td>
+		            <td>${TeamExerciseSchedule.storename}</td>
+		            <td>${TeamExerciseSchedule.classroomname}</td>
+		            <td>${TeamExerciseSchedule.begintime}</td>
+		            <td>${TeamExerciseSchedule.endtime}</td>
+		            <td>${TeamExerciseSchedule.oknum}/${TeamExerciseSchedule.num}</td>
+		            <td>
+		            	<a href="@{Application.TeamExerciseScheduleDetail(TeamExerciseSchedule.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<!-- 
+		            	<a href="@{Application.deleteTeamExerciseSchedule(TeamExerciseSchedule.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
+		            	 -->
+		            </td>
+		        </tr>
+	        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+    
+    <div style="margin:20px;font-size:15px;font-weight:600;">
+    	共${number}条记录
+	</div>
+	<div style="margin:20px;font-size:15px;font-weight:600;">
+    	---
+	</div>
+</div>
+	    
+	    
+  
+<script type="text/javascript">
+function confirmdelete(){
+	var gnl=confirm("信息一旦删除就没有了，你真的确定要删除吗?"); 
+	if (gnl==true){ 
+		return true; 
+	} else {
+		return false;
+	}
+}
+</script>
+    
+</body>
+</html>

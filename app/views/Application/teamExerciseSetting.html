@@ -167,6 +167,21 @@
 			            $('#employeeidq').combobox('reload', url);
 		        	}"  style="height:32px">
 				<input id="employeeidq" name="employeeid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',prompt:'请选择一个教练'" style="height:32px">
+				<select name="yearmonth" class="easyui-combobox" style="height:32px;width:120px;">
+					<option value="">全部年月</option>
+					<option value="2016-03">2016年03月</option>
+					<option value="2016-04">2016年04月</option>
+					<option value="2016-05">2016年05月</option>
+				    <option value="2016-06">2016年06月</option>
+				    <option value="2016-07">2016年07月</option>
+					<option value="2016-08">2016年08月</option>
+					<option value="2016-09">2016年09月</option>
+				    <option value="2016-10">2016年10月</option>
+				    <option value="2016-11">2016年11月</option>
+					<option value="2016-12">2016年12月</option>
+					<option value="2017-01">2017年01月</option>
+				    <option value="2017-02">2017年02月</option>
+				</select>
 				<input type="submit" style="width:80px;height:32px" value="搜索">    
 				<a href="@{Application.addTeamExerciseSchedule()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:120px;height:32px;margin-left:450px;">增加排期</a>
 				#{/form}

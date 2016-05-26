@@ -59,42 +59,26 @@ public class MemberMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select * from Member";
+			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, a.fingerprint, b.name as cityname, a.cardtype from Member a, city b where a.cityid=b.id and a.cardtype>0";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				String openid = rs.getString("openid");			//微信唯一标识
 				String name = rs.getString("name");
 				String wechatname = rs.getString("wechatname");
-				int sex = rs.getInt("sex");		//1男 2女
-				double height = rs.getDouble("height");
-				String birthday = rs.getString("birthday");	//生日
 				String phone = rs.getString("phone");
 				int fingerprint = rs.getInt("fingerprint");	//指纹状态，1已录入 2未录入
-				int cityid = rs.getInt("cityid");
+				String cityname = rs.getString("cityname");
 				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
-				String deaddate = rs.getString("deaddate");
-				int exercisetime = rs.getInt("exercisetime"); 	//时间   1早上 2下午 3晚上
-				int exercisegoal = rs.getInt("exercisegoal");	//目标   1减脂 2塑形 3增肌
-				int exercisehz = rs.getInt("exercisehz");	//频率，1难的  2一周一次   3一周三次   4每天
-				int distance = rs.getInt("distance");	//距离  1：一公里以内  2：三公里以内  3：三公里以外
-				//体脂信息
-				String bmi = rs.getString("bmi");		//BMI
-				String muscle = rs.getString("muscle");		//肌肉率
-				String fat = rs.getString("fat");		//脂肪
-				String water = rs.getString("water");		//水分
-				String protein = rs.getString("protein");	//蛋白质
-				int basicrate = rs.getInt("basicrate");	//基础代谢率
-				int bodyage = rs.getInt("bodyage");		//身体年龄
-				Member an = new Member(id, openid, name, wechatname, sex, height, birthday, phone, fingerprint,  cityid, cardtype, deaddate, exercisetime, exercisegoal, exercisehz, distance, bmi, muscle, fat, water, protein, basicrate, bodyage);
+				Member an = new Member(id, openid, name, wechatname, phone, fingerprint,  cityname, cardtype);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return list;
 	}
@@ -105,30 +89,28 @@ public class MemberMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select * from Member";
-			boolean flag = false;
+			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, a.fingerprint, b.name as cityname, a.cardtype from Member a, city b "
+					+ "where a.cityid=b.id ";
+			boolean flag = true;
 			if (acityid!=0) {
 				if (!flag) {
-					sql += " where cityid = " + acityid;
-					flag = true;
+					sql += " where a.cityid = " + acityid;
 				} else {
-					sql += " and cityid = " + acityid;
+					sql += " and a.cityid = " + acityid;
 				}
 			}
 			if (acardtype!=5) {		//注意这里是5表示所有会员，因为非会员是0
 				if (!flag) {
-					sql += " where cardtype = " + acardtype;
-					flag = true;
+					sql += " where a.cardtype = " + acardtype;
 				} else {
-					sql += " and cardtype = " + acardtype;
+					sql += " and a.cardtype = " + acardtype;
 				}
 			}
 			if (keyname!=null && keyname.length()>0) {
 				if (!flag) {
-					sql+=" where ( name like '%" + keyname + "%' or wechatname like '%" + keyname + "%' or phone like '%" + keyname + "%' ) ";
-					flag = true;
+					sql+=" where ( a.name like '%" + keyname + "%' or a.wechatname like '%" + keyname + "%' or a.phone like '%" + keyname + "%' ) ";
 				} else {
-					sql+=" and ( name like '%" + keyname + "%' or wechatname like '%" + keyname + "%' or phone like '%" + keyname + "%' ) ";
+					sql+=" and ( a.name like '%" + keyname + "%' or a.wechatname like '%" + keyname + "%' or a.phone like '%" + keyname + "%' ) ";
 				}
 			}
 			rs = DB.executeQuery(stmt, sql);
@@ -137,35 +119,19 @@ public class MemberMgr {
 				String openid = rs.getString("openid");			//微信唯一标识
 				String name = rs.getString("name");
 				String wechatname = rs.getString("wechatname");
-				int sex = rs.getInt("sex");		//1男 2女
-				double height = rs.getDouble("height");
-				String birthday = rs.getString("birthday");	//生日
 				String phone = rs.getString("phone");
 				int fingerprint = rs.getInt("fingerprint");	//指纹状态，1已录入 2未录入
-				int cityid = rs.getInt("cityid");
+				String cityname = rs.getString("cityname");
 				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
-				String deaddate = rs.getString("deaddate");
-				int exercisetime = rs.getInt("exercisetime"); 	//时间   1早上 2下午 3晚上
-				int exercisegoal = rs.getInt("exercisegoal");	//目标   1减脂 2塑形 3增肌
-				int exercisehz = rs.getInt("exercisehz");	//频率，1难的  2一周一次   3一周三次   4每天
-				int distance = rs.getInt("distance");	//距离  1：一公里以内  2：三公里以内  3：三公里以外
-				//体脂信息
-				String bmi = rs.getString("bmi");		//BMI
-				String muscle = rs.getString("muscle");		//肌肉率
-				String fat = rs.getString("fat");		//脂肪
-				String water = rs.getString("water");		//水分
-				String protein = rs.getString("protein");	//蛋白质
-				int basicrate = rs.getInt("basicrate");	//基础代谢率
-				int bodyage = rs.getInt("bodyage");		//身体年龄
-				Member an = new Member(id, openid, name, wechatname, sex, height, birthday, phone, fingerprint,  cityid, cardtype, deaddate, exercisetime, exercisegoal, exercisehz, distance, bmi, muscle, fat, water, protein, basicrate, bodyage);
+				Member an = new Member(id, openid, name, wechatname, phone, fingerprint,  cityname, cardtype);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return list;
 	}
@@ -227,9 +193,9 @@ public class MemberMgr {
 		} catch (SQLException eee) {
 			eee.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return an;
 	}
@@ -250,124 +216,35 @@ public class MemberMgr {
 		}
 	}
 	
-	
-	
-	
-	/*
-	public boolean hasMember(String pengid) {
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		String sql = "select * from member where pengid = '" + pengid + "'";
-		rs = DB.executeQuery(stmt, sql);
-		try {
-			if (rs.next()) {
-				return true;
-			} 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return false;
-	}
-	
-	public boolean hasOtherMember(String pengid, int id) {
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		String sql = "select * from member where pengid = '" + pengid + "'";
-		rs = DB.executeQuery(stmt, sql);
-		try {
-			if (rs.next()) {
-				int tid = rs.getInt("id");
-				if (tid != id)
-					return true;
-			} 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return false;
-	}
-	
-	
-	
-	
-	
-	
-	public List<Member> getMembers(int userid) {
+	public List<Member> getGoodRecommendedMember() {
 		List<Member> list = new ArrayList<Member>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select * from member where associationid=" + userid;
+			String sql = "select id, openid, name, wechatname, phone, deaddate from member where phone in "
+					+ "(select recommendedphone from Member group by recommendedphone having recommendedphone != '' and  count(recommendedphone) >= 4) "
+					+ "order by id";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
-				Member m = new Member();
-				m.setId(rs.getInt("id"));
-				m.setAssociationid(rs.getInt("associationid"));
-				m.setPengid(rs.getString("pengid"));
-				m.setName(rs.getString("name"));
-				m.setProvince(rs.getString("province"));
-				m.setCity(rs.getString("city"));
-				m.setLongitude(rs.getString("longitude"));
-				m.setLatitude(rs.getString("latitude"));
-				m.setPhone(rs.getString("phone"));
-				list.add(m);
+				int id = rs.getInt("id");
+				String openid = rs.getString("openid");			//微信唯一标识
+				String name = rs.getString("name");
+				String wechatname = rs.getString("wechatname");
+				String phone = rs.getString("phone");
+				String deaddate = rs.getString("deaddate");
+				Member an = new Member(id, openid, name, wechatname, phone, deaddate);
+				list.add(an);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException eee) {
+			eee.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return list;
 	}
 	
-	
-	
-	
-	
-	
-	public Member loadById(int id) {
-		Member m = null;
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		try {
-			conn = DB.getConn();
-			stmt = DB.getStmt(conn);
-			String sql = "select * from member where id=" + id;
-			rs = DB.executeQuery(stmt, sql);
-			if (rs.next()) {
-				m = new Member();
-				m.setId(rs.getInt("id"));
-				m.setAssociationid(rs.getInt("associationid"));
-				m.setPengid(rs.getString("pengid"));
-				m.setName(rs.getString("name"));
-				m.setProvince(rs.getString("province"));
-				m.setCity(rs.getString("city"));
-				m.setLongitude(rs.getString("longitude"));
-				m.setLatitude(rs.getString("latitude"));
-				m.setPhone(rs.getString("phone"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return m;
-	}
-	*/
 	
 }

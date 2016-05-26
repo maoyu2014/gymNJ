@@ -88,21 +88,23 @@ public class TeamExerciseScheduleMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select * from TeamExerciseSchedule where begintime like '%" + yearmonth + "%' order by begintime desc";
+			String sql = "select a.id as id, a.num as num, a.oknum as oknum, a.begintime as begintime, a.endtime as endtime, b.name as storename, c.name as classroomname, d.name as employeename, e.name as teamexercisename "
+					+ "from TeamExerciseSchedule a, store b, classroom c, employee d, teamexercise e where "
+					+ "a.storeid=b.id and a.classroomid=c.id and a.employeeid=d.id and a.teamexerciseid=e.id and begintime like '%" + yearmonth + "%' order by begintime desc";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				int storeid = rs.getInt("storeid");
-				int classroomid = rs.getInt("classroomid");
-				int employeeid = rs.getInt("employeeid");
-				int teamexerciseid = rs.getInt("teamexerciseid");
+				String storename = rs.getString("storename");
+				String classroomname = rs.getString("classroomname");
+				String employeename = rs.getString("employeename");
+				String teamexercisename = rs.getString("teamexercisename");
 				
 				int num = rs.getInt("num");
 				int oknum = rs.getInt("oknum");
 				
 				String begintime = rs.getString("begintime");
 				String endtime = rs.getString("endtime");
-				TeamExerciseSchedule an = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime);
+				TeamExerciseSchedule an = new TeamExerciseSchedule(id, storename, classroomname, employeename, teamexercisename, num, oknum, begintime, endtime);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -115,52 +117,60 @@ public class TeamExerciseScheduleMgr {
 		return list;
 	}
 	
-	public List<TeamExerciseSchedule> searchTeamExerciseSchedule(int astoreid, int aemployeeid) {
+	public List<TeamExerciseSchedule> searchTeamExerciseSchedule(int astoreid, int aemployeeid, String yearmonth) {
 		List<TeamExerciseSchedule> list = new ArrayList<TeamExerciseSchedule>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select * from TeamExerciseSchedule";
-			boolean flag = false;
+			String sql = "select a.id as id, a.num as num, a.oknum as oknum, a.begintime as begintime, a.endtime as endtime, b.name as storename, c.name as classroomname, d.name as employeename, e.name as teamexercisename "
+					+ "from TeamExerciseSchedule a, store b, classroom c, employee d, teamexercise e where "
+					+ "a.storeid=b.id and a.classroomid=c.id and a.employeeid=d.id and a.teamexerciseid=e.id ";
+			boolean flag = true;
 			if (astoreid!=0) {
 				if (!flag) {
-					sql += " where storeid = " + astoreid;
-					flag = true;
+					sql += " where a.storeid = " + astoreid;
 				} else {
-					sql += " and storeid = " + astoreid;
+					sql += " and a.storeid = " + astoreid;
 				}
 			}
 			if (aemployeeid!=0) {
 				if (!flag) {
-					sql += " where employeeid = " + aemployeeid;
-					flag = true;
+					sql += " where a.employeeid = " + aemployeeid;
 				} else {
-					sql += " and employeeid = " + aemployeeid;
+					sql += " and a.employeeid = " + aemployeeid;
 				}
 			}
+			if (yearmonth!=null && yearmonth.length()>0) {
+				if (!flag) {
+					sql += " where a.begintime like '%" + yearmonth + "%'";
+				} else {
+					sql += " and a.begintime like '%" + yearmonth + "%'";
+				}
+			}
+			sql += " order by a.begintime desc";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				int storeid = rs.getInt("storeid");
-				int classroomid = rs.getInt("classroomid");
-				int employeeid = rs.getInt("employeeid");
-				int teamexerciseid = rs.getInt("teamexerciseid");
+				String storename = rs.getString("storename");
+				String classroomname = rs.getString("classroomname");
+				String employeename = rs.getString("employeename");
+				String teamexercisename = rs.getString("teamexercisename");
 				
 				int num = rs.getInt("num");
 				int oknum = rs.getInt("oknum");
 				
 				String begintime = rs.getString("begintime");
 				String endtime = rs.getString("endtime");
-				TeamExerciseSchedule an = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime);
+				TeamExerciseSchedule an = new TeamExerciseSchedule(id, storename, classroomname, employeename, teamexercisename, num, oknum, begintime, endtime);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return list;
 	}
@@ -208,9 +218,9 @@ public class TeamExerciseScheduleMgr {
 		} catch (SQLException eee) {
 			eee.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return an;
 	}
@@ -237,121 +247,5 @@ public class TeamExerciseScheduleMgr {
 		}
 	}
 	
-	/*
-	public boolean hasMember(String pengid) {
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		String sql = "select * from member where pengid = '" + pengid + "'";
-		rs = DB.executeQuery(stmt, sql);
-		try {
-			if (rs.next()) {
-				return true;
-			} 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return false;
-	}
-	
-	public boolean hasOtherMember(String pengid, int id) {
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		String sql = "select * from member where pengid = '" + pengid + "'";
-		rs = DB.executeQuery(stmt, sql);
-		try {
-			if (rs.next()) {
-				int tid = rs.getInt("id");
-				if (tid != id)
-					return true;
-			} 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return false;
-	}
-	
-	
-	
-	
-	
-	
-	public List<Member> getMembers(int userid) {
-		List<Member> list = new ArrayList<Member>();
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		try {
-			String sql = "select * from member where associationid=" + userid;
-			rs = DB.executeQuery(stmt, sql);
-			while (rs.next()) {
-				Member m = new Member();
-				m.setId(rs.getInt("id"));
-				m.setAssociationid(rs.getInt("associationid"));
-				m.setPengid(rs.getString("pengid"));
-				m.setName(rs.getString("name"));
-				m.setProvince(rs.getString("province"));
-				m.setCity(rs.getString("city"));
-				m.setLongitude(rs.getString("longitude"));
-				m.setLatitude(rs.getString("latitude"));
-				m.setPhone(rs.getString("phone"));
-				list.add(m);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(conn);
-			DB.close(stmt);
-			DB.close(rs);
-		}
-		return list;
-	}
-	
-	
-	
-	
-	
-	
-	public Member loadById(int id) {
-		Member m = null;
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		try {
-			conn = DB.getConn();
-			stmt = DB.getStmt(conn);
-			String sql = "select * from member where id=" + id;
-			rs = DB.executeQuery(stmt, sql);
-			if (rs.next()) {
-				m = new Member();
-				m.setId(rs.getInt("id"));
-				m.setAssociationid(rs.getInt("associationid"));
-				m.setPengid(rs.getString("pengid"));
-				m.setName(rs.getString("name"));
-				m.setProvince(rs.getString("province"));
-				m.setCity(rs.getString("city"));
-				m.setLongitude(rs.getString("longitude"));
-				m.setLatitude(rs.getString("latitude"));
-				m.setPhone(rs.getString("phone"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return m;
-	}
-	*/
 	
 }

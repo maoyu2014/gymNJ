@@ -30,6 +30,9 @@ public class MemberShow {
 	public int basicrate;	//基础代谢率
 	public int bodyage;		//身体年龄
 	
+	public String recommendedphone;	//推介人手机号
+	
+	//展示信息
 	public String sexvalue;
 	public String fingerprinttype;
 	public String cityname;

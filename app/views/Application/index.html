@@ -3,7 +3,7 @@
 <html>
     <head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>健身俱乐部</title>
+        <title>智能健身房</title>
         <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
         <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
 		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
@@ -20,7 +20,7 @@
     
     <body class="easyui-layout">
     	<div data-options="region:'north'" style="height:10%;background-color:#e0ebeb;">
-			<h2 style="text-align:center;margin-top:10px;font-size:40px;"><a href="@{Application.index()}">健身俱乐部</a><span style="position:absolute;right:20px;font-size:15px;"><a href="@{Application.login()}"></a> | <a href="@{Application.logout()}">登出</a></span></h2>
+			<h2 style="text-align:center;margin-top:10px;font-size:40px;"><a href="@{Application.index()}">智能健身房</a><span style="position:absolute;right:20px;font-size:15px;"><a href="@{Application.login()}"></a> | <a href="@{Application.logout()}">登出</a></span></h2>
 		</div>
 		
 	    <div data-options="region:'south'" style="height:5%;background-color:#e0ebeb;">
@@ -30,7 +30,11 @@
 		<div data-options="region:'west'" style="width:20%;background-color:#e0ebeb;">
 			<ul id="accordion" class="accordion">
 				<li>
-					<a href="@{Application.MemberSetting()}" target="iframe_a"><div class="link"><i class="fa fa-globe"></i>会员管理</div></a>
+					<div class="link"><i class="fa fa-globe"></i>会员管理<i class="fa fa-chevron-down"></i></div>
+					<ul class="submenu">
+						<li><a href="@{Application.MemberSetting()}" target="iframe_a">会员信息</a></li>
+						<li><a href="@{Application.GoodRecommendedMember()}" target="iframe_a">优秀推介人</a></li>
+					</ul>
 				</li>
 				<li>
 					<div class="link"><i class="fa fa-globe"></i>预约签到<i class="fa fa-chevron-down"></i></div>
@@ -42,8 +46,11 @@
 				<li>
 					<div class="link"><i class="fa fa-globe"></i>课程管理<i class="fa fa-chevron-down"></i></div>
 					<ul class="submenu">
-						<li><a href="@{Application.teamExerciseSetting()}" target="iframe_a">团操课程</a></li>
-						<li><a href="@{Application.PrivateExerciseSetting()}" target="iframe_a">特训班</a></li>
+						<li><a href="@{Application.teamExerciseBasic()}" target="iframe_a">团操</a></li>
+						<li><a href="@{Application.teamExerciseWeek()}" target="iframe_a">本周团操课程</a></li>
+						<li><a href="@{Application.teamExerciseMonth()}" target="iframe_a">本月团操课程</a></li>
+						<li><a href="@{Application.teamExerciseSchedule()}" target="iframe_a">团操排期</a></li>
+						<li><a href="@{Application.PrivateExerciseSetting()}" target="iframe_a">特训班排期</a></li>
 					</ul>
 				</li>
 				<li>
@@ -60,10 +67,10 @@
 					<a href="@{Application.PurchaseHistorySetting()}" target="iframe_a"><div class="link"><i class="fa fa-globe"></i>财务管理</div></a>
 				</li>
 				<li>
-					<a href="@{Application.employeeSetting()}" target="iframe_a"><div class="link"><i class="fa fa-globe"></i>员工设置</div></a>
+					<a href="@{Application.employeeSetting()}" target="iframe_a"><div class="link"><i class="fa fa-globe"></i>员工管理</div></a>
 				</li>
 				<li>
-					<a href="@{Application.storeSetting()}" target="iframe_a"><div class="link"><i class="fa fa-globe"></i>门店设置</div></a>
+					<a href="@{Application.storeSetting()}" target="iframe_a"><div class="link"><i class="fa fa-globe"></i>门店管理</div></a>
 				</li>
 				<li>
 					<div class="link"><i class="fa fa-globe"></i>统计报表<i class="fa fa-chevron-down"></i></div>

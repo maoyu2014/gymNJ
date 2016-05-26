@@ -12,6 +12,7 @@ public class Member {
 	public String birthday;	//生日
 	public String phone;
 	public int fingerprint;	//指纹状态，1已录入 2未录入
+	public int comeinpassword;				//入场密码表，注意这个字段不在构造函数中，因为字段是变化的
 	public int cityid;		//会员属于哪个城市
 	public int cardtype;	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
 	public String deaddate;	//到期时间
@@ -29,6 +30,19 @@ public class Member {
 	public int basicrate;	//基础代谢率
 	public int bodyage;		//身体年龄
 	
+	public String recommendedphone;	//推介人手机号
+	
+	//展示信息
+	public String sexvalue;
+	public String fingerprinttype;
+	public String cityname;
+	public String offenstorename;
+	public String cardtypename;
+	public String exercisetimevalue;
+	public String exercisegoalvalue;
+	public String exercisehzvalue;
+	public String distancevalue;
+		
 	public Member() {}
 	
 	public Member(int id, String openid, String name, String wechatname,
@@ -62,6 +76,26 @@ public class Member {
 		this.bodyage = bodyage;
 	}
 	
+	public Member(int id, String openid, String name, String wechatname, String phone, String deaddate) {
+		this.id = id;
+		this.openid = openid;
+		this.name = name;
+		this.wechatname = wechatname;
+		this.phone = phone;
+		this.deaddate = deaddate;
+	}
+
+	public Member(int id, String openid, String name, String wechatname,
+			String phone, int fingerprint, String cityname, int cardtype) {
+		this.id = id;
+		this.openid = openid;
+		this.name = name;
+		this.wechatname = wechatname;
+		this.phone = phone;
+		this.fingerprint = fingerprint;
+		this.cityname = cityname;
+		this.cardtype = cardtype;
+	}
 	
 	
 	

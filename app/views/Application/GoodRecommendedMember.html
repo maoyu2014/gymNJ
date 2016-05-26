@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+    
+<body>
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">优秀推介人（推介人数大于等于4人）</div>
+	
+	
+	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'name',width:80">姓名</th>
+	                <th data-options="field:'wechatname',width:100">微信名</th>
+	                <th data-options="field:'phone',width:100">电话</th>
+	                <th data-options="field:'deaddate',width:100">到期时间</th>
+	                <th data-options="field:'operation',width:100">操作</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        	#{list items:list, as:'member'}
+	        	<tr>
+		            <td>${member.name}</td>
+		            <td>${member.wechatname}</td>
+		            <td>${member.phone}</td>
+		            <td>${member.deaddate}</td>          
+		            <td>
+		            	<a href="@{Application.modifyMemberDeaddate(member.id)}" class="easyui-linkbutton" data-options="" style="">延长奖励</a>
+		            </td>
+		        </tr>
+		        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+    
+    <div style="margin:20px;font-size:15px;font-weight:600;">
+    	共${number}条记录
+	</div>
+	
+</body>
+
+<script>
+</script>
+
+</html>
