@@ -28,9 +28,14 @@ import utils.TeamExerciseScheduleMgr;
 import utils.UserInOutInfoFromHardMgr;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 import models.*;
 import models.front.CheckTm;
@@ -177,6 +182,42 @@ public class Application extends Controller {
 		int month = calendar.get(Calendar.MONTH)+1; 
 		if (month<10) cdate+="0"+month; else cdate += month;
     	return cdate;
+    }
+    
+    //ueditor服务端
+    public static void upload(String action, File upfile) {
+    	Map<String, String> result = new HashMap<>();
+    	FileReader fis = null;
+    	String str = "";
+		try {
+			fis = new FileReader("./public/ueditor/php/Copyofconfig.json");
+			int x;
+	    	while ((x=fis.read())!=-1) {
+	    		str += (char)x;
+	    	}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	JSONObject jsonObj=(JSONObject) JSONValue.parse(str);
+//    	System.out.println(jsonObj);
+//    	System.out.println(action);
+    	
+    	if (action.equals("config")) {
+    		renderJSON(jsonObj);
+    	}
+    	else if (action.equals("uploadimage")) {
+    		if (upfile!=null) {
+    	    	long currentTime = System.currentTimeMillis();
+    	    	String fileName = currentTime + upfile.getName();
+    	    	Files.copy(upfile, Play.getFile("./public/images/" + fileName));
+    	    	result.put("state", "SUCCESS");
+        		result.put("url", "/public/images/" + fileName);
+        		result.put("title", "fileName");
+        		result.put("original", "fileName");
+//        		System.out.println(fileName);
+        	}
+    		renderJSON(result);
+    	}
     }
     
     /*
@@ -1328,15 +1369,80 @@ public class Application extends Controller {
     	render("Application/teamExerciseSchedule.html", list, number);
     }
     
-    //TODO
-    //关于同一个教练教室不能一个时间段有两个课程
+    //TODO 关于同一个教练教室不能一个时间段有两个课程
     //添加团操排期页面
     public static void addTeamExerciseSchedule() {
         render();
     }
     
-    //添加团操排期
+    //添加新增的团操排期
     public static void addTeamExerciseScheduleToDB(int storeid,int classroomid,int employeeid,int teamexerciseid,
+    		int num, String begintime1, String endtime1, String begintime2, String endtime2,
+    		String begintime3, String endtime3, String begintime4, String endtime4, String begintime5, String endtime5) {
+    	if (storeid==0) {
+    		renderJSON("必须选择一个门店");
+    	}
+    	if (classroomid==0) {
+    		renderJSON("必须选择一个教室");
+    	}
+    	if (employeeid==0) {
+    		renderJSON("必须选择一个教练");
+    	}
+    	if (teamexerciseid==0) {
+    		renderJSON("必须选择一个课程");
+    	}
+    	if (! begintime1.substring(0, 10).equals(endtime1.substring(0, 10)) ) {
+    		renderJSON("第一行课程必须是同一天的不同时间段，不能跨天!");
+    	}
+    	if (begintime2!=null && endtime2!=null && begintime2.length()>0 && endtime2.length()>0) {
+    		if (! begintime2.substring(0, 10).equals(endtime2.substring(0, 10)) ) {
+        		renderJSON("第二行必须是同一天的不同时间段，不能跨天!");
+        	}
+    	}
+    	if (begintime3!=null && endtime3!=null && begintime3.length()>0 && endtime3.length()>0) {
+    		if (! begintime3.substring(0, 10).equals(endtime3.substring(0, 10)) ) {
+        		renderJSON("第三行必须是同一天的不同时间段，不能跨天!");
+        	}
+    	}
+    	if (begintime4!=null && endtime4!=null && begintime4.length()>0 && endtime4.length()>0) {
+    		if (! begintime4.substring(0, 10).equals(endtime4.substring(0, 10)) ) {
+        		renderJSON("第四行必须是同一天的不同时间段，不能跨天!");
+        	}
+    	}
+    	if (begintime5!=null && endtime5!=null && begintime5.length()>0 && endtime5.length()>0) {
+    		if (! begintime5.substring(0, 10).equals(endtime5.substring(0, 10)) ) {
+        		renderJSON("第五行必须是同一天的不同时间段，不能跨天!");
+        	}
+    	}
+    	TeamExerciseSchedule a = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime1, endtime1);
+    	TeamExerciseScheduleMgr.getInstance().save(a);
+    	if (begintime2!=null && endtime2!=null && begintime2.length()>0 && endtime2.length()>0) {
+    		TeamExerciseSchedule aa = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime2, endtime2);
+        	TeamExerciseScheduleMgr.getInstance().save(aa);
+    	}
+    	if (begintime3!=null && endtime3!=null && begintime3.length()>0 && endtime3.length()>0) {
+    		TeamExerciseSchedule aa = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime3, endtime3);
+        	TeamExerciseScheduleMgr.getInstance().save(aa);
+    	}
+    	if (begintime4!=null && endtime4!=null && begintime4.length()>0 && endtime4.length()>0) {
+    		TeamExerciseSchedule aa = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime4, endtime4);
+        	TeamExerciseScheduleMgr.getInstance().save(aa);
+    	}
+    	if (begintime5!=null && endtime5!=null && begintime5.length()>0 && endtime5.length()>0) {
+    		TeamExerciseSchedule aa = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime5, endtime5);
+        	TeamExerciseScheduleMgr.getInstance().save(aa);
+    	}
+    	teamExerciseSchedule();
+    }
+
+    //团操复制页面
+    public static void TeamExerciseScheduleCopy(int id) {
+    	TeamExerciseSchedule sc = TeamExerciseScheduleMgr.getInstance().findTeamExerciseScheduleById(id);
+    	render(sc);
+    }
+    
+    //添加复制的团操排期
+    public static void addCopyTeamExerciseScheduleToDB(int storeid,int classroomid,int employeeid,int teamexerciseid,
     		int num, String begintime, String endtime) {
     	if (storeid==0) {
     		renderJSON("必须选择一个门店");
@@ -1351,13 +1457,13 @@ public class Application extends Controller {
     		renderJSON("必须选择一个课程");
     	}
     	if (! begintime.substring(0, 10).equals(endtime.substring(0, 10)) ) {
-    		renderJSON("必须是同一天的不同时间段，不能跨天!");
+    		renderJSON("第一行课程必须是同一天的不同时间段，不能跨天!");
     	}
     	TeamExerciseSchedule a = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime, endtime);
     	TeamExerciseScheduleMgr.getInstance().save(a);
     	teamExerciseSchedule();
     }
-
+    
 	//删除团操排期
     public static void deleteTeamExerciseSchedule(int id) {
     	boolean flag = TeamExerciseScheduleMgr.getInstance().deleteTeamExerciseSchedule(id);

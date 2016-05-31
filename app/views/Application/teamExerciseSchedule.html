@@ -77,9 +77,8 @@
 		            <td>${TeamExerciseSchedule.oknum}/${TeamExerciseSchedule.num}</td>
 		            <td>
 		            	<a href="@{Application.TeamExerciseScheduleDetail(TeamExerciseSchedule.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-		            	<!-- 
 		            	<a href="@{Application.deleteTeamExerciseSchedule(TeamExerciseSchedule.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
-		            	 -->
+						<a href="@{Application.TeamExerciseScheduleCopy(TeamExerciseSchedule.id)}" class="easyui-linkbutton" data-options="" style="">复制</a>		            
 		            </td>
 		        </tr>
 	        #{/list}

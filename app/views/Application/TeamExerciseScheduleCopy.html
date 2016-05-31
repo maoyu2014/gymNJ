@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+    
+<body>
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">复制团操排期</div>
+	
+	#{form @Application.addCopyTeamExerciseScheduleToDB(), onsubmit:"return check()"}
+	<div style="margin-left:100px;">
+		
+		<div style="margin:10px">
+		<span style="font-size:14px;display:inline-block;width:100px">门店：</span>
+		<input id="storeid" name="storeid" class="easyui-combobox" data-options="
+			editable:false,
+			valueField:'id',
+			textField:'name',
+			url:'@{Application.getAllStore()}',
+			onSelect: function(record){
+	            var url = '@{Application.getAllTuanClassroomByStoreId()}?storeid=' + record.id;
+	            $('#classroomidq').combobox('reload', url);
+	            url = '@{Application.getAllCoachByStoreID()}?storeid=' + record.id;
+	            $('#employeeidq').combobox('reload', url);
+        	}"  value="${sc.storeid}" style="height:32px">
+		</div>
+		
+		<div style="margin:10px">
+		<span style="font-size:14px;display:inline-block;width:100px">教室：</span>
+		<input id="classroomidq" name="classroomid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{Application.getAllTuanClassroomByStoreId(sc.storeid)}'" value="${sc.classroomid}" style="height:32px">
+		</div>
+		
+		<div style="margin:10px">
+		<span style="font-size:14px;display:inline-block;width:100px">教练：</span>
+		<input id="employeeidq" name="employeeid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{Application.getAllCoachByStoreID(sc.storeid)}'" value="${sc.employeeid}" style="height:32px">
+		</div>
+		
+		<div style="margin:10px">
+		<span style="font-size:14px;display:inline-block;width:100px">课程：</span>
+		<input id="teamexerciseid" name="teamexerciseid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{Application.getAllTeamExercise()}'" value="${sc.teamexerciseid}" style="height:32px">
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">可预约人数：</span>
+		<input id="num" name="num" class="easyui-numberbox" data-options="required:true" value="${sc.num}" style="height:32px">
+		</div>
+		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">课程安排：</span>
+		<input id="begintime" name="begintime" class="easyui-datetimebox" data-options="required:true,showSeconds:false,editable:false" value="${sc.begintime}" style="height:32px">--至--
+		<input id="endtime" name="endtime" class="easyui-datetimebox" data-options="required:true,showSeconds:false,editable:false" value="${sc.endtime}" style="height:32px">
+		（必须为同一天）
+		</div>
+		
+		<div style="margin-left:100px;">
+		<input type="submit" style="width:80px;height:32px">
+		</div>
+		
+	</div>
+	#{/form}
+	
+</body>
+
+<script>
+function check() {
+	var v;
+	v = $("#storeid").combobox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#classroomidq").combobox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#employeeidq").combobox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#teamexerciseid").combobox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#num").val();
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#begintime").datetimebox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	v = $("#endtime").datetimebox("getValue"); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	return true;
+}
+</script>
+
+</html>

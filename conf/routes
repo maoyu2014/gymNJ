@@ -7,6 +7,8 @@ GET     /                                       Application.index
 GET     /pwdList/getPwdInfoList                 Application.getPwdInfoList
 GET     /devCheckSysTm/getCheckTm               Application.getCheckTm
 GET     /userInOutInfoSndToServer               Application.userInOutInfoSndToServer
+GET		/upload									Application.upload
+POST	/upload									Application.upload
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
