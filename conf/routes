@@ -9,6 +9,7 @@ GET     /devCheckSysTm/getCheckTm               Application.getCheckTm
 GET     /userInOutInfoSndToServer               Application.userInOutInfoSndToServer
 GET		/upload									Application.upload
 POST	/upload									Application.upload
+GET     /twoDimensionCodePassword               Application.twoDimensionCodePassword
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

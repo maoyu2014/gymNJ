@@ -22,6 +22,7 @@ import utils.MemberMgr;
 import utils.PrivateExerciseMgr;
 import utils.PurchaseHistoryMgr;
 import utils.PwdToHardMgr;
+import utils.SocketConnect;
 import utils.StoreMgr;
 import utils.TeamExerciseMgr;
 import utils.TeamExerciseScheduleMgr;
@@ -30,6 +31,8 @@ import utils.UserInOutInfoFromHardMgr;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -59,7 +62,7 @@ public class Application extends Controller {
 	 */
 	
     //在所有功能前检查是否是已经登录的
-    @Before(unless={"login","check","getPwdInfoList","getCheckTm","userInOutInfoSndToServer"})
+    @Before(unless={"login","check","getPwdInfoList","getCheckTm","userInOutInfoSndToServer","twoDimensionCodePassword"})
     public static void checkAuthentification() {
     	if (session.get("user") == null) login();
     }
@@ -2226,6 +2229,22 @@ public class Application extends Controller {
     	uifh.state="0000";
     	renderJSON(uifh);
     }
+    
+    
+    /*
+     * 巍巍传递过来的memberid和password
+     */
+    public static void twoDimensionCodePassword(int memberid, String password) {
+    	if (memberid==0 || password==null || password.length()==0) {
+    		renderJSON("输入有问题");
+    	}
+    	PrintWriter out = SocketConnect.getPrintInstance();
+    	out.println("come_in_id_and_password");
+    	out.println(memberid);
+    	out.println(password);
+    	renderJSON("发送成功");
+    }
+    
     
     
 }
