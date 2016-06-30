@@ -28,14 +28,14 @@ public class Employee {
 	
 	public int storeid;
 	public String introduce;
-	
+	public String openid;
 	
 	public Employee(int id, String username, String password, String name,
 			String headimage, int sex, String phone, int ismanager,
 			int isfinance, int iscoach, int domember, int doappointment,
 			int docourse, int doplan, int domarkte, int dofinance,
 			int doemployee, int dostore, int dostatistics, int storeid,
-			 String introduce) {
+			 String introduce, String openid) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -57,6 +57,7 @@ public class Employee {
 		this.dostatistics = dostatistics;
 		this.storeid = storeid;
 		this.introduce = introduce;
+		this.openid = openid;
 	}
 	
 	public Employee(String username, String password, String name,
@@ -64,7 +65,7 @@ public class Employee {
 			int isfinance, int iscoach, int domember, int doappointment,
 			int docourse, int doplan, int domarkte, int dofinance,
 			int doemployee, int dostore, int dostatistics, int storeid,
-			String introduce) {
+			String introduce, String openid) {
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -85,8 +86,9 @@ public class Employee {
 		this.dostatistics = dostatistics;
 		this.storeid = storeid;
 		this.introduce = introduce;
+		this.openid = openid;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "id=" + id + ", username=" + username + ", name=" + name + ", headimage=" + headimage

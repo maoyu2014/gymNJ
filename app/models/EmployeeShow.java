@@ -29,6 +29,7 @@ public class EmployeeShow {
 	public int storeid;
 	public String storename;
 	public String introduce;
+	public String openid;
 	
 	public int comeinpassword;
 	
@@ -37,7 +38,7 @@ public class EmployeeShow {
 			int isfinance, int iscoach, int domember, int doappointment,
 			int docourse, int doplan, int domarkte, int dofinance,
 			int doemployee, int dostore, int dostatistics, int storeid,
-			String storename, String introduce) {
+			String storename, String introduce, String openid) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -60,6 +61,7 @@ public class EmployeeShow {
 		this.storeid = storeid;
 		this.storename = storename;
 		this.introduce = introduce;
+		this.openid = openid;
 	}
 	
 	public EmployeeShow(String username, String password, String name,
@@ -67,7 +69,7 @@ public class EmployeeShow {
 			int isfinance, int iscoach, int domember, int doappointment,
 			int docourse, int doplan, int domarkte, int dofinance,
 			int doemployee, int dostore, int dostatistics, int storeid,
-			String storename, String introduce) {
+			String storename, String introduce, String openid) {
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -89,6 +91,7 @@ public class EmployeeShow {
 		this.storeid = storeid;
 		this.storename = storename;
 		this.introduce = introduce;
+		this.openid = openid;
 	}
 
 	public EmployeeShow(Employee em) {
@@ -113,6 +116,7 @@ public class EmployeeShow {
 		this.dostatistics = em.dostatistics;
 		this.storeid = em.storeid;
 		this.introduce = em.introduce;
+		this.openid = em.openid;
 	}
 		
 	

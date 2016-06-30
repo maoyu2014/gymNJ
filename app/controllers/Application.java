@@ -470,7 +470,7 @@ public class Application extends Controller {
 	    	headimage = fileName;
 	    	Files.copy(headimagefile, Play.getFile("public/images/" + fileName));
     	}
-    	Employee e = new Employee(username, md5password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
+    	Employee e = new Employee(username, md5password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce, null);
     	EmployeeMgr.getInstance().save(e);
     	//给新的员工立刻生成今日密码
     	GeneratePasswordToNewEmployee();
@@ -566,7 +566,7 @@ public class Application extends Controller {
 	    	headimage = fileName;
 	    	Files.copy(headimagefile, Play.getFile("public/images/" + fileName));
     	}
-    	Employee e = new Employee(id,username, md5password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce);
+    	Employee e = new Employee(id,username, md5password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce, null);
     	EmployeeMgr.getInstance().update(e);
     	employeeSetting();
     }
