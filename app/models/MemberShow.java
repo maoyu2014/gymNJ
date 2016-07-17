@@ -1,12 +1,13 @@
 package models;
 
-//会员
+//会员,已经不用了
 public class MemberShow {
 
 	public int id;
 	public String openid;			//微信唯一标识
 	public String name;
 	public String wechatname;
+	public String wechatnumber;
 	public int sex;		//1男 2女
 	public double height;
 	public String birthday;	//生日
@@ -16,15 +17,20 @@ public class MemberShow {
 	public int cityid;
 	public int cardtype;	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
 	public String deaddate;	//到期时间
+	
 	public int exercisetime; 	//时间   1早上 2下午 3晚上
 	public int exercisegoal; 	//目标   1减脂 2塑形 3增肌
 	public int exercisehz;		//频率，1难的  2一周一次   3一周三次   4每天
 	public int distance; 	//距离  1：一公里以内  2：三公里以内  3：三公里以外
 	
+	public String fitnesstest;	//体能测试
+	public String memberstatus;	//会员状态
+	
 	//体脂信息
 	public String bmi;			//BMI
 	public String muscle;		//肌肉率
 	public String fat;			//脂肪
+	public String innerfat;		//内脏脂肪
 	public String water;		//水分
 	public String protein;		//蛋白质
 	public int basicrate;	//基础代谢率

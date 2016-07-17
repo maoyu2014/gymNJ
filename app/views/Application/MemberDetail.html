@@ -32,6 +32,11 @@
 				</div>
 				
 				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">微信号码：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.wechatnumber}" style="">
+				</div>
+				
+				<div style="margin:5px;">
 				<span style="font-size:14px;display:inline-block;width:100px">性别：</span>
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.sexvalue}" style="">
 				</div>
@@ -77,23 +82,8 @@
 				</div>
 				
 				<div style="margin:5px;">
-				<span style="font-size:14px;display:inline-block;width:100px">健身时间：</span>
-				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.exercisetimevalue}" style="">
-				</div>
-				
-				<div style="margin:5px;">
 				<span style="font-size:14px;display:inline-block;width:100px">健身目标：</span>
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.exercisegoalvalue}" style="">
-				</div>
-				
-				<div style="margin:5px;">
-				<span style="font-size:14px;display:inline-block;width:100px">健身频率：</span>
-				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.exercisehzvalue}" style="">
-				</div>
-				
-				<div style="margin:5px;">
-				<span style="font-size:14px;display:inline-block;width:100px">距离：</span>
-				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.distancevalue}" style="">
 				</div>
 				
 				<div style="margin:5px;">
@@ -109,6 +99,11 @@
 				<div style="margin:5px;">
 				<span style="font-size:14px;display:inline-block;width:100px">脂肪：</span>
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.fat}" style="">
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">内脏脂肪：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.innerfat}" style="">
 				</div>
 				
 				<div style="margin:5px;">
@@ -131,6 +126,18 @@
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.bodyage}" style="">
 				</div>
 				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">体能测试：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.fitnesstest}" style="">
+				<a href="@{Application.MemberFitnessTestEdit(sc.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">会员状态：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.memberstatus}" style="">
+				<a href="@{Application.MemberStatusEdit(sc.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
+				</div>
+				
 			</div>
 		</div>
 		
@@ -138,7 +145,7 @@
 			
 			<div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">购卡信息</div>
 			<div style="margin:10px">
-		        <table class="easyui-datagrid" data-options="fitColumns:false,singleSelect:true,striped:true,rownumbers:true">
+		        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
 			        <thead>
 			            <tr>
 			                <th data-options="field:'cardtypename',width:150">卡类型</th>
@@ -156,7 +163,7 @@
 		    
 			<div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">到店状态</div>
 			<div style="margin:10px">
-		        <table class="easyui-datagrid" data-options="fitColumns:false,singleSelect:true,striped:true,rownumbers:true">
+		        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
 			        <thead>
 			            <tr>
 			                <th data-options="field:'daodian',width:150">到店</th>
@@ -185,7 +192,7 @@
 		    
 			<div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">团操课程</div>
 			<div style="margin:10px">
-		        <table class="easyui-datagrid" data-options="fitColumns:false,singleSelect:true,striped:true,rownumbers:true">
+		        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
 			        <thead>
 			            <tr>
 			                <th data-options="field:'name',width:150">课程</th>
@@ -207,7 +214,7 @@
 		    
 			<div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">特训课程</div>
 			<div style="margin:10px">
-		        <table class="easyui-datagrid" data-options="fitColumns:false,singleSelect:true,striped:true,rownumbers:true">
+		        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
 			        <thead>
 			            <tr>
 			                <th data-options="field:'name',width:150">课程</th>
@@ -226,6 +233,86 @@
 			        </tbody>
 			    </table>
 		    </div>
+		    
+		    <div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">体能测试</div>
+			<div style="margin:10px">
+		        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:false">
+			        <thead>
+			            <tr>
+			                <th data-options="field:'xiongwei',width:100">胸围</th>
+			                <th data-options="field:'yaowei',width:100">腰围</th>
+			                <th data-options="field:'tunwei',width:100">臀围</th>
+			                <th data-options="field:'shangtunwei',width:100">上臀围</th>
+			                <th data-options="field:'datuiwei',width:100">大腿围</th>
+			                <th data-options="field:'xiaotuiwei',width:100">小腿围</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        	<tr>
+			        		<td>${mft.xiongwei}</td>
+			        		<td>${mft.yaowei}</td>
+			        		<td>${mft.tunwei}</td>
+			        		<td>${mft.shangtunwei}</td>
+			        		<td>${mft.datuiwei}</td>
+			        		<td>${mft.xiaotuiwei}</td>
+			        	</tr>
+			        </tbody>
+			    </table>
+			    <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:false">
+			        <thead>
+			            <tr>
+			                <th data-options="field:'testcontent',width:200,align:'left'">测试内容</th>
+			                <th data-options="field:'testdata',width:200">数据</th>
+			            </tr>
+			        </thead>
+					<tbody>
+						<tr>
+							<td>引体向上（男）</td>
+							<td>${mft.pullup}</td>
+						</tr>
+						<tr>
+							<td>俯卧撑（男）</td>
+							<td>${mft.pushup}</td>
+						</tr>
+						<tr>
+							<td>平板支撑（男）</td>
+							<td>${mft.plank}</td>
+						</tr>
+						<tr>
+							<td>坐位体前屈</td>
+							<td>${mft.sitandreach}</td>
+						</tr>
+						<tr>
+							<td>蹲起</td>
+							<td>${mft.squatandrise}</td>
+						</tr>
+						<tr>
+							<td>仰卧起坐（女）</td>
+							<td>${mft.situp}</td>
+						</tr>
+						<tr>
+							<td>哈佛台阶试验</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;&nbsp;--第1min心率</td>
+							<td>${mft.heartrateone}</td>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;&nbsp;--第2min心率</td>
+							<td>${mft.heartratetwo}</td>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;&nbsp;--第3min心率</td>
+							<td>${mft.heartratethree}</td>
+						</tr>
+					</tbody>
+				</table>
+		    </div>
+		    
+		    
+		    
+		    
 		    
 		</div>
 		

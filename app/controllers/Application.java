@@ -18,7 +18,9 @@ import utils.FitnessPlanMgr;
 import utils.GroupWebsiteMgr;
 import utils.GroupbuyMgr;
 import utils.Md5_Utils;
+import utils.MemberFitnessTestMgr;
 import utils.MemberMgr;
+import utils.MemberStatusMgr;
 import utils.PrivateExerciseMgr;
 import utils.PurchaseHistoryMgr;
 import utils.PwdToHardMgr;
@@ -1535,20 +1537,11 @@ public class Application extends Controller {
     //特训班PrivateExercise设置（展示）页面
     public static void PrivateExerciseSetting() {
     	List<PrivateExercise> list = PrivateExerciseMgr.getInstance().getAllPrivateExercise();
-    	List<PrivateExerciseShow> lists = new ArrayList<>();
     	for (PrivateExercise p : list) {
-    		PrivateExerciseShow ps = new PrivateExerciseShow(p);
-    		StoreCity s = StoreMgr.getInstance().findStoreById(p.storeid);
-    		if (s!=null) ps.storename = s.name;
-    		Employee e = EmployeeMgr.getInstance().findEmployeeById(p.employeeid);
-    		if (e!=null) ps.employeename = e.name;
-    		Classroom c = ClassroomMgr.getInstance().findClassroomById(p.classroomid);
-    		if (c!=null) ps.classroomname = c.name;
-    		
-    		String signbegintime = ps.signbegintime;
-    		String signendtime = ps.signendtime;
-    		String classbegintime = ps.classbegintime;
-    		String classendtime = ps.classendtime;
+    		String signbegintime = p.signbegintime;
+    		String signendtime = p.signendtime;
+    		String classbegintime = p.classbegintime;
+    		String classendtime = p.classendtime;
     		if (signbegintime!=null && signbegintime.length()>0) {
 	    		signbegintime = signbegintime.substring(0, 4)+signbegintime.substring(5, 7)
 	    				+signbegintime.substring(8, 10);
@@ -1573,46 +1566,26 @@ public class Application extends Controller {
     		int day = calendar.get(Calendar.DAY_OF_MONTH);
     		if (day<10) nowtime+="0"+day;
     		else nowtime+=day;
-//    		int hour = calendar.get(Calendar.HOUR_OF_DAY);
-//    		if (hour<10) nowtime+="0"+hour;
-//    		else nowtime+=hour;
-//    		int minutes = calendar.get(Calendar.MINUTE);
-//    		if (minutes<10) nowtime+="0"+minutes;
-//    		else nowtime+=minutes;
     		
-//    		System.out.println(signbegintime);
-//    		System.out.println(signendtime);
-//    		System.out.println(classbegintime);
-//    		System.out.println(classendtime);
-//    		System.out.println(nowtime);
     		String status = "已发布";
     		if (nowtime.compareTo(signbegintime)>=0 ) status="报名中";
     		if (nowtime.compareTo(classbegintime)>=0 ) status="开课中";
     		if (nowtime.compareTo(classendtime)>0 ) status="已结束";
-    		ps.status = status;
-    		lists.add(ps);
+    		p.status = status;
     	}
-    	int number = lists.size();
-    	render(lists, number);
+    	int number = list.size();
+    	render(list, number);
     }
     
     //搜索特训班
-    public static void PrivateExerciseSearch(int storeid, int employeeid, int astatus, String privateexercisename) {
-    	List<PrivateExercise> list = PrivateExerciseMgr.getInstance().searchPrivateExercise(storeid, employeeid, privateexercisename);
-    	List<PrivateExerciseShow> lists = new ArrayList<>();
-    	for (PrivateExercise p : list) {
-    		PrivateExerciseShow ps = new PrivateExerciseShow(p);
-    		StoreCity s = StoreMgr.getInstance().findStoreById(p.storeid);
-    		if (s!=null) ps.storename = s.name;
-    		Employee e = EmployeeMgr.getInstance().findEmployeeById(p.employeeid);
-    		if (e!=null) ps.employeename = e.name;
-    		Classroom c = ClassroomMgr.getInstance().findClassroomById(p.classroomid);
-    		if (c!=null) ps.classroomname = c.name;
-    		
-    		String signbegintime = ps.signbegintime;
-    		String signendtime = ps.signendtime;
-    		String classbegintime = ps.classbegintime;
-    		String classendtime = ps.classendtime;
+    public static void PrivateExerciseSearch(int storeid, int employeeid, String astatus, String privateexercisename) {
+    	List<PrivateExercise> listpe = PrivateExerciseMgr.getInstance().searchPrivateExercise(storeid, employeeid, privateexercisename);
+    	List<PrivateExercise> list = new ArrayList<>();
+    	for (PrivateExercise p : listpe) {
+    		String signbegintime = p.signbegintime;
+    		String signendtime = p.signendtime;
+    		String classbegintime = p.classbegintime;
+    		String classendtime = p.classendtime;
     		if (signbegintime!=null && signbegintime.length()>0) {
 	    		signbegintime = signbegintime.substring(0, 4)+signbegintime.substring(5, 7)
 	    				+signbegintime.substring(8, 10);
@@ -1638,19 +1611,16 @@ public class Application extends Controller {
     		if (day<10) nowtime+="0"+day;
     		else nowtime+=day;
     		String status = "已发布";
-    		if (nowtime.compareTo(signbegintime)>0 ) status="报名中";
+    		if (nowtime.compareTo(signbegintime)>=0 ) status="报名中";
     		if (nowtime.compareTo(classbegintime)>=0 ) status="开课中";
     		if (nowtime.compareTo(classendtime)>0 ) status="已结束";
-    		if (astatus==0 || astatus==1 && status.equals("已发布") || 
-    				astatus==2 && status.equals("报名中") ||
-    				astatus==3 && status.equals("开课中") ||
-    				astatus==4 && status.equals("已结束") ) {
-	    		ps.status = status;
-	    		lists.add(ps);
+    		p.status = status;
+    		if (astatus.equals("全部状态") || astatus.equals(status)) {
+	    		list.add(p);
     		}
     	}
-    	int number = lists.size();
-    	render("Application/PrivateExerciseSetting.html", lists, number);
+    	int number = list.size();
+    	render("Application/PrivateExerciseSetting.html", list, number);
     }
     
     //添加特训班页面
@@ -1659,11 +1629,11 @@ public class Application extends Controller {
     }
     
     //添加特训班
-    public static void addPrivateExerciseToDB(String name, File imagefile, int weeks, int period, 
+    public static void addPrivateExerciseToDB(String name, String coursestyle, File imagefile, int weeks, int period, 
     		int num, double price, int storeid, int classroomid, int employeeid, 
     		String classbegintime, String classendtime, 
     		String exerciseweeknum, String exercisebegintime, String exerciseendtime,
-    		String signbegintime, String signendtime,
+    		String signbegintime, String signendtime, String summary,
     		String courseintroduce, String courseplan, String notice, String fitstep) {
     	if (storeid==0) {
     		renderJSON("请选择一个门店");
@@ -1681,7 +1651,7 @@ public class Application extends Controller {
 	    	image = fileName;
 	    	Files.copy(imagefile, Play.getFile("public/images/" + fileName));
     	}
-    	PrivateExercise a = new PrivateExercise(name, image, weeks, period, num, 0, price, storeid, classroomid, employeeid, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime, courseintroduce, courseplan, notice, fitstep);
+    	PrivateExercise a = new PrivateExercise(name, coursestyle, image, weeks, period, num, 0, price, storeid, classroomid, employeeid, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime, summary, courseintroduce, courseplan, notice, fitstep); 
     	PrivateExerciseMgr.getInstance().save(a);
     	PrivateExerciseSetting();
     }
@@ -1702,12 +1672,12 @@ public class Application extends Controller {
     }
     
     //修改特训班
-    public static void updatePrivateExerciseToDB(int id, String name, File imagefile, String image,
+    public static void updatePrivateExerciseToDB(int id, String name, String coursestyle, File imagefile, String image,
     		int weeks, 	int period, 
     		int num, int oknum, double price, int storeid, int classroomid, int employeeid, 
     		String classbegintime, String classendtime, 
     		String exerciseweeknum, String exercisebegintime, String exerciseendtime,
-    		String signbegintime, String signendtime,
+    		String signbegintime, String signendtime, String summary,
     		String courseintroduce, String courseplan, String notice, String fitstep) {
     	if (storeid==0) {
     		renderJSON("请选择一个门店");
@@ -1724,7 +1694,7 @@ public class Application extends Controller {
 	    	image = fileName;
 	    	Files.copy(imagefile, Play.getFile("public/images/" + fileName));
     	}
-    	PrivateExercise a = new PrivateExercise(id, name, image, weeks, period, num, oknum, price, storeid, classroomid, employeeid, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime, courseintroduce, courseplan, notice, fitstep);
+    	PrivateExercise a = new PrivateExercise(id, name, coursestyle, image, weeks, period, num, oknum, price, storeid, classroomid, employeeid, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime, summary, courseintroduce, courseplan, notice, fitstep);
     	PrivateExerciseMgr.getInstance().update(a);
     	PrivateExerciseSetting();
     }
@@ -1855,12 +1825,11 @@ public class Application extends Controller {
     
     //Member详情(修改)页面
     public static void MemberDetail(int id) {
-    	Member m = MemberMgr.getInstance().findMemberById(id);
-    	if (m==null) {
+    	Member sc = MemberMgr.getInstance().findMemberById(id);
+    	if (sc==null) {
     		renderText("改会员已经被删除，数据库不存在该会员");
     	}
-    	MemberShow sc = new MemberShow(m);
-    	City s = CityMgr.getInstance().findCityById(m.cityid);
+    	City s = CityMgr.getInstance().findCityById(sc.cityid);
 		if (s!=null) {
 			sc.cityname = s.name;
 		}
@@ -1885,14 +1854,14 @@ public class Application extends Controller {
 		if (sc.distance==1) sc.distancevalue="一公里以内";
 		else if (sc.distance==2) sc.distancevalue="三公里以内";
 		else if (sc.distance==3) sc.distancevalue="三公里以外";
-		// 入场密码
+		// 入场密码 展示
 		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(sc.id);
 		if (cp!=null) {
 			Calendar calendar = Calendar.getInstance();  
 			int hour = calendar.get(Calendar.HOUR_OF_DAY);
 			sc.comeinpassword  = cp.arr[hour];
 		}
-		//到店状态 
+		//到店状态 展示
 		List<String> listIn = UserInOutInfoFromHardMgr.getInstance().getMemberInInfo(sc.id);
 		List<String> listOut = UserInOutInfoFromHardMgr.getInstance().getMemberOutInfo(sc.id);
 		int inOutTmNum = Math.max(listIn.size(),listOut.size());
@@ -1922,9 +1891,45 @@ public class Application extends Controller {
 				}
 			}
 		}
-		render(sc, listIn, listOut, inOutTmNum, listtes, listpe);
+		//体能测试展示
+		MemberFitnessTest mft = MemberFitnessTestMgr.getInstance().getMemberFitnessTestByMemberId(id);
+		render(sc, listIn, listOut, inOutTmNum, listtes, listpe, mft);
     }
-   
+    
+    //会员状态
+    public static void MemberStatusEdit(int id) {
+    	List<MemberStatus> list = MemberStatusMgr.getInstance().getMemberStatusByMemberId(id);
+    	int memberid = id;
+    	render(list, memberid);
+    }
+    
+    public static void addMemberStatusToDB(int memberid, String memberstatus, String edittime, String reason) {
+    	MemberStatus m = new MemberStatus(memberid, memberstatus, edittime, reason);
+    	MemberStatusMgr.getInstance().save(m);
+    	MemberMgr.getInstance().updateMemberStatus(memberid, memberstatus);
+    	MemberStatusEdit(memberid);
+    }
+    
+    //体能测试
+    public static void MemberFitnessTestEdit(int id) {
+    	MemberFitnessTest mft = MemberFitnessTestMgr.getInstance().getMemberFitnessTestByMemberId(id);
+    	int memberid = id;
+    	if (mft==null) 
+    		render("Application/MemberFitnessTestAdd.html",memberid);
+    	else
+    		render(memberid, mft);
+    }
+    
+    public static void addMemberFitnessTestToDB(int memberid, String fitnesstest, 
+    		String xiongwei, String yaowei, String tunwei, String shangtunwei, String datuiwei, String xiaotuiwei,
+    		String pullup, String pushup, String plank, String sitandreach, String squatandrise,
+    		String situp, String heartrateone, String heartratetwo, String heartratethree) {
+    	MemberFitnessTest mft = new MemberFitnessTest(memberid, fitnesstest, xiongwei, yaowei, tunwei, shangtunwei, datuiwei, xiaotuiwei, pullup, pushup, plank, sitandreach, squatandrise, situp, heartrateone, heartratetwo, heartratethree);
+    	MemberFitnessTestMgr.getInstance().save(mft);
+    	MemberMgr.getInstance().updateMemberFitnessTest(memberid, fitnesstest);
+    	MemberDetail(memberid);
+    }
+    
     /*
 	后台也不需要修改会员
     //修改Member

@@ -35,30 +35,32 @@ public class PrivateExerciseMgr {
 	
 	public void save(PrivateExercise e) {
 		Connection conn = DB.getConn();
-		String sql = "insert into PrivateExercise values (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "insert into PrivateExercise values (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
 			pstmt.setString(1, e.name);
-			pstmt.setString(2, e.image);
-			pstmt.setInt(3, e.weeks);
-			pstmt.setInt(4, e.period);
-			pstmt.setInt(5, e.num);
-			pstmt.setInt(6, e.oknum);
-			pstmt.setDouble(7, e.price);
-			pstmt.setInt(8, e.storeid);
-			pstmt.setInt(9, e.classroomid);
-			pstmt.setInt(10, e.employeeid);
-			pstmt.setString(11, e.classbegintime);
-			pstmt.setString(12, e.classendtime);
-			pstmt.setString(13, e.exerciseweeknum);
-			pstmt.setString(14, e.exercisebegintime);
-			pstmt.setString(15, e.exerciseendtime);
-			pstmt.setString(16, e.signbegintime);
-			pstmt.setString(17, e.signendtime);
-			pstmt.setString(18, e.courseintroduce);
-			pstmt.setString(19, e.courseplan);
-			pstmt.setString(20, e.notice);
-			pstmt.setString(21, e.fitstep);
+			pstmt.setString(2, e.coursestyle);
+			pstmt.setString(3, e.image);
+			pstmt.setInt(4, e.weeks);
+			pstmt.setInt(5, e.period);
+			pstmt.setInt(6, e.num);
+			pstmt.setInt(7, e.oknum);
+			pstmt.setDouble(8, e.price);
+			pstmt.setInt(9, e.storeid);
+			pstmt.setInt(10, e.classroomid);
+			pstmt.setInt(11, e.employeeid);
+			pstmt.setString(12, e.classbegintime);
+			pstmt.setString(13, e.classendtime);
+			pstmt.setString(14, e.exerciseweeknum);
+			pstmt.setString(15, e.exercisebegintime);
+			pstmt.setString(16, e.exerciseendtime);
+			pstmt.setString(17, e.signbegintime);
+			pstmt.setString(18, e.signendtime);
+			pstmt.setString(19, e.summary);
+			pstmt.setString(20, e.courseintroduce);
+			pstmt.setString(21, e.courseplan);
+			pstmt.setString(22, e.notice);
+			pstmt.setString(23, e.fitstep);
 			pstmt.executeUpdate();
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -74,20 +76,19 @@ public class PrivateExerciseMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select * from PrivateExercise";
+			String sql = "select p.id, p.name, p.coursestyle, p.weeks, p.period, p.num, p.oknum, p.price, s.name as storename, e.name as employeename, p.classbegintime, p.classendtime, p.exerciseweeknum, p.exercisebegintime, p.exerciseendtime, p.signbegintime, p.signendtime from PrivateExercise p, store s, employee e where p.storeid = s.id and p.employeeid = e.id";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				String name = rs.getString("name");
-				String image = rs.getString("image");
+				String name = rs.getString("name"); 
+				String coursestyle = rs.getString("coursestyle");
 				int weeks = rs.getInt("weeks");
 				int period = rs.getInt("period");
 				int num = rs.getInt("num");
 				int oknum = rs.getInt("oknum");
 				double price = rs.getDouble("price");
-				int storeid = rs.getInt("storeid");
-				int classroomid = rs.getInt("classroomid");
-				int employeeid = rs.getInt("employeeid");
+				String storename = rs.getString("storename");
+				String employeename = rs.getString("employeename");
 				String classbegintime = rs.getString("classbegintime");		//开课时间
 				String classendtime = rs.getString("classendtime");
 				String exerciseweeknum = rs.getString("exerciseweeknum");				//训练时间是礼拜几几几
@@ -95,19 +96,15 @@ public class PrivateExerciseMgr {
 				String exerciseendtime = rs.getString("exerciseendtime");
 				String signbegintime = rs.getString("signbegintime");		//报名时间
 				String signendtime = rs.getString("signendtime");
-				String courseintroduce = rs.getString("courseintroduce");	//课程介绍
-				String courseplan = rs.getString("courseplan");	//课程安排，中间用等于号分割
-				String notice = rs.getString("notice");		//注意事项
-				String fitstep = rs.getString("fitstep");		//健身步骤，中间用等于号分割
-				PrivateExercise an = new PrivateExercise(id, name, image, weeks, period, num, oknum, price, storeid, classroomid, employeeid, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime, courseintroduce, courseplan, notice, fitstep);
+				PrivateExercise an = new PrivateExercise(id, name, coursestyle, weeks, period, num, oknum, price, storename, employeename, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return list;
 	}
@@ -118,45 +115,28 @@ public class PrivateExerciseMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select * from PrivateExercise";
-			boolean flag = false;
+			String sql = "select p.id, p.name, p.coursestyle, p.weeks, p.period, p.num, p.oknum, p.price, s.name as storename, e.name as employeename, p.classbegintime, p.classendtime, p.exerciseweeknum, p.exercisebegintime, p.exerciseendtime, p.signbegintime, p.signendtime from PrivateExercise p, store s, employee e where p.storeid=s.id and p.employeeid=e.id";
 			if (astoreid!=0) {
-				if (!flag) {
-					sql += " where storeid = " + astoreid;
-					flag = true;
-				} else {
-					sql += " and storeid = " + astoreid;
-				}
+				sql += " and p.storeid = " + astoreid;
 			}
 			if (aemployeeid!=0) {
-				if (!flag) {
-					sql += " where employeeid = " + aemployeeid;
-					flag = true;
-				} else {
-					sql += " and employeeid = " + aemployeeid;
-				}
+				sql += " and p.employeeid = " + aemployeeid;
 			}
 			if (privateexercisename!=null && privateexercisename.length()>0) {
-				if (!flag) {
-					sql+=" where name like '%" + privateexercisename + "%'";
-					flag = true;
-				} else {
-					sql+=" and name like '%" + privateexercisename + "%'";
-				}
+				sql+=" and p.name like '%" + privateexercisename + "%'";
 			}
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				String name = rs.getString("name");
-				String image = rs.getString("image");
+				String name = rs.getString("name"); 
+				String coursestyle = rs.getString("coursestyle");
 				int weeks = rs.getInt("weeks");
 				int period = rs.getInt("period");
 				int num = rs.getInt("num");
 				int oknum = rs.getInt("oknum");
 				double price = rs.getDouble("price");
-				int storeid = rs.getInt("storeid");
-				int classroomid = rs.getInt("classroomid");
-				int employeeid = rs.getInt("employeeid");
+				String storename = rs.getString("storename");
+				String employeename = rs.getString("employeename");
 				String classbegintime = rs.getString("classbegintime");		//开课时间
 				String classendtime = rs.getString("classendtime");
 				String exerciseweeknum = rs.getString("exerciseweeknum");				//训练时间是礼拜几几几
@@ -164,19 +144,15 @@ public class PrivateExerciseMgr {
 				String exerciseendtime = rs.getString("exerciseendtime");
 				String signbegintime = rs.getString("signbegintime");		//报名时间
 				String signendtime = rs.getString("signendtime");
-				String courseintroduce = rs.getString("courseintroduce");	//课程介绍
-				String courseplan = rs.getString("courseplan");	//课程安排，中间用等于号分割
-				String notice = rs.getString("notice");		//注意事项
-				String fitstep = rs.getString("fitstep");		//健身步骤，中间用等于号分割
-				PrivateExercise an = new PrivateExercise(id, name, image, weeks, period, num, oknum, price, storeid, classroomid, employeeid, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime, courseintroduce, courseplan, notice, fitstep);
+				PrivateExercise an = new PrivateExercise(id, name, coursestyle, weeks, period, num, oknum, price, storename, employeename, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return list;
 	}
@@ -204,12 +180,12 @@ public class PrivateExerciseMgr {
 		ResultSet rs = null;
 		PrivateExercise an = null;
 		try {
-			//加空格啊加空格，sql一定记得各种加空格
 			String sql = "select * from PrivateExercise where id = " + aid;
 			rs = DB.executeQuery(stmt, sql);
 			if (rs.next()) {
 				int id = rs.getInt("id");
 				String name = rs.getString("name");
+				String coursestyle = rs.getString("coursestyle");
 				String image = rs.getString("image");
 				int weeks = rs.getInt("weeks");
 				int period = rs.getInt("period");
@@ -226,25 +202,26 @@ public class PrivateExerciseMgr {
 				String exerciseendtime = rs.getString("exerciseendtime");
 				String signbegintime = rs.getString("signbegintime");		//报名时间
 				String signendtime = rs.getString("signendtime");
+				String summary = rs.getString("summary");
 				String courseintroduce = rs.getString("courseintroduce");	//课程介绍
 				String courseplan = rs.getString("courseplan");	//课程安排，中间用等于号分割
 				String notice = rs.getString("notice");		//注意事项
 				String fitstep = rs.getString("fitstep");		//健身步骤，中间用等于号分割
-				an = new PrivateExercise(id, name, image, weeks, period, num, oknum, price, storeid, classroomid, employeeid, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime, courseintroduce, courseplan, notice, fitstep);
+				an = new PrivateExercise(id, name, coursestyle, image, weeks, period, num, oknum, price, storeid, classroomid, employeeid, classbegintime, classendtime, exerciseweeknum, exercisebegintime, exerciseendtime, signbegintime, signendtime, summary, courseintroduce, courseplan, notice, fitstep);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return an;
 	}
 	
 	public void update(PrivateExercise e) {
 		Connection conn = DB.getConn();
-		String sql = "update PrivateExercise set name = ?, image = ?, weeks = ?, period = ?, num = ?, oknum = ?, price = ?,storeid = ?, classroomid = ?, employeeid = ?, classbegintime = ?, classendtime = ?, exerciseweeknum = ?, exercisebegintime = ?,exerciseendtime = ?, signbegintime = ?, signendtime = ?, courseintroduce = ?, courseplan = ?, notice = ?, fitstep = ?  where id = " +e.id;
+		String sql = "update PrivateExercise set name = ?, image = ?, weeks = ?, period = ?, num = ?, oknum = ?, price = ?,storeid = ?, classroomid = ?, employeeid = ?, classbegintime = ?, classendtime = ?, exerciseweeknum = ?, exercisebegintime = ?,exerciseendtime = ?, signbegintime = ?, signendtime = ?, courseintroduce = ?, courseplan = ?, notice = ?, fitstep = ?, coursestyle = ?, summary = ?  where id = " +e.id;
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
 			pstmt.setString(1, e.name);
@@ -268,6 +245,8 @@ public class PrivateExerciseMgr {
 			pstmt.setString(19, e.courseplan);
 			pstmt.setString(20, e.notice);
 			pstmt.setString(21, e.fitstep);
+			pstmt.setString(22, e.coursestyle);
+			pstmt.setString(23, e.summary);
 			pstmt.executeUpdate();
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -277,121 +256,5 @@ public class PrivateExerciseMgr {
 		}
 	}
 	
-	/*
-	public boolean hasMember(String pengid) {
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		String sql = "select * from member where pengid = '" + pengid + "'";
-		rs = DB.executeQuery(stmt, sql);
-		try {
-			if (rs.next()) {
-				return true;
-			} 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return false;
-	}
-	
-	public boolean hasOtherMember(String pengid, int id) {
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		String sql = "select * from member where pengid = '" + pengid + "'";
-		rs = DB.executeQuery(stmt, sql);
-		try {
-			if (rs.next()) {
-				int tid = rs.getInt("id");
-				if (tid != id)
-					return true;
-			} 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return false;
-	}
-	
-	
-	
-	
-	
-	
-	public List<Member> getMembers(int userid) {
-		List<Member> list = new ArrayList<Member>();
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		try {
-			String sql = "select * from member where associationid=" + userid;
-			rs = DB.executeQuery(stmt, sql);
-			while (rs.next()) {
-				Member m = new Member();
-				m.setId(rs.getInt("id"));
-				m.setAssociationid(rs.getInt("associationid"));
-				m.setPengid(rs.getString("pengid"));
-				m.setName(rs.getString("name"));
-				m.setProvince(rs.getString("province"));
-				m.setCity(rs.getString("city"));
-				m.setLongitude(rs.getString("longitude"));
-				m.setLatitude(rs.getString("latitude"));
-				m.setPhone(rs.getString("phone"));
-				list.add(m);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(conn);
-			DB.close(stmt);
-			DB.close(rs);
-		}
-		return list;
-	}
-	
-	
-	
-	
-	
-	
-	public Member loadById(int id) {
-		Member m = null;
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		try {
-			conn = DB.getConn();
-			stmt = DB.getStmt(conn);
-			String sql = "select * from member where id=" + id;
-			rs = DB.executeQuery(stmt, sql);
-			if (rs.next()) {
-				m = new Member();
-				m.setId(rs.getInt("id"));
-				m.setAssociationid(rs.getInt("associationid"));
-				m.setPengid(rs.getString("pengid"));
-				m.setName(rs.getString("name"));
-				m.setProvince(rs.getString("province"));
-				m.setCity(rs.getString("city"));
-				m.setLongitude(rs.getString("longitude"));
-				m.setLatitude(rs.getString("latitude"));
-				m.setPhone(rs.getString("phone"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return m;
-	}
-	*/
 	
 }

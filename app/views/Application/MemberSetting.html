@@ -40,33 +40,39 @@
 	                <th data-options="field:'name',width:80">姓名</th>
 	                <th data-options="field:'id',width:50">ID</th>
 	                <th data-options="field:'wechatname',width:100">微信名</th>
+	                <th data-options="field:'wechatnumber',width:100">微信号</th>
 	                <th data-options="field:'phone',width:100">电话</th>
 	                <th data-options="field:'fingerprinttype',width:100">指纹录入</th>
 	                <th data-options="field:'comeinpassword',width:100">入场密码</th>
 	                <th data-options="field:'cityname',width:100">所在城市</th>
-	                <th data-options="field:'offenstorename',width:100">常去门店</th>
+	                <!-- <th data-options="field:'offenstorename',width:100">常去门店</th>  -->
+	                <th data-options="field:'fitnesstest',width:100">体能测试</th>
 	                <th data-options="field:'cardtype',width:100">会员种类</th>
+	                <th data-options="field:'memberstatus',width:100">会员状态</th>
 	                <th data-options="field:'operation',width:100">操作</th>
 	            </tr>
 	        </thead>
 	        <tbody>
-	        #{list items:list, as:'MemberShow'}
-	        	#{if MemberShow.openid != "baojieayi"}
+	        #{list items:list, as:'Member'}
+	        	#{if Member.openid != "baojieayi"}
 	        	<tr>
-		            <td>${MemberShow.name}</td>
-		            <td>${MemberShow.id}</td>
-		            <td>${MemberShow.wechatname}</td>
-		            <td>${MemberShow.phone}</td>          
-		            <td>${MemberShow.fingerprinttype}</td>
-		            <td>${MemberShow.comeinpassword}</td>
-		            <td>${MemberShow.cityname}</td>
-		            <td>${MemberShow.offenstorename}</td>
-		            <td>${MemberShow.cardtypename}</td>
+		            <td>${Member.name}</td>
+		            <td>${Member.id}</td>
+		            <td>${Member.wechatname}</td>
+		            <td>${Member.wechatnumber}</td>
+		            <td>${Member.phone}</td>          
+		            <td>${Member.fingerprinttype}</td>
+		            <td>${Member.comeinpassword}</td>
+		            <td>${Member.cityname}</td>
+		            <!-- <td>${Member.offenstorename}</td>   -->
+		            <td>${Member.fitnesstest}</td>
+		            <td>${Member.cardtypename}</td>
+		            <td>${Member.memberstatus}</td>
 		            <td>
-		            	<a href="@{Application.MemberDetail(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-		            	<a href="@{Application.modifyMemberDeaddate(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
+		            	<a href="@{Application.MemberDetail(Member.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{Application.modifyMemberDeaddate(Member.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
 		            	<!--
-		            	<a href="@{Application.deleteMember(MemberShow.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a> 
+		            	<a href="@{Application.deleteMember(Member.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a> 
 		            	 -->
 		            </td>
 		        </tr>

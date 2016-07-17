@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+    
+<body>
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">会员状态更新及历史记录</div>
+	
+	<div style="margin:20px">
+		#{form @Application.addMemberStatusToDB(memberid)}
+		会员类型：
+		<select name="memberstatus" class="easyui-combobox" style="height:32px;width:100px;">
+			<option value="沉睡会员">沉睡会员</option>
+		    <option value="活跃会员">活跃会员</option>
+		    <option value="工作伙伴">工作伙伴</option>
+		    <option value="特训成员">特训成员</option>
+		</select><br/><br/>
+		时间：
+		<input name="edittime" class="easyui-textbox" style="height:32px"><br/><br/>
+		原因：
+		<input name="reason" class="easyui-textbox" style="height:32px;width:500px"><br/><br/>	
+		<input type="submit" style="width:80px;height:32px" value="更新状态">  
+		#{/form}
+	</div>
+	
+	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'memberstatus',width:50">会员状态</th>
+	                <th data-options="field:'edittime',width:50">修改时间</th>
+	                <th data-options="field:'reason',width:100">原因</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        #{list items:list, as:'MemberStatus'}
+	        	<tr>
+		            <td>${MemberStatus.memberstatus}</td>
+		            <td>${MemberStatus.edittime}</td>
+		            <td>${MemberStatus.reason}</td>
+		        </tr>
+	        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+    
+</body>
+
+<script>
+function confirmdelete(){
+	var gnl=confirm("信息一旦删除就没有了，你真的确定要删除吗?"); 
+	if (gnl==true){ 
+		return true; 
+	} else {
+		return false;
+	}
+}
+</script>
+
+</html>

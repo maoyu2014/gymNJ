@@ -31,6 +31,16 @@
 		<input id="name" name="name" class="easyui-textbox" data-options="required:true" style="height:32px">
 		</div>
 		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">课程类型：</span>
+		<select name="coursestyle" class="easyui-combobox" style="height:32px;width:100px;">
+			<option value="免费课程">免费课程</option>
+		    <option value="基础课程">基础课程</option>
+		    <option value="提高课程">提高课程</option>
+		    <option value="强化课程">强化课程</option>
+		</select>
+		</div>
+		
 		<div style="margin:10px">
 		<span style="font-size:14px;display:inline-block;width:100px">课程图片：</span>
 		<input name="imagefile" class="easyui-filebox" data-options="buttonText:'上传图片'" style="height:32px">
@@ -97,8 +107,13 @@
 		<input id="signendtime" name="signendtime" class="easyui-datebox" data-options="required:true,editable:false" style="height:32px">
 		</div>
 		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">内容简介：</span>
+		<textarea id="summary" name="summary" rows="8" cols="30"></textarea>
+		</div>
+		
 		<div style="margin:10px">
-		<span style="font-size:14px;display:inline-block;width:100px">课程简介：</span>
+		<span style="font-size:14px;display:inline-block;width:100px">课程介绍：</span>
 		<!-- 
 		<textarea id="courseintroduce" name="courseintroduce" rows="8" cols="50"></textarea>
 		 -->

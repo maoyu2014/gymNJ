@@ -1,5 +1,6 @@
 package models;
 
+//特训课程show，现在不用了，直接用PrivateExercise
 public class PrivateExerciseShow {
 
 	public int id;

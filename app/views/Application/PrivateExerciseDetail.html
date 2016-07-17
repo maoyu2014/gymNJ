@@ -35,6 +35,36 @@
 		<input id="name" name="name" class="easyui-textbox" data-options="required:true" value="${sc.name}" style="height:32px">
 		</div>
 		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">课程类型：</span>
+		<select name="coursestyle" class="easyui-combobox" style="height:32px;width:100px;">
+			#{if sc.coursestyle=='免费课程'}
+			<option value="免费课程" selected>免费课程</option>
+			#{/if}
+			#{else}
+			<option value="免费课程">免费课程</option>
+			#{/else}
+			#{if sc.coursestyle=='基础课程'}
+		    <option value="基础课程" selected>基础课程</option>
+		    #{/if}
+		    #{else}
+		    <option value="基础课程">基础课程</option>
+		    #{/else}
+		    #{if sc.coursestyle=='提高课程'}
+		    <option value="提高课程" selected>提高课程</option>
+		    #{/if}
+		    #{else}
+		    <option value="提高课程">提高课程</option>
+		    #{/else}
+		    #{if sc.coursestyle=='强化课程'}
+		    <option value="强化课程" selected>强化课程</option>
+		    #{/if}
+		    #{else}
+		    <option value="强化课程">强化课程</option>
+		    #{/else}
+		</select>
+		</div>
+		
 		<div style="margin:10px">
 		<span style="font-size:14px;display:inline-block;width:100px">课程图片：</span>
 		<input name="imagefile" class="easyui-filebox" data-options="buttonText:'上传图片'" value="${sc.image}" style="height:32px">
@@ -107,8 +137,13 @@
 		<input id="signendtime" name="signendtime" class="easyui-datebox" data-options="required:true,editable:false" value="${sc.signendtime}" style="height:32px">
 		</div>
 		
+		<div style="margin:10px;">
+		<span style="font-size:14px;display:inline-block;width:100px">内容简介：</span>
+		<textarea id="summary" name="summary" rows="8" cols="30">${sc.summary}</textarea>
+		</div>
+		
 		<div style="margin:10px">
-		<span style="font-size:14px;display:inline-block;width:100px">课程简介：</span>
+		<span style="font-size:14px;display:inline-block;width:100px">课程介绍：</span>
 		<!-- 
 		<textarea id="courseintroduce" name="courseintroduce" rows="8" cols="50">${sc.courseintroduce}</textarea>
 		 -->

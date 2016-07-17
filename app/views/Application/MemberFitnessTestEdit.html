@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+    
+<body>
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">会员体能测试编辑</div>
+	
+	<div style="margin:20px">
+		#{form @Application.addMemberFitnessTestToDB(memberid)}
+		是否测试过：
+		<select name="fitnesstest" class="easyui-combobox" style="height:32px;width:100px;">
+			<option value="已测">已测</option>
+		    <option value="未测">未测</option>
+		</select><br/><br/>
+		
+		<div style="margin:10px">
+	        <table border="1" cellspacing="1">
+		            <tr>
+		                <th>胸围</th>
+		                <th>腰围</th>
+		                <th>臀围</th>
+		                <th>上臀围</th>
+		                <th>大腿围</th>
+		                <th>小腿围</th>
+		            </tr>
+		        	<tr>
+		        		<td><input name="xiongwei" type="text" value="${mft.xiongwei}"></td>
+		        		<td><input name="yaowei" type="text" value="${mft.yaowei}"></td>
+		        		<td><input name="tunwei" type="text" value="${mft.tunwei}"></td>
+		        		<td><input name="shangtunwei" type="text" value="${mft.shangtunwei}"></td>
+		        		<td><input name="datuiwei" type="text" value="${mft.datuiwei}"></td>
+		        		<td><input name="xiaotuiwei" type="text" value="${mft.xiaotuiwei}"></td>
+		        	</tr>
+		    </table>
+		    <br/>
+		    <table border="1" cellspacing="1">
+		            <tr>
+		                <th data-options="field:'testcontent',width:200,align:'left'">测试内容</th>
+		                <th data-options="field:'testdata',width:200">数据</th>
+		            </tr>
+					<tr>
+						<td>引体向上（男）</td>
+						<td><input name="pullup" type="text" value="${mft.pullup}"></td>
+					</tr>
+					<tr>
+						<td>俯卧撑（男）</td>
+						<td><input name="pushup" type="text" value="${mft.pushup}"  style=""></td>
+					</tr>
+					<tr>
+						<td>平板支撑（男）</td>
+						<td><input name="plank" type="text" value="${mft.plank}"  style=""></td>
+					</tr>
+					<tr>
+						<td>坐位体前屈</td>
+						<td><input name="sitandreach" type="text" value="${mft.sitandreach}"  style=""></td>
+					</tr>
+					<tr>
+						<td>蹲起</td>
+						<td><input name="squatandrise" type="text" value="${mft.squatandrise}"  style=""></td>
+					</tr>
+					<tr>
+						<td>仰卧起坐（女）</td>
+						<td><input name="situp" type="text" value="${mft.situp}"  style=""></td>
+					</tr>
+					<tr>
+						<td>哈佛台阶试验</td>
+						<td>--------</td>
+					</tr>
+					<tr>
+						<td>&nbsp;&nbsp;&nbsp;--第1min心率</td>
+						<td><input name="heartrateone" type="text" value="${mft.heartrateone}"  style=""></td>
+					</tr>
+					<tr>
+						<td>&nbsp;&nbsp;&nbsp;--第2min心率</td>
+						<td><input name="heartratetwo" type="text" value="${mft.heartratetwo}"  style=""></td>
+					</tr>
+					<tr>
+						<td>&nbsp;&nbsp;&nbsp;--第3min心率</td>
+						<td><input name="heartratethree" type="text" value="${mft.heartratethree}"  style=""></td>
+					</tr>
+			</table>
+	    </div>
+		
+		<p><input type="submit" style="width:80px;height:32px" value="提交"></p>
+		#{/form}
+	</div>
+	
+    
+</body>
+
+
+</html>

@@ -31,11 +31,11 @@
         	}" style="height:32px">
 		<input id="employeeidq" name="employeeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',prompt:'请选择一个教练'" style="height:32px">
 		<select name="astatus" class="easyui-combobox" style="height:32px;width:100px;">
-			<option value="0">全部状态</option>
-			<option value="1">已发布</option>
-		    <option value="2">报名中</option>
-		    <option value="3">开课中</option>
-		    <option value="4">已结束</option>
+			<option value="全部状态">全部状态</option>
+			<option value="已发布">已发布</option>
+		    <option value="报名中">报名中</option>
+		    <option value="开课中">开课中</option>
+		    <option value="已结束">已结束</option>
 		</select>
 		<input name="privateexercisename" class="easyui-textbox" data-options="prompt:'搜索特训班名称关键字'" style="height:32px">
 		<input type="submit" style="width:80px;height:32px" value="搜索">       
@@ -48,30 +48,36 @@
 	        <thead>
 	            <tr>
 	                <th data-options="field:'name',width:100">课程名称</th>
+	                <th data-options="field:'coursestyle',width:100">课程类型</th>
 	                <th data-options="field:'employeename',width:80">教练</th>
 	                <th data-options="field:'storename',width:100">门店</th>
+	                <th data-options="field:'signbegintime',width:100">报名时间</th>
 	                <th data-options="field:'classbegintime',width:100">开课时间</th>
-	                <th data-options="field:'weeks_period',width:100">课时</th>
-	                <th data-options="field:'oknum_num',width:100">报名人数</th>
-	                <th data-options="field:'status',width:100">状态</th>
-	                <th data-options="field:'price',width:100">费用（人/元）</th>
+	                <th data-options="field:'exercisebegintime',width:100">训练时间</th>
+	                <th data-options="field:'weeks_period',width:70">课时</th>
+	                <th data-options="field:'oknum_num',width:70">报名人数</th>
+	                <th data-options="field:'status',width:70">状态</th>
+	                <th data-options="field:'price',width:70">费用（人/元）</th>
 	                <th data-options="field:'operation',width:100">操作</th>
 	            </tr>
 	        </thead>
 	        <tbody>
-	        #{list items:lists, as:'PrivateExerciseShow'}
+	        #{list items:list, as:'PrivateExercise'}
 	        	<tr>
-		            <td>${PrivateExerciseShow.name}</td>
-		            <td>${PrivateExerciseShow.employeename}</td>
-		            <td>${PrivateExerciseShow.storename}</td>          
-		            <td>${PrivateExerciseShow.classbegintime}</td>
-		            <td>${PrivateExerciseShow.weeks}周/${PrivateExerciseShow.period}</td>
-		            <td>${PrivateExerciseShow.oknum}/${PrivateExerciseShow.num}</td>
-		            <td>${PrivateExerciseShow.status}</td>
-		            <td>${PrivateExerciseShow.price}</td>
+		            <td>${PrivateExercise.name}</td>
+		            <td>${PrivateExercise.coursestyle}</td>
+		            <td>${PrivateExercise.employeename}</td>
+		            <td>${PrivateExercise.storename}</td>      
+		            <td>${PrivateExercise.signbegintime}</td>    
+		            <td>${PrivateExercise.classbegintime}</td>
+		            <td>${PrivateExercise.exercisebegintime}-${PrivateExercise.exerciseendtime}</td>
+		            <td>${PrivateExercise.weeks}周/${PrivateExercise.period}</td>
+		            <td>${PrivateExercise.oknum}/${PrivateExercise.num}</td>
+		            <td>${PrivateExercise.status}</td>
+		            <td>${PrivateExercise.price}</td>
 		            <td>
-		            	<a href="@{Application.PrivateExerciseDetail(PrivateExerciseShow.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-		            	<a href="@{Application.deletePrivateExercise(PrivateExerciseShow.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
+		            	<a href="@{Application.PrivateExerciseDetail(PrivateExercise.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{Application.deletePrivateExercise(PrivateExercise.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
 		            </td>
 		        </tr>
 	        #{/list}

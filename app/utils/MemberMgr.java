@@ -59,18 +59,21 @@ public class MemberMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, a.fingerprint, b.name as cityname, a.cardtype from Member a, city b where a.cityid=b.id and a.cardtype>0";
+			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, a.fingerprint, b.name as cityname, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus from Member a, city b where a.cityid=b.id and a.cardtype>0";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				String openid = rs.getString("openid");			//微信唯一标识
 				String name = rs.getString("name");
 				String wechatname = rs.getString("wechatname");
+				String wechatnumber = rs.getString("wechatnumber");
 				String phone = rs.getString("phone");
 				int fingerprint = rs.getInt("fingerprint");	//指纹状态，1已录入 2未录入
 				String cityname = rs.getString("cityname");
 				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
-				Member an = new Member(id, openid, name, wechatname, phone, fingerprint,  cityname, cardtype);
+				String fitnesstest = rs.getString("fitnesstest");
+				String memberstatus = rs.getString("memberstatus");
+				Member an = new Member(id, openid, name, wechatname, phone, fingerprint, cityname, cardtype, wechatnumber, fitnesstest, memberstatus);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -89,7 +92,7 @@ public class MemberMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, a.fingerprint, b.name as cityname, a.cardtype from Member a, city b "
+			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, a.fingerprint, b.name as cityname, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus from Member a, city b "
 					+ "where a.cityid=b.id ";
 			boolean flag = true;
 			if (acityid!=0) {
@@ -123,7 +126,10 @@ public class MemberMgr {
 				int fingerprint = rs.getInt("fingerprint");	//指纹状态，1已录入 2未录入
 				String cityname = rs.getString("cityname");
 				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
-				Member an = new Member(id, openid, name, wechatname, phone, fingerprint,  cityname, cardtype);
+				String wechatnumber = rs.getString("wechatnumber");
+				String fitnesstest = rs.getString("fitnesstest");
+				String memberstatus = rs.getString("memberstatus");
+				Member an = new Member(id, openid, name, wechatname, phone, fingerprint, cityname, cardtype, wechatnumber, fitnesstest, memberstatus);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -167,6 +173,7 @@ public class MemberMgr {
 				String openid = rs.getString("openid");			//微信唯一标识
 				String name = rs.getString("name");
 				String wechatname = rs.getString("wechatname");
+				String wechatnumber = rs.getString("wechatnumber");
 				int sex = rs.getInt("sex");		//1男 2女
 				double height = rs.getDouble("height");
 				String birthday = rs.getString("birthday");	//生日
@@ -180,15 +187,20 @@ public class MemberMgr {
 				int exercisegoal = rs.getInt("exercisegoal");	//目标   1减脂 2塑形 3增肌
 				int exercisehz = rs.getInt("exercisehz");	//频率，1难的  2一周一次   3一周三次   4每天
 				int distance = rs.getInt("distance");	//距离  1：一公里以内  2：三公里以内  3：三公里以外
+				
+				String fitnesstest = rs.getString("fitnesstest");
+				String memberstatus = rs.getString("memberstatus");
+				
 				//体脂信息
 				String bmi = rs.getString("bmi");		//BMI
 				String muscle = rs.getString("muscle");		//肌肉率
 				String fat = rs.getString("fat");		//脂肪
+				String innerfat = rs.getString("innerfat");		//内脏脂肪
 				String water = rs.getString("water");		//水分
 				String protein = rs.getString("protein");	//蛋白质
 				int basicrate = rs.getInt("basicrate");	//基础代谢率
 				int bodyage = rs.getInt("bodyage");		//身体年龄
-				an = new Member(id, openid, name, wechatname, sex, height, birthday, phone, fingerprint,  cityid,  cardtype, deaddate, exercisetime, exercisegoal, exercisehz, distance, bmi, muscle, fat, water, protein, basicrate, bodyage);
+				an = new Member(id, openid, name, wechatname, sex, height, birthday, phone, fingerprint, cityid, cardtype, deaddate, exercisetime, exercisegoal, exercisehz, distance, bmi, muscle, fat, water, protein, basicrate, bodyage, wechatnumber, fitnesstest, memberstatus, innerfat);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -246,5 +258,34 @@ public class MemberMgr {
 		return list;
 	}
 	
+	public void updateMemberStatus(int memberid, String memberstatus) {
+		Connection conn = DB.getConn();
+		String sql = "update Member set memberstatus = ?  where id = " + memberid;
+		PreparedStatement pstmt = DB.getPstmt(conn, sql);
+		try {
+			pstmt.setString(1, memberstatus);
+			pstmt.executeUpdate();
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+	}
+	
+	public void updateMemberFitnessTest(int memberid, String fitnesstest) {
+		Connection conn = DB.getConn();
+		String sql = "update Member set fitnesstest = ?  where id = " + memberid;
+		PreparedStatement pstmt = DB.getPstmt(conn, sql);
+		try {
+			pstmt.setString(1, fitnesstest);
+			pstmt.executeUpdate();
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+	}
 	
 }
