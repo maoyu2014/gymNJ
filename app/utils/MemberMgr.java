@@ -235,7 +235,7 @@ public class MemberMgr {
 		ResultSet rs = null;
 		try {
 			String sql = "select id, openid, name, wechatname, phone, deaddate from member where phone in "
-					+ "(select recommendedphone from Member group by recommendedphone having recommendedphone != '' and  count(recommendedphone) >= 4) "
+					+ "(select recommendedphone from Member group by recommendedphone having recommendedphone != '' and  count(recommendedphone) >= 1) "
 					+ "order by id";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {

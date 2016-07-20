@@ -216,7 +216,7 @@ public class Application extends Controller {
     	    	String fileName = currentTime + upfile.getName();
     	    	Files.copy(upfile, Play.getFile("./public/images/" + fileName));
     	    	result.put("state", "SUCCESS");
-        		result.put("url", "/public/images/" + fileName);
+        		result.put("url", "http://gymanage.meeour.com/public/images/" + fileName);
         		result.put("title", "fileName");
         		result.put("original", "fileName");
 //        		System.out.println(fileName);
