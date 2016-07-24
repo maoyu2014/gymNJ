@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+    
+<body>
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">特训营预约展示</div>
+	
+	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'membername',width:80">会员名</th>
+	                <th data-options="field:'typename',width:80">课程属性</th>
+	                <th data-options="field:'exercisename',width:120">课程名称</th>
+	                <th data-options="field:'booktime',width:120">预约时间</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        #{list items:list, as:'book'}
+	        	<tr>
+		            <td>${book.membername}</td>
+		            <td>${book.typename}</td>
+		            <td>${book.exercisename}</td>
+		            <td>${book.booktime}</td>
+		        </tr>
+	        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+    
+    <div style="margin:20px;font-size:15px;font-weight:600;">
+    	共${number}条记录
+	</div>
+	
+</body>
+
+
+</html>

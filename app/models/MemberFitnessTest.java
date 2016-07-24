@@ -21,6 +21,8 @@ public class MemberFitnessTest {
 	public String heartratetwo;
 	public String heartratethree;
 	
+	public MemberFitnessTest() {}
+	
 	public MemberFitnessTest(int id, int memberid, String fitnesstest,
 			String xiongwei, String yaowei, String tunwei, String shangtunwei,
 			String datuiwei, String xiaotuiwei, String pullup, String pushup,

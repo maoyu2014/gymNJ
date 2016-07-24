@@ -1893,6 +1893,9 @@ public class Application extends Controller {
 		}
 		//体能测试展示
 		MemberFitnessTest mft = MemberFitnessTestMgr.getInstance().getMemberFitnessTestByMemberId(id);
+		if (mft==null) {
+			mft = new MemberFitnessTest();
+		}
 		render(sc, listIn, listOut, inOutTmNum, listtes, listpe, mft);
     }
     
@@ -1949,8 +1952,19 @@ public class Application extends Controller {
      * ···············--------预约管理-------------1,预约团操和私教BookExercise
      */
     
+    //特训营预约管理
+    public static void BookPrivateExerciseDisplay() {
+    	List<BookExercise> list = BookExerciseMgr.getInstance().getAllActivePrivateBookExercise();
+    	for (BookExercise b : list) {
+    		if (b.type==0) b.typename="团操";
+    		else if (b.type==1) b.typename="特训营";
+    		else b.typename="undefined";
+    	}
+    	int number = list.size();
+    	render(list, number);
+    }
     
-    //BookExercise预约设置（展示）页面
+    //BookExercise团操和特训营一起的预约设置（展示）页面
     public static void BookExerciseSetting() {
     	List<BookExercise> listBookExercise = BookExerciseMgr.getInstance().getAllActiveBookExercise();
     	List<Member> listMember = new ArrayList<>();
@@ -2044,17 +2058,6 @@ public class Application extends Controller {
     	render("Application/BookExerciseSetting.html", listBookExercise, listMember, listPrivateExerciseShow, listTeamExerciseScheduleShow, number);
     }
     
-// 后台不需要添加BookExercise，BookExercise在手机端添加
-//    //添加BookExercise页面
-//    public static void addBookExercise() {
-//        render();
-//    }
- 
-//    //添加BookExercise
-//    public static void addBookExerciseToDB() {
-//    	
-//    }
-
 	//删除BookExercise预约
     public static void deleteBookExercise(int id) {
     	boolean flag = BookExerciseMgr.getInstance().deleteBookExercise(id);
@@ -2063,18 +2066,6 @@ public class Application extends Controller {
     	else 
     		renderText("删除失败");
     }
-    
-//    //BookExercise预约详情(修改)页面
-//    public static void BookExerciseDetail(int id) {
-//		render();
-//    }
-   
-// 后台也不需要修改预约BookExercise
-//    //修改预约
-//    public static void updateBookExerciseToDB() {
-//
-//    }
-    
     
     
     /*

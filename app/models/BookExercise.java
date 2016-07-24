@@ -1,6 +1,6 @@
 package models;
 
-//预约团操
+//预约课程
 public class BookExercise {
 
 	public int id;
@@ -9,12 +9,23 @@ public class BookExercise {
 	public int exerciseid;
 	public String booktime;
 	
-	public BookExercise(int id, int memberid, int type, int exerciseid,
-			String booktime) {
+	public String membername;
+	public String typename;
+	public String exercisename;
+	
+	public BookExercise(int id, int memberid, int type, int exerciseid,	String booktime) {
 		this.id = id;
 		this.memberid = memberid;
 		this.type = type;
 		this.exerciseid = exerciseid;
+		this.booktime = booktime;
+	}
+	
+	public BookExercise(int id, String membername, int type, String exercisename, String booktime) {
+		this.id = id;
+		this.membername = membername;
+		this.type = type;
+		this.exercisename = exercisename;
 		this.booktime = booktime;
 	}
 	
