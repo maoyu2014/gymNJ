@@ -8,7 +8,9 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import models.Announcement;
 import models.City;
@@ -256,6 +258,29 @@ public class MemberMgr {
 			DB.close(conn);
 		}
 		return list;
+	}
+	
+	public Map<String, Integer> getPhoneVSNumber() {
+		Map<String, Integer> map = new HashMap<>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		try {
+			String sql = "select recommendedphone, count(recommendedphone) as numbers from Member group by recommendedphone having recommendedphone != '' and  count(recommendedphone) >= 1";
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				String recommendedphone = rs.getString("recommendedphone");
+				int numbers = rs.getInt("numbers");
+				map.put(recommendedphone, numbers);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return map;
 	}
 	
 	public void updateMemberStatus(int memberid, String memberstatus) {

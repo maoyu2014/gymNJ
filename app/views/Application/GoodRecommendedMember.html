@@ -26,6 +26,7 @@
 	                <th data-options="field:'wechatname',width:100">微信名</th>
 	                <th data-options="field:'phone',width:100">电话</th>
 	                <th data-options="field:'deaddate',width:100">到期时间</th>
+	                <th data-options="field:'numofpeopel',width:80">推荐人数</th>
 	                <th data-options="field:'operation',width:100">操作</th>
 	            </tr>
 	        </thead>
@@ -35,7 +36,8 @@
 		            <td>${member.name}</td>
 		            <td>${member.wechatname}</td>
 		            <td>${member.phone}</td>
-		            <td>${member.deaddate}</td>          
+		            <td>${member.deaddate}</td>         
+		            <td>${member.recommendnums}</td> 
 		            <td>
 		            	<a href="@{Application.modifyMemberDeaddate(member.id)}" class="easyui-linkbutton" data-options="" style="">延长奖励</a>
 		            </td>

@@ -1943,6 +1943,10 @@ public class Application extends Controller {
     //优秀推介人界面
     public static void GoodRecommendedMember() {
     	List<Member> list = MemberMgr.getInstance().getGoodRecommendedMember();
+    	Map<String, Integer> map = MemberMgr.getInstance().getPhoneVSNumber();
+    	for (Member m : list) {
+    		m.recommendnums = map.get(m.phone);
+    	}
     	int number = list.size();
     	render(list, number);
     }

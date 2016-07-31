@@ -36,7 +36,8 @@ public class Member {
 	public int basicrate;	//基础代谢率
 	public int bodyage;		//身体年龄
 	
-	public String recommendedphone;	//推介人手机号
+	public String recommendedphone;	//推荐人的的手机号
+	public int recommendnums;		//推荐了多少人
 	
 	//展示信息
 	public String sexvalue;
