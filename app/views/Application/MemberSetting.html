@@ -21,12 +21,30 @@
 		#{form @Application.MemberSearch()}
 		<input name="acityid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{Application.getAllCity()}',prompt:'请选择一个城市'" style="width:120px;height:32px">
 		<select name="acardtype" class="easyui-combobox" style="height:32px;width:100px;">
-			<option value="5">全部卡种类</option>
+			<option value="10">全部卡种类</option>
 			<option value="1">月卡</option>
 		    <option value="2">季卡</option>
 		    <option value="3">半年卡</option>
 		    <option value="4">年卡</option>
-		    <option value="0">非会员</option>	<!-- 这里特殊，0是非会员，所以全部种类用了5 -->
+		    <option value="5">299新人月卡</option>
+		    <option value="0">非会员</option>	<!-- 这里特殊，0是非会员，所以全部种类用了10 -->
+		</select>
+		<select name="amembertype" class="easyui-combobox" style="height:32px;width:100px;">
+			<option value="0">会员种类</option>
+			<option value="1">在期会员</option>
+			<option value="2">过期会员</option>
+		    <!-- <option value="3">特训营学员</option>   -->
+		</select>
+		<select name="asextype" class="easyui-combobox" style="height:32px;width:100px;">
+			<option value="0">性别</option>
+			<option value="1">男</option>
+			<option value="2">女</option>
+		    <option value="3">未知</option>
+		</select>
+		<select name="afitnesstest" class="easyui-combobox" style="height:32px;width:100px;">
+			<option value="是否">体能测试</option>
+			<option value="已测">已测体脂</option>
+			<option value="未测">未测体脂</option>
 		</select>
 		<input name="keyname" class="easyui-textbox" data-options="prompt:'搜姓名、微信名、手机号'" style="height:32px">
 		<input type="submit" style="width:80px;height:32px" value="搜索">        

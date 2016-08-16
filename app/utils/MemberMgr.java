@@ -55,13 +55,13 @@ public class MemberMgr {
 //		}
 //	}
 	
-	public List<Member> getAllMember() {
+	public List<Member> getAllMember(String todaytime) {
 		List<Member> list = new ArrayList<Member>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, a.fingerprint, b.name as cityname, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus from Member a, city b where a.cityid=b.id and a.cardtype>0";
+			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, a.fingerprint, b.name as cityname, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus from Member a, city b where a.cityid=b.id and a.deaddate > '" + todaytime + "'";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
@@ -88,7 +88,7 @@ public class MemberMgr {
 		return list;
 	}
 	
-	public List<Member> searchMember(int acityid, int acardtype, String keyname) {
+	public List<Member> searchMember(String todaytime, int acityid, int acardtype, int amembertype, int asextype, String afitnesstest, String keyname) {
 		List<Member> list = new ArrayList<Member>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
@@ -96,27 +96,26 @@ public class MemberMgr {
 		try {
 			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, a.fingerprint, b.name as cityname, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus from Member a, city b "
 					+ "where a.cityid=b.id ";
-			boolean flag = true;
 			if (acityid!=0) {
-				if (!flag) {
-					sql += " where a.cityid = " + acityid;
-				} else {
-					sql += " and a.cityid = " + acityid;
-				}
+				sql += " and a.cityid = " + acityid;
 			}
-			if (acardtype!=5) {		//注意这里是5表示所有会员，因为非会员是0
-				if (!flag) {
-					sql += " where a.cardtype = " + acardtype;
-				} else {
-					sql += " and a.cardtype = " + acardtype;
-				}
+			if (acardtype!=10) {		//注意这里是10表示所有会员，因为非会员是0
+				sql += " and a.cardtype = " + acardtype;
+			}
+			if (amembertype!=0) {
+				if (amembertype==1)		//在期会员
+					sql += " and a.deaddate > '" + todaytime + "'";
+				else if (amembertype==2) // 过期会员
+					sql += " and a.deaddate < '" + todaytime + "' and a.cardtype>0";
+			}
+			if (asextype!=0) {
+				sql += " and a.sex = " + asextype;
+			}
+			if (!afitnesstest.equals("是否")) {
+				sql += " and a.fitnesstest = '" + afitnesstest + "'";
 			}
 			if (keyname!=null && keyname.length()>0) {
-				if (!flag) {
-					sql+=" where ( a.name like '%" + keyname + "%' or a.wechatname like '%" + keyname + "%' or a.phone like '%" + keyname + "%' ) ";
-				} else {
-					sql+=" and ( a.name like '%" + keyname + "%' or a.wechatname like '%" + keyname + "%' or a.phone like '%" + keyname + "%' ) ";
-				}
+				sql+=" and ( a.name like '%" + keyname + "%' or a.wechatname like '%" + keyname + "%' or a.phone like '%" + keyname + "%' ) ";
 			}
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
@@ -183,7 +182,7 @@ public class MemberMgr {
 				int fingerprint = rs.getInt("fingerprint");	//指纹状态，1已录入 2未录入
 //				int comeinpasswordid = rs.getInt("comeinpasswordid");			//入场密码表
 				int cityid = rs.getInt("cityid");
-				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
+				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡,5是299新人月卡
 				String deaddate = rs.getString("deaddate");
 				int exercisetime = rs.getInt("exercisetime"); 	//时间   1早上 2下午 3晚上
 				int exercisegoal = rs.getInt("exercisegoal");	//目标   1减脂 2塑形 3增肌

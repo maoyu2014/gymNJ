@@ -1712,7 +1712,8 @@ public class Application extends Controller {
     
     //Member设置（展示）页面
     public static void MemberSetting() {
-    	List<Member> list = MemberMgr.getInstance().getAllMember();
+    	String todaytime = getCurrentTimeSecond();
+    	List<Member> list = MemberMgr.getInstance().getAllMember(todaytime);
     	for (Member ps : list) {
     		if (ps.fingerprint==1) ps.fingerprinttype="已录入";
     		else ps.fingerprinttype="未录入";
@@ -1721,6 +1722,7 @@ public class Application extends Controller {
     		else if (ps.cardtype==2) ps.cardtypename="季卡";
     		else if (ps.cardtype==3) ps.cardtypename="半年卡";
     		else if (ps.cardtype==4) ps.cardtypename="年卡";
+    		else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
     		// 入场密码
     		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(ps.id);
     		if (cp!=null) {
@@ -1734,8 +1736,9 @@ public class Application extends Controller {
     }
     
     //搜索会员
-    public static void MemberSearch(int acityid, int acardtype, String keyname) {
-    	List<Member> list = MemberMgr.getInstance().searchMember(acityid, acardtype, keyname);
+    public static void MemberSearch(int acityid, int acardtype, int amembertype, int asextype, String afitnesstest, String keyname) {
+    	String todaytime = getCurrentTimeSecond();
+    	List<Member> list = MemberMgr.getInstance().searchMember(todaytime, acityid, acardtype, amembertype, asextype, afitnesstest, keyname);
     	for (Member ps : list) {
     		if (ps.fingerprint==1) ps.fingerprinttype="已录入";
     		else ps.fingerprinttype="未录入";
@@ -1744,6 +1747,7 @@ public class Application extends Controller {
     		else if (ps.cardtype==2) ps.cardtypename="季卡";
     		else if (ps.cardtype==3) ps.cardtypename="半年卡";
     		else if (ps.cardtype==4) ps.cardtypename="年卡";
+    		else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
     		// 入场密码
     		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(ps.id);
     		if (cp!=null) {
@@ -1840,6 +1844,7 @@ public class Application extends Controller {
 		else if (sc.cardtype==2) sc.cardtypename="季卡";
 		else if (sc.cardtype==3) sc.cardtypename="半年卡";
 		else if (sc.cardtype==4) sc.cardtypename="年卡";
+		else if (sc.cardtype==5) sc.cardtypename="299新人月卡";
 		if (sc.sex==1) sc.sexvalue="男"; else sc.sexvalue="女";
 		if (sc.exercisetime==1) sc.exercisetimevalue="早上";
 		else if (sc.exercisetime==2) sc.exercisetimevalue="下午";
