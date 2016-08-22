@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+         
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+
+<body>
+
+<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">团操预约</div>
+	
+<div title="团操课程预约" style="">
+
+	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'name',width:120">报名学员</th>
+	                <th data-options="field:'phone',width:120">手机号码</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        #{list items:list, as:'member'}
+	        	<tr>
+		            <td>${member.name}</td>
+		            <td>${member.phone}</td>
+		        </tr>
+	        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+    
+    <div style="margin:20px;font-size:15px;font-weight:600;">
+    	共${num}条记录
+	</div>
+</div>
+	    
+    
+</body>
+</html>

@@ -226,5 +226,34 @@ public class BookExerciseMgr {
 		}
 		return list;
 	}
+
+	public List<Member> getTeamExerciseScheduleBookMember(int aid) {
+		List<Member> list = new ArrayList<>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		Member an = null;
+		try {
+			String sql = "select m.id as id, m.name as name, m.phone as phone from BookExercise b, member m where b.memberid=m.id and b.exerciseid = " + aid;
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				String phone = rs.getString("phone");
+				an = new Member();
+				an.id = id; 
+				an.name = name; 
+				an.phone = phone;
+				list.add(an);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return list;
+	}
 	
 }

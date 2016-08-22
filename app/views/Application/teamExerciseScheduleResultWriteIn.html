@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+         
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+
+<body>
+
+<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">录入成绩</div>
+	
+<div style="margin:20px">
+	#{form @Application.addTeamExerciseScheduleResultToDB()}
+	
+	<div style="margin:10px">
+        <table border="1" cellspacing="0" cellpadding="2">
+	            <tr>
+	                <td>姓名</td>
+	                <td colspan="2"><input type="text" name="yundong1"></td>
+	                <td colspan="2"><input type="text" name="yundong2"></td>
+	                <td colspan="2"><input type="text" name="yundong3"></td>
+	                <td colspan="2"><input type="text" name="yundong4"></td>
+	            </tr>
+	            <tr>
+	            	<td>运动量</td>
+	            	<td colspan="8"><input type="text" name="yundongliang" style="width:800px;"></td>
+	            </tr>
+	            <tr>
+	            	<td>轮次</td>
+	            	<td>第1轮</td>
+	            	<td>第2轮</td>
+	            	<td>第1轮</td>
+	            	<td>第2轮</td>
+	            	<td>第1轮</td>
+	            	<td>第2轮</td>
+	            	<td>第1轮</td>
+	            	<td>第2轮</td>
+	            </tr>
+	        	#{list items:list, as:'member'}
+	        	<tr>
+	            	<td>${member.name}</td>
+	            	<td><input type="text" name="shijian1" style="width:100px;"></td>
+	            	<td><input type="text" name="shijian2" style="width:100px;"></td>
+	            	<td><input type="text" name="shijian3" style="width:100px;"></td>
+	            	<td><input type="text" name="shijian4" style="width:100px;"></td>
+	            	<td><input type="text" name="shijian5" style="width:100px;"></td>
+	            	<td><input type="text" name="shijian6" style="width:100px;"></td>
+	            	<td><input type="text" name="shijian7" style="width:100px;"></td>
+	            	<td><input type="text" name="shijian8" style="width:100px;"></td>
+	            </tr>
+	        	#{/list}
+	        	<tr>
+	        		<td colspan="9">卡路里消耗</td>
+	        	</tr>
+	        	<tr>
+	        		<td>1-3名</td>
+	        		<td colspan="8"><input type="text" name="one2three" style="width:700px;"></td>
+	        	</tr>
+	        	<tr>
+	        		<td>4-6名</td>
+	        		<td colspan="8"><input type="text" name="four2six" style="width:700px;"></td>
+	        	</tr>
+	        	<tr>
+	        		<td>7-12名</td>
+	        		<td colspan="8"><input type="text" name="seven212" style="width:700px;"></td>
+	        	</tr>
+	    </table>
+    </div>
+	
+	<p>
+		<input type="submit" style="width:80px;height:32px" value="保存修改">
+	</p>
+	#{/form}
+</div>
+	    
+    
+</body>
+</html>

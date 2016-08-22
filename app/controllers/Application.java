@@ -1278,6 +1278,22 @@ public class Application extends Controller {
     	render(mapweek);
     }
     
+    //查看团操报名学员
+    public static void teamExerciseScheduleBookMember(int id) {
+    	List<Member> list = BookExerciseMgr.getInstance().getTeamExerciseScheduleBookMember(id);
+    	int num = list.size();
+    	render(list, num);
+    }
+    
+    //写入本次团操课程锻炼结果
+    public static void teamExerciseScheduleResultWriteIn(int id) {
+    	List<Member> list = BookExerciseMgr.getInstance().getTeamExerciseScheduleBookMember(id);
+    	render(list);
+    }
+    
+    public static void addTeamExerciseScheduleResultToDB() {
+    }
+    
     //团操
     public static void teamExerciseBasic() {
     	List<TeamExercise> lists = TeamExerciseMgr.getInstance().getAllTeamExercise();
