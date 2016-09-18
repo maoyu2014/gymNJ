@@ -28,6 +28,7 @@ import utils.SocketConnect;
 import utils.StoreMgr;
 import utils.TeamExerciseMgr;
 import utils.TeamExerciseScheduleMgr;
+import utils.TeamExerciseScheduleResultMgr;
 import utils.UserInOutInfoFromHardMgr;
 
 import java.io.File;
@@ -1287,11 +1288,70 @@ public class Application extends Controller {
     
     //写入本次团操课程锻炼结果
     public static void teamExerciseScheduleResultWriteIn(int id) {
-    	List<Member> list = BookExerciseMgr.getInstance().getTeamExerciseScheduleBookMember(id);
-    	render(list);
+    	TeamExerciseScheduleResultInfo aa = TeamExerciseScheduleResultMgr.getInstance().getInfo(id);
+    	List<TeamExerciseScheduleResultDetail> anlist = TeamExerciseScheduleResultMgr.getInstance().getDetail(id);
+    	List<Member> templist = BookExerciseMgr.getInstance().getTeamExerciseScheduleBookMember(id);
+    	int number = templist.size();
+    	List<Member> list = new ArrayList<>();
+    	if (anlist.size()==0) {
+    		anlist = null;
+    		list = templist;
+    	} else {
+    		for (int i=0; i<number; i++) {
+    			int memberid = anlist.get(i).memberid;
+    			for (int j=0; j<number; j++) {
+    				int aid = templist.get(j).id;
+    				if (aid==memberid) {
+    					list.add(templist.get(j));
+    					break;
+    				}
+    			}
+    		}
+    	}
+    	render(list, id, number, aa, anlist);
     }
     
-    public static void addTeamExerciseScheduleResultToDB() {
+    public static void addTeamExerciseScheduleResultToDB(int id, List<Member> list) {
+    	String yundong1 = params.get("yundong1");
+    	String yundong2 = params.get("yundong2");
+    	String yundong3 = params.get("yundong3");
+    	String yundong4 = params.get("yundong4");
+    	String yundongliang = params.get("yundongliang");
+    	String one2three = params.get("one2three");
+    	String four2six = params.get("four2six");
+    	String seven212 = params.get("seven212");
+    	if (TeamExerciseScheduleResultMgr.getInstance().hasInfo(id)) {
+    		TeamExerciseScheduleResultMgr.getInstance().updateInfo(id, yundong1, yundong2, yundong3, yundong4,
+        			yundongliang, one2three, four2six, seven212);
+    	} else {
+    		TeamExerciseScheduleResultMgr.getInstance().saveInfo(id, yundong1, yundong2, yundong3, yundong4,
+    			yundongliang, one2three, four2six, seven212);
+    	}
+    	TeamExerciseScheduleResultInfo aa = new TeamExerciseScheduleResultInfo(id, yundong1, yundong2, yundong3, yundong4, yundongliang, one2three, four2six, seven212);
+    	int number = list.size();
+    	List<TeamExerciseScheduleResultDetail> anlist = new ArrayList<>();
+    	for (int i=1; i<=number; i++) {
+    		int memberid = list.get(i-1).id;
+    		String shijian1 = params.get(i+"shijian1");
+    		String shijian2 = params.get(i+"shijian2");
+    		String shijian3 = params.get(i+"shijian3");
+    		String shijian4 = params.get(i+"shijian4");
+    		String shijian5 = params.get(i+"shijian5");
+    		String shijian6 = params.get(i+"shijian6");
+    		String shijian7 = params.get(i+"shijian7");
+    		String shijian8 = params.get(i+"shijian8");
+    		if (TeamExerciseScheduleResultMgr.getInstance().hasDetail(id, memberid)) {
+    			TeamExerciseScheduleResultMgr.getInstance().updateDetail(id, memberid, shijian1, shijian2,
+        				shijian3, shijian4, shijian5, shijian6, shijian7, shijian8);
+    		} else {
+    			TeamExerciseScheduleResultMgr.getInstance().saveDetail(id, memberid, shijian1, shijian2,
+    				shijian3, shijian4, shijian5, shijian6, shijian7, shijian8);
+    		}
+    		TeamExerciseScheduleResultDetail bb = new TeamExerciseScheduleResultDetail(id, memberid, shijian1, shijian2, shijian3, shijian4, shijian5, shijian6, shijian7, shijian8);
+    		anlist.add(bb);
+    	}
+    	
+    	render("Application/teamExerciseScheduleResultWriteIn.html",id, list, number, aa, anlist);
     }
     
     //团操
@@ -1399,7 +1459,8 @@ public class Application extends Controller {
     //添加新增的团操排期
     public static void addTeamExerciseScheduleToDB(int storeid,int classroomid,int employeeid,int teamexerciseid,
     		int num, String begintime1, String endtime1, String begintime2, String endtime2,
-    		String begintime3, String endtime3, String begintime4, String endtime4, String begintime5, String endtime5) {
+    		String begintime3, String endtime3, String begintime4, String endtime4, String begintime5, String endtime5,
+    		int consumenum) {
     	if (storeid==0) {
     		renderJSON("必须选择一个门店");
     	}
@@ -1435,22 +1496,22 @@ public class Application extends Controller {
         		renderJSON("第五行必须是同一天的不同时间段，不能跨天!");
         	}
     	}
-    	TeamExerciseSchedule a = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime1, endtime1);
+    	TeamExerciseSchedule a = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime1, endtime1, consumenum);
     	TeamExerciseScheduleMgr.getInstance().save(a);
     	if (begintime2!=null && endtime2!=null && begintime2.length()>0 && endtime2.length()>0) {
-    		TeamExerciseSchedule aa = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime2, endtime2);
+    		TeamExerciseSchedule aa = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime2, endtime2,consumenum);
         	TeamExerciseScheduleMgr.getInstance().save(aa);
     	}
     	if (begintime3!=null && endtime3!=null && begintime3.length()>0 && endtime3.length()>0) {
-    		TeamExerciseSchedule aa = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime3, endtime3);
+    		TeamExerciseSchedule aa = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime3, endtime3,consumenum);
         	TeamExerciseScheduleMgr.getInstance().save(aa);
     	}
     	if (begintime4!=null && endtime4!=null && begintime4.length()>0 && endtime4.length()>0) {
-    		TeamExerciseSchedule aa = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime4, endtime4);
+    		TeamExerciseSchedule aa = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime4, endtime4,consumenum);
         	TeamExerciseScheduleMgr.getInstance().save(aa);
     	}
     	if (begintime5!=null && endtime5!=null && begintime5.length()>0 && endtime5.length()>0) {
-    		TeamExerciseSchedule aa = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime5, endtime5);
+    		TeamExerciseSchedule aa = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime5, endtime5,consumenum);
         	TeamExerciseScheduleMgr.getInstance().save(aa);
     	}
     	teamExerciseSchedule();
@@ -1464,7 +1525,7 @@ public class Application extends Controller {
     
     //添加复制的团操排期
     public static void addCopyTeamExerciseScheduleToDB(int storeid,int classroomid,int employeeid,int teamexerciseid,
-    		int num, String begintime, String endtime) {
+    		int num, String begintime, String endtime, int consumenum) {
     	if (storeid==0) {
     		renderJSON("必须选择一个门店");
     	}
@@ -1480,7 +1541,7 @@ public class Application extends Controller {
     	if (! begintime.substring(0, 10).equals(endtime.substring(0, 10)) ) {
     		renderJSON("第一行课程必须是同一天的不同时间段，不能跨天!");
     	}
-    	TeamExerciseSchedule a = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime, endtime);
+    	TeamExerciseSchedule a = new TeamExerciseSchedule(storeid, classroomid, employeeid, teamexerciseid, num, 0, begintime, endtime, consumenum);
     	TeamExerciseScheduleMgr.getInstance().save(a);
     	teamExerciseSchedule();
     }
@@ -1502,7 +1563,7 @@ public class Application extends Controller {
     
     //修改团操排期
     public static void updateTeamExerciseScheduleToDB(int id, int storeid,int classroomid,int employeeid,int teamexerciseid,
-    		int num, int oknum, String begintime, String endtime) {
+    		int num, int oknum, String begintime, String endtime, int consumenum) {
     	if (storeid==0) {
     		renderJSON("必须选择一个门店");
     	}
@@ -1518,7 +1579,7 @@ public class Application extends Controller {
     	if (! begintime.substring(0, 10).equals(endtime.substring(0, 10)) ) {
     		renderJSON("必须是同一天的不同时间段，不能跨天!");
     	}
-    	TeamExerciseSchedule a = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime);
+    	TeamExerciseSchedule a = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime, consumenum);
     	TeamExerciseScheduleMgr.getInstance().update(a);
     	teamExerciseSchedule();
     }

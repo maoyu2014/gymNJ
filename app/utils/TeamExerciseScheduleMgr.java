@@ -29,7 +29,7 @@ public class TeamExerciseScheduleMgr {
 	
 	public void save(TeamExerciseSchedule e) {
 		Connection conn = DB.getConn();
-		String sql = "insert into TeamExerciseSchedule values (null, ?, ?, ?, ?, ?, ?, ?,?)";
+		String sql = "insert into TeamExerciseSchedule values (null, ?, ?, ?, ?, ?, ?, ?,?,?)";
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
 			pstmt.setInt(1, e.storeid);
@@ -40,6 +40,7 @@ public class TeamExerciseScheduleMgr {
 			pstmt.setInt(6, e.oknum);
 			pstmt.setString(7, e.begintime);
 			pstmt.setString(8, e.endtime);
+			pstmt.setInt(9, e.consumenum);
 			pstmt.executeUpdate();
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -69,7 +70,8 @@ public class TeamExerciseScheduleMgr {
 				
 				String begintime = rs.getString("begintime");
 				String endtime = rs.getString("endtime");
-				TeamExerciseSchedule an = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime);
+				int consumenum = rs.getInt("consumenum");
+				TeamExerciseSchedule an = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime, consumenum);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -88,7 +90,7 @@ public class TeamExerciseScheduleMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select a.id as id, a.num as num, a.oknum as oknum, a.begintime as begintime, a.endtime as endtime, b.name as storename, c.name as classroomname, d.name as employeename, e.name as teamexercisename "
+			String sql = "select a.id as id, a.num as num, a.oknum as oknum, a.begintime as begintime, a.endtime as endtime, a.consumenum as consumenum, b.name as storename, c.name as classroomname, d.name as employeename, e.name as teamexercisename "
 					+ "from TeamExerciseSchedule a, store b, classroom c, employee d, teamexercise e where "
 					+ "a.storeid=b.id and a.classroomid=c.id and a.employeeid=d.id and a.teamexerciseid=e.id and begintime like '%" + yearmonth + "%' order by begintime desc";
 			rs = DB.executeQuery(stmt, sql);
@@ -104,7 +106,8 @@ public class TeamExerciseScheduleMgr {
 				
 				String begintime = rs.getString("begintime");
 				String endtime = rs.getString("endtime");
-				TeamExerciseSchedule an = new TeamExerciseSchedule(id, storename, classroomname, employeename, teamexercisename, num, oknum, begintime, endtime);
+				int consumenum = rs.getInt("consumenum");
+				TeamExerciseSchedule an = new TeamExerciseSchedule(id, storename, classroomname, employeename, teamexercisename, num, oknum, begintime, endtime, consumenum);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -123,7 +126,7 @@ public class TeamExerciseScheduleMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select a.id as id, a.num as num, a.oknum as oknum, a.begintime as begintime, a.endtime as endtime, b.name as storename, c.name as classroomname, d.name as employeename, e.name as teamexercisename "
+			String sql = "select a.id as id, a.num as num, a.oknum as oknum, a.begintime as begintime, a.endtime as endtime, a.consumenum as consumenum, b.name as storename, c.name as classroomname, d.name as employeename, e.name as teamexercisename "
 					+ "from TeamExerciseSchedule a, store b, classroom c, employee d, teamexercise e where "
 					+ "a.storeid=b.id and a.classroomid=c.id and a.employeeid=d.id and a.teamexerciseid=e.id ";
 			boolean flag = true;
@@ -162,7 +165,8 @@ public class TeamExerciseScheduleMgr {
 				
 				String begintime = rs.getString("begintime");
 				String endtime = rs.getString("endtime");
-				TeamExerciseSchedule an = new TeamExerciseSchedule(id, storename, classroomname, employeename, teamexercisename, num, oknum, begintime, endtime);
+				int consumenum = rs.getInt("consumenum");
+				TeamExerciseSchedule an = new TeamExerciseSchedule(id, storename, classroomname, employeename, teamexercisename, num, oknum, begintime, endtime, consumenum);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -213,7 +217,8 @@ public class TeamExerciseScheduleMgr {
 				
 				String begintime = rs.getString("begintime");
 				String endtime = rs.getString("endtime");
-				an = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime);
+				int consumenum = rs.getInt("consumenum");
+				an = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime, consumenum);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -227,7 +232,7 @@ public class TeamExerciseScheduleMgr {
 	
 	public void update(TeamExerciseSchedule e) {
 		Connection conn = DB.getConn();
-		String sql = "update TeamExerciseSchedule set storeid = ?, classroomid = ?, employeeid = ?, teamexerciseid = ?, num = ?, oknum = ?, begintime = ?, endtime = ?  where id = " +e.id;
+		String sql = "update TeamExerciseSchedule set storeid = ?, classroomid = ?, employeeid = ?, teamexerciseid = ?, num = ?, oknum = ?, begintime = ?, endtime = ?, consumenum = ?  where id = " +e.id;
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
 			pstmt.setInt(1, e.storeid);
@@ -238,6 +243,7 @@ public class TeamExerciseScheduleMgr {
 			pstmt.setInt(6, e.oknum);
 			pstmt.setString(7, e.begintime);
 			pstmt.setString(8, e.endtime);
+			pstmt.setInt(9, e.consumenum);
 			pstmt.executeUpdate();
 		} catch (SQLException eee) {
 			eee.printStackTrace();

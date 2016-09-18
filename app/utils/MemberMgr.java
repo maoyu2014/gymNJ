@@ -201,7 +201,8 @@ public class MemberMgr {
 				String protein = rs.getString("protein");	//蛋白质
 				int basicrate = rs.getInt("basicrate");	//基础代谢率
 				int bodyage = rs.getInt("bodyage");		//身体年龄
-				an = new Member(id, openid, name, wechatname, sex, height, birthday, phone, fingerprint, cityid, cardtype, deaddate, exercisetime, exercisegoal, exercisehz, distance, bmi, muscle, fat, water, protein, basicrate, bodyage, wechatnumber, fitnesstest, memberstatus, innerfat);
+				int leftcoursenum = rs.getInt("leftcoursenum");
+				an = new Member(id, openid, name, wechatname, sex, height, birthday, phone, fingerprint, cityid, cardtype, deaddate, exercisetime, exercisegoal, exercisehz, distance, bmi, muscle, fat, water, protein, basicrate, bodyage, wechatnumber, fitnesstest, memberstatus, innerfat, leftcoursenum);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();

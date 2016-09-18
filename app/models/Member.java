@@ -50,6 +50,8 @@ public class Member {
 	public String exercisehzvalue;
 	public String distancevalue;
 		
+	public int leftcoursenum;
+	
 	public Member() {}
 	
 	public Member(int id, String openid, String name, String wechatname,
@@ -58,7 +60,7 @@ public class Member {
 			int cardtype, String deaddate, int exercisetime, int exercisegoal, int exercisehz,
 			int distance, String bmi, String muscle, String fat, String water,
 			String protein, int basicrate, int bodyage,
-			String wechatnumber, String fitnesstest, String memberstatus, String innerfat) {
+			String wechatnumber, String fitnesstest, String memberstatus, String innerfat, int leftcouresnum) {
 		this.id = id;
 		this.openid = openid;
 		this.name = name;
@@ -86,6 +88,7 @@ public class Member {
 		this.fitnesstest = fitnesstest;
 		this.memberstatus = memberstatus;
 		this.innerfat = innerfat;
+		this.leftcoursenum = leftcouresnum;
 	}
 	
 	//recommended人用的

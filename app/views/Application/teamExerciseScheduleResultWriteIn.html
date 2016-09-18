@@ -18,20 +18,20 @@
 <div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">录入成绩</div>
 	
 <div style="margin:20px">
-	#{form @Application.addTeamExerciseScheduleResultToDB()}
+	#{form @Application.addTeamExerciseScheduleResultToDB(id, list)}
 	
 	<div style="margin:10px">
         <table border="1" cellspacing="0" cellpadding="2">
 	            <tr>
 	                <td>姓名</td>
-	                <td colspan="2"><input type="text" name="yundong1"></td>
-	                <td colspan="2"><input type="text" name="yundong2"></td>
-	                <td colspan="2"><input type="text" name="yundong3"></td>
-	                <td colspan="2"><input type="text" name="yundong4"></td>
+	                <td colspan="2"><input type="text" name="yundong1" value="${aa?.yundong1}"></td>
+	                <td colspan="2"><input type="text" name="yundong2" value="${aa?.yundong2}"></td>
+	                <td colspan="2"><input type="text" name="yundong3" value="${aa?.yundong3}"></td>
+	                <td colspan="2"><input type="text" name="yundong4" value="${aa?.yundong4}"></td>
 	            </tr>
 	            <tr>
 	            	<td>运动量</td>
-	            	<td colspan="8"><input type="text" name="yundongliang" style="width:800px;"></td>
+	            	<td colspan="8"><input type="text" name="yundongliang" style="width:800px;"  value="${aa?.yundongliang}"></td>
 	            </tr>
 	            <tr>
 	            	<td>轮次</td>
@@ -44,39 +44,48 @@
 	            	<td>第1轮</td>
 	            	<td>第2轮</td>
 	            </tr>
-	        	#{list items:list, as:'member'}
+	            %{ int k=0; }%
+	        	%{ 
+	        	for (int i=0; i<number; i++) {
+	        		member = list.get(i);
+	        		if (anlist!=null) bb = anlist.get(i);
+	        	}%
 	        	<tr>
+	        		%{ k++; }%
 	            	<td>${member.name}</td>
-	            	<td><input type="text" name="shijian1" style="width:100px;"></td>
-	            	<td><input type="text" name="shijian2" style="width:100px;"></td>
-	            	<td><input type="text" name="shijian3" style="width:100px;"></td>
-	            	<td><input type="text" name="shijian4" style="width:100px;"></td>
-	            	<td><input type="text" name="shijian5" style="width:100px;"></td>
-	            	<td><input type="text" name="shijian6" style="width:100px;"></td>
-	            	<td><input type="text" name="shijian7" style="width:100px;"></td>
-	            	<td><input type="text" name="shijian8" style="width:100px;"></td>
+	            	<td><input type="text" name="${k}shijian1" style="width:100px;" value="${bb?.shijian1}"></td>
+	            	<td><input type="text" name="${k}shijian2" style="width:100px;" value="${bb?.shijian2}"></td>
+	            	<td><input type="text" name="${k}shijian3" style="width:100px;" value="${bb?.shijian3}"></td>
+	            	<td><input type="text" name="${k}shijian4" style="width:100px;" value="${bb?.shijian4}"></td>
+	            	<td><input type="text" name="${k}shijian5" style="width:100px;" value="${bb?.shijian5}"></td>
+	            	<td><input type="text" name="${k}shijian6" style="width:100px;" value="${bb?.shijian6}"></td>
+	            	<td><input type="text" name="${k}shijian7" style="width:100px;" value="${bb?.shijian7}"></td>
+	            	<td><input type="text" name="${k}shijian8" style="width:100px;" value="${bb?.shijian8}"></td>
 	            </tr>
-	        	#{/list}
+	        	%{
+	        	}
+	        	}%
 	        	<tr>
 	        		<td colspan="9">卡路里消耗</td>
 	        	</tr>
 	        	<tr>
 	        		<td>1-3名</td>
-	        		<td colspan="8"><input type="text" name="one2three" style="width:700px;"></td>
+	        		<td colspan="8"><input type="text" name="one2three" style="width:700px;"  value="${aa?.one2three}"></td>
 	        	</tr>
 	        	<tr>
 	        		<td>4-6名</td>
-	        		<td colspan="8"><input type="text" name="four2six" style="width:700px;"></td>
+	        		<td colspan="8"><input type="text" name="four2six" style="width:700px;"  value="${aa?.four2six}"></td>
 	        	</tr>
 	        	<tr>
 	        		<td>7-12名</td>
-	        		<td colspan="8"><input type="text" name="seven212" style="width:700px;"></td>
+	        		<td colspan="8"><input type="text" name="seven212" style="width:700px;"  value="${aa?.seven212}"></td>
 	        	</tr>
 	    </table>
     </div>
 	
 	<p>
 		<input type="submit" style="width:80px;height:32px" value="保存修改">
+		<a href="" class="easyui-linkbutton" data-options="" style="width:80px;height:32px;">发送成绩</a>
 	</p>
 	#{/form}
 </div>

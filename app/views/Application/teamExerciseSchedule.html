@@ -55,13 +55,14 @@
         <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
 	        <thead>
 	            <tr>
-	                <th data-options="field:'teamexercisename',width:80">课程名称</th>
+	                <th data-options="field:'teamexercisename',width:100">课程名称</th>
 	                <th data-options="field:'employeename',width:80">教练</th>
 	                <th data-options="field:'storename',width:80">门店</th>
 	                <th data-options="field:'classroomname',width:80">教室</th>
 	                <th data-options="field:'begintime',width:80">开始时间</th>
 	                <th data-options="field:'endtime',width:80">结束时间</th>
 	                <th data-options="field:'oknum_num',width:80">预约人数</th>
+	                <th data-options="field:'consumenum',width:40">消耗课时数</th>
 	                <th data-options="field:'operation',width:80">操作</th>
 	            </tr>
 	        </thead>
@@ -75,6 +76,7 @@
 		            <td>${TeamExerciseSchedule.begintime}</td>
 		            <td>${TeamExerciseSchedule.endtime}</td>
 		            <td>${TeamExerciseSchedule.oknum}/${TeamExerciseSchedule.num}</td>
+		            <td>${TeamExerciseSchedule.consumenum}</td>
 		            <td>
 		            	<a href="@{Application.TeamExerciseScheduleDetail(TeamExerciseSchedule.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
 		            	<a href="@{Application.deleteTeamExerciseSchedule(TeamExerciseSchedule.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
