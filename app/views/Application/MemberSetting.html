@@ -62,11 +62,12 @@
 	                <th data-options="field:'phone',width:100">电话</th>
 	                <th data-options="field:'fingerprinttype',width:100">指纹录入</th>
 	                <th data-options="field:'comeinpassword',width:100">入场密码</th>
-	                <th data-options="field:'cityname',width:100">所在城市</th>
+	                <th data-options="field:'cityname',width:70">所在城市</th>
 	                <!-- <th data-options="field:'offenstorename',width:100">常去门店</th>  -->
-	                <th data-options="field:'fitnesstest',width:100">体能测试</th>
+	                <th data-options="field:'fitnesstest',width:80">体能测试</th>
 	                <th data-options="field:'cardtype',width:100">会员种类</th>
 	                <th data-options="field:'memberstatus',width:100">会员状态</th>
+	                <th data-options="field:'leftcoursenum',width:60">剩余课时</th>
 	                <th data-options="field:'operation',width:100">操作</th>
 	            </tr>
 	        </thead>
@@ -86,6 +87,7 @@
 		            <td>${Member.fitnesstest}</td>
 		            <td>${Member.cardtypename}</td>
 		            <td>${Member.memberstatus}</td>
+		            <td>${Member.leftcoursenum}</td>
 		            <td>
 		            	<a href="@{Application.MemberDetail(Member.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
 		            	<a href="@{Application.modifyMemberDeaddate(Member.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>

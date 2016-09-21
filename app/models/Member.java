@@ -104,7 +104,8 @@ public class Member {
 	//会员信息首页用的
 	public Member(int id, String openid, String name, String wechatname,
 			String phone, int fingerprint, String cityname, int cardtype,
-			String wechatnumber, String fitnesstest, String memberstatus) {
+			String wechatnumber, String fitnesstest, String memberstatus,
+			int leftcoursenum) {
 		this.id = id;
 		this.openid = openid;
 		this.name = name;
@@ -116,6 +117,7 @@ public class Member {
 		this.wechatnumber = wechatnumber;
 		this.fitnesstest = fitnesstest;
 		this.memberstatus = memberstatus;
+		this.leftcoursenum = leftcoursenum;
 	}
 	
 	

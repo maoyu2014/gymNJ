@@ -1858,6 +1858,7 @@ public class Application extends Controller {
 		else if (m.cardtype==2) cardtypename="季卡";
 		else if (m.cardtype==3) cardtypename="半年卡";
 		else if (m.cardtype==4) cardtypename="年卡";
+		else if (m.cardtype==5) cardtypename="299新人月卡";
 		List<DeadtimeLog> list = DeadtimeLogMgr.getInstance().findDeadtimeLogByMemberId(aid);
 		render(m, cardtypename, list);
 	}
@@ -1869,6 +1870,7 @@ public class Application extends Controller {
 			renderText("选择非会员，则到期时间必须小于等于今天!");
 		}
 		MemberMgr.getInstance().updateDeaddate(aid, acardtype, deaddate);
+		MemberMgr.getInstance().updateLeftcoursenum(aid, acardtype);
 		String updatetime = getCurrentTimeSecond();
 		String employeename = (String) parseSession().get("username");
 		DeadtimeLog dl = new DeadtimeLog(aid, updatetime, acardtype, deaddate, employeename);

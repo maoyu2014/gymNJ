@@ -61,7 +61,7 @@ public class MemberMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, a.fingerprint, b.name as cityname, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus from Member a, city b where a.cityid=b.id and a.deaddate > '" + todaytime + "'";
+			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, a.fingerprint, b.name as cityname, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, city b where a.cityid=b.id and a.deaddate > '" + todaytime + "'";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
@@ -75,7 +75,8 @@ public class MemberMgr {
 				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
 				String fitnesstest = rs.getString("fitnesstest");
 				String memberstatus = rs.getString("memberstatus");
-				Member an = new Member(id, openid, name, wechatname, phone, fingerprint, cityname, cardtype, wechatnumber, fitnesstest, memberstatus);
+				int leftcoursenum = rs.getInt("leftcoursenum");
+				Member an = new Member(id, openid, name, wechatname, phone, fingerprint, cityname, cardtype, wechatnumber, fitnesstest, memberstatus, leftcoursenum);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -94,7 +95,7 @@ public class MemberMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, a.fingerprint, b.name as cityname, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus from Member a, city b "
+			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, a.fingerprint, b.name as cityname, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, city b "
 					+ "where a.cityid=b.id ";
 			if (acityid!=0) {
 				sql += " and a.cityid = " + acityid;
@@ -130,7 +131,8 @@ public class MemberMgr {
 				String wechatnumber = rs.getString("wechatnumber");
 				String fitnesstest = rs.getString("fitnesstest");
 				String memberstatus = rs.getString("memberstatus");
-				Member an = new Member(id, openid, name, wechatname, phone, fingerprint, cityname, cardtype, wechatnumber, fitnesstest, memberstatus);
+				int leftcoursenum = rs.getInt("leftcoursenum");
+				Member an = new Member(id, openid, name, wechatname, phone, fingerprint, cityname, cardtype, wechatnumber, fitnesstest, memberstatus, leftcoursenum);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -225,6 +227,35 @@ public class MemberMgr {
 		} catch (SQLException eee) {
 			eee.printStackTrace();
 		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+	}
+	
+	public void updateLeftcoursenum(int aid, int acardtype) {
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		String sql1 = "select leftcoursenum from member where id = " + aid;
+		String sql2 = "update Member set leftcoursenum = ? where id = " +aid;
+		PreparedStatement pstmt = DB.getPstmt(conn, sql2);
+		try {
+			rs = DB.executeQuery(stmt, sql1);
+			int leftnumber=0;
+			if (rs.next()) {
+				leftnumber = rs.getInt("leftcoursenum");
+			}
+			if (acardtype==1 || acardtype==5) leftnumber+=1;
+			else if (acardtype==2) leftnumber+=3;
+			else if (acardtype==3) leftnumber+=6;
+			else if (acardtype==4) leftnumber+=12;
+			pstmt.setInt(1, leftnumber);
+			pstmt.executeUpdate();
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
 			DB.close(pstmt);
 			DB.close(conn);
 		}
