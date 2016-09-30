@@ -343,5 +343,21 @@ public class MemberMgr {
 			DB.close(conn);
 		}
 	}
+
+	public void updateMemberLeftcoursenum(int memberid, int aleftcoursenum) {
+		Connection conn = DB.getConn();
+		String sql = "update Member set leftcoursenum = ?  where id = " + memberid;
+		PreparedStatement pstmt = DB.getPstmt(conn, sql);
+		try {
+			pstmt.setInt(1, aleftcoursenum);
+			pstmt.executeUpdate();
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		
+	}
 	
 }

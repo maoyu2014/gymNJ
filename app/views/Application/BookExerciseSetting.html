@@ -50,16 +50,10 @@
 	        <thead>
 	            <tr>
 	                <th data-options="field:'name1',width:80">会员名</th>
-	                <!-- 
-	                <th data-options="field:'name2',width:80">微信名</th>
-	                 -->
 	                <th data-options="field:'phone',width:80">手机</th>
 	                <th data-options="field:'booktime',width:120">预约时间</th>
 	                <th data-options="field:'type',width:60">性质</th>
 	                <th data-options="field:'storename',width:80">门店</th>
-	                <!-- 
-	                <th data-options="field:'classroomname',width:100">教室</th>
-	                 -->
 	                <th data-options="field:'employeename',width:80">教练</th>
 	                <th data-options="field:'exercisename',width:100">课程</th>
 	                <th data-options="field:'begintime',width:100">上课时间</th>
@@ -72,9 +66,6 @@
 	        #{list items:0..number-1, as:'i'}
 	        	<tr>
 		            <td>${listMember[i].name}</td>
-		            <!-- 
-		            <td>${listMember[i].wechatname}</td>
-		            -->
 		            <td>${listMember[i].phone}</td>
 		            <td>${listBookExercise[i].booktime}</td>
 		            <td>
@@ -93,16 +84,6 @@
 		            	${listPrivateExerciseShow.get(listBookExercise[i].id).storename}
 		            #{/else}
 		            </td>
-		            <!-- 
-		            <td>
-		            #{if  listBookExercise[i].type==0}
-		            	${listTeamExerciseScheduleShow.get(listBookExercise[i].id).classroomname}
-		            #{/if}
-		            #{else}
-		            	${listPrivateExerciseShow.get(listBookExercise[i].id).classroomname}
-		            #{/else}
-					</td>
-					-->
 					<td>
 		            #{if  listBookExercise[i].type==0}
 		            	${listTeamExerciseScheduleShow.get(listBookExercise[i].id).employeename}

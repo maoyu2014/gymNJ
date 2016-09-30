@@ -1800,6 +1800,7 @@ public class Application extends Controller {
     		else if (ps.cardtype==3) ps.cardtypename="半年卡";
     		else if (ps.cardtype==4) ps.cardtypename="年卡";
     		else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
+    		else if (ps.cardtype==6) ps.cardtypename="课程卡成员";
     		// 入场密码
     		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(ps.id);
     		if (cp!=null) {
@@ -1825,6 +1826,7 @@ public class Application extends Controller {
     		else if (ps.cardtype==3) ps.cardtypename="半年卡";
     		else if (ps.cardtype==4) ps.cardtypename="年卡";
     		else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
+    		else if (ps.cardtype==6) ps.cardtypename="课程卡成员";
     		// 入场密码
     		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(ps.id);
     		if (cp!=null) {
@@ -1859,6 +1861,7 @@ public class Application extends Controller {
 		else if (m.cardtype==3) cardtypename="半年卡";
 		else if (m.cardtype==4) cardtypename="年卡";
 		else if (m.cardtype==5) cardtypename="299新人月卡";
+		else if (m.cardtype==6) cardtypename="课程卡成员";
 		List<DeadtimeLog> list = DeadtimeLogMgr.getInstance().findDeadtimeLogByMemberId(aid);
 		render(m, cardtypename, list);
 	}
@@ -1870,7 +1873,7 @@ public class Application extends Controller {
 			renderText("选择非会员，则到期时间必须小于等于今天!");
 		}
 		MemberMgr.getInstance().updateDeaddate(aid, acardtype, deaddate);
-		MemberMgr.getInstance().updateLeftcoursenum(aid, acardtype);
+		MemberMgr.getInstance().updateLeftcoursenum(aid, acardtype);		//按照情况，给购买会员的人送课，一月一节课
 		String updatetime = getCurrentTimeSecond();
 		String employeename = (String) parseSession().get("username");
 		DeadtimeLog dl = new DeadtimeLog(aid, updatetime, acardtype, deaddate, employeename);
@@ -1924,6 +1927,7 @@ public class Application extends Controller {
 		else if (sc.cardtype==3) sc.cardtypename="半年卡";
 		else if (sc.cardtype==4) sc.cardtypename="年卡";
 		else if (sc.cardtype==5) sc.cardtypename="299新人月卡";
+		else if (sc.cardtype==6) sc.cardtypename="课程卡成员";
 		if (sc.sex==1) sc.sexvalue="男"; else sc.sexvalue="女";
 		if (sc.exercisetime==1) sc.exercisetimevalue="早上";
 		else if (sc.exercisetime==2) sc.exercisetimevalue="下午";
@@ -1983,7 +1987,19 @@ public class Application extends Controller {
 		render(sc, listIn, listOut, inOutTmNum, listtes, listpe, mft);
     }
     
-    //会员状态
+    //修改会员剩余课时数
+    public static void MemberLeftcoursenumEditPage(int id) {
+    	Member sc = MemberMgr.getInstance().findMemberById(id);
+    	int memberid = id;
+    	render(sc, memberid);
+    }
+    
+    public static void MemberLeftcoursenumEditToDB(int memberid, int aleftcoursenum) {
+    	MemberMgr.getInstance().updateMemberLeftcoursenum(memberid, aleftcoursenum);
+    	MemberLeftcoursenumEditPage(memberid);
+    }
+    
+    //修改会员状态
     public static void MemberStatusEdit(int id) {
     	List<MemberStatus> list = MemberStatusMgr.getInstance().getMemberStatusByMemberId(id);
     	int memberid = id;
@@ -1997,7 +2013,7 @@ public class Application extends Controller {
     	MemberStatusEdit(memberid);
     }
     
-    //体能测试
+    //修改会员体能测试
     public static void MemberFitnessTestEdit(int id) {
     	MemberFitnessTest mft = MemberFitnessTestMgr.getInstance().getMemberFitnessTestByMemberId(id);
     	int memberid = id;
@@ -2052,7 +2068,7 @@ public class Application extends Controller {
     	render(list, number);
     }
     
-    //BookExercise团操和特训营一起的预约设置（展示）页面
+    //团操预约管理（展示）页面
     public static void BookExerciseSetting() {
     	List<BookExercise> listBookExercise = BookExerciseMgr.getInstance().getAllActiveBookExercise();
     	List<Member> listMember = new ArrayList<>();
