@@ -34,21 +34,21 @@ public class BookExerciseMgr {
 		return em;
 	}
 	
-	public List<BookExercise> getAllActiveBookExercise() {
+	public List<BookExercise> getAllActiveBookTeamExerciseSchedule(String currentmonth) {
 		List<BookExercise> list = new ArrayList<BookExercise>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select * from BookExercise where status = 1";
+			String sql = "select b.id as id, m.name as membername, b.type as type, t.name as exercisename, b.booktime as booktime from BookExercise b, member m, teamexerciseschedule ts, teamexercise t where b.booktime >= '" + currentmonth + "' and b.status = 1 and b.type = 0 and b.memberid = m.id and b.exerciseid = ts.id and ts.teamexerciseid = t.id ";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				int memberid = rs.getInt("memberid");
+				String membername = rs.getString("membername");
 				int type = rs.getInt("type");
-				int exerciseid = rs.getInt("exerciseid");
+				String exercisename = rs.getString("exercisename");
 				String booktime = rs.getString("booktime");
-				BookExercise an = new BookExercise(id, memberid, type, exerciseid, booktime);
+				BookExercise an = new BookExercise(id, membername, type, exercisename, booktime);
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -234,7 +234,7 @@ public class BookExerciseMgr {
 		ResultSet rs = null;
 		Member an = null;
 		try {
-			String sql = "select m.id as id, m.name as name, m.phone as phone from BookExercise b, member m where b.memberid=m.id and b.exerciseid = " + aid;
+			String sql = "select m.id as id, m.name as name, m.phone as phone from BookExercise b, member m where b.memberid=m.id and b.status=1 and b.exerciseid = " + aid;
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");

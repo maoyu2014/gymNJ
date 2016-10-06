@@ -23,6 +23,7 @@
 		<div style="background-color:#a6a6a6;height:30%;border:0px solid;font-size:30px;text-align:center;padding:10px">￥${feesum.format('000.00')}元</div>
 	</div>
 	
+	<!-- 
 	<div style="margin:20px">
 		#{form @Application.PurchaseHistorySearch()}
 		<select name="cardtype" class="easyui-combobox" style="height:32px;width:120px;">
@@ -38,37 +39,36 @@
 		<input type="submit" style="width:80px;height:32px" value="搜索">    
 		#{/form}
 	</div>
-	
+	 -->
+	 
 	<div style="margin:20px">
         <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
 	        <thead>
 	            <tr>
-	                <th data-options="field:'name',width:80">会员</th>
-	                <th data-options="field:'cardtype',width:100">消费种类</th>
+	                <th data-options="field:'membername',width:80">会员姓名</th>
+	                <th data-options="field:'cardtypename',width:100">会员种类</th>
 	                <th data-options="field:'purchasetime',width:100">支付时间</th>
 	                <th data-options="field:'fee',width:100">支付金额</th>
-	                <th data-options="field:'purchasetype',width:100">支付方式</th>
-	                <th data-options="field:'notice',width:100">备注</th>
+	                <th data-options="field:'purchasetypename',width:100">支付方式</th>
 	                <th data-options="field:'operation',width:100">操作</th>
 	            </tr>
 	        </thead>
 	        <tbody>
-	        #{if number>0}
-	        #{list items:0..number-1, as:'i'}
-	        	<tr>
-		            <td>${listMemberShow[i].name}</td>
-		            <td>${listPurchaseHistory[i].carttypename}</td>
-		            <td>${listPurchaseHistory[i].purchasetime}</td>
-		            <td>${listPurchaseHistory[i].fee}</td>
-		            <td>${listPurchaseHistory[i].purchasetypename}</td>
-		            <td>${listPurchaseHistory[i].notice}</td>
-		            <td>
-		            	<a href="@{Application.MemberDetail(listMemberShow[i].id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-		            	<a href="@{Application.deletePurchaseHistory(listPurchaseHistory[i].id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
-		            </td>
-		        </tr>
+	        #{list items:listPurchaseHistory, as:'purchase'}
+        	<tr>
+	            <td>${purchase.membername}</td>
+	            <td>${purchase.cardtypename}</td>
+	            <td>${purchase.purchasetime}</td>
+	            <td>${purchase.fee}</td>
+	            <td>${purchase.purchasetypename}</td>
+	            <td>
+	            	<a href="@{Application.MemberDetail(purchase.memberid)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+	            	<!-- 
+	            	<a href="@{Application.deletePurchaseHistory(purchase.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
+	            	 -->
+	            </td>
+	        </tr>
 	        #{/list}
-	        #{/if}
 	        </tbody>
 	    </table>
     </div>

@@ -388,7 +388,7 @@ public class Application extends Controller {
     }
     
     /*
-     * ----------------------员工设置Employee
+     * ----------------------员工管理----Employee
      */
     
     //员工设置(展示)页面
@@ -622,7 +622,7 @@ public class Application extends Controller {
     }
     
     /*
-     * ···············--------营销管理1······---------·门店公告Announcement
+     * ···············--------营销管理 1······---------·门店公告Announcement
      */
     
     
@@ -773,7 +773,7 @@ public class Application extends Controller {
     
     
     /*
-     * ···············--------营销管理2······---------·团购活动Groupbuy
+     * ···············--------营销管理 2······---------·团购活动Groupbuy
      */
     
     
@@ -929,7 +929,7 @@ public class Application extends Controller {
     
     
     /*
-     * ···············--------健身计划FitnessPlan
+     * ···············--------健身计划---FitnessPlan
      */
     
     
@@ -1096,106 +1096,11 @@ public class Application extends Controller {
     
     
     /*
-     * ···············--------课程管理1-----------团操课程TeamExercise
+     * ···············--------课程管理 1-----------（团操）课程 TeamExercise
      */
     
-    /*
-    //就得四个Tab那个，已废弃
-    public static void teamExerciseSetting() {
-    	List<TeamExercise> lists = TeamExerciseMgr.getInstance().getAllTeamExercise();
-    	String yearmonth = getCurrentMonth();
-    	List<TeamExerciseSchedule> listss = TeamExerciseScheduleMgr.getInstance().getAllTeamExerciseScheduleByYearMonth(yearmonth);
-    	List<TeamExerciseScheduleShow> listtt = new ArrayList<>();
-    	for (TeamExerciseSchedule tes : listss) {
-    		TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
-    		StoreCity s = StoreMgr.getInstance().findStoreById(tes.storeid);
-    		if (s!=null) tess.storename = s.name;
-    		Employee e = EmployeeMgr.getInstance().findEmployeeById(tes.employeeid);
-    		if (e!=null) tess.employeename = e.name;
-    		Classroom c = ClassroomMgr.getInstance().findClassroomById(tes.classroomid);
-    		if (c!=null) tess.classroomname = c.name;
-    		TeamExercise t = TeamExerciseMgr.getInstance().findTeamExerciseById(tes.teamexerciseid);
-    		if (t!=null) tess.teamexercisename = t.name;
-    		listtt.add(tess);
-    	}
-    	//周课表 同样代码有两份
-    	Map<Integer, List<TeamExerciseScheduleShow> > mapweek = new HashMap<>();
-    	for (int i=1; i<=7; i++) mapweek.put(i, new ArrayList<>());
-    	Calendar calendar =  Calendar.getInstance();
-    	int[] dir = new int[] {0,7,1,2,3,4,5,6};
-    	int x  =calendar.get(Calendar.DAY_OF_WEEK);
-    	int xx = dir[x];
-    	
-    	calendar.add(Calendar.DAY_OF_YEAR, -xx+1);
-		String mybegintime = ""+calendar.get(Calendar.YEAR)+"-";
-		int month = calendar.get(Calendar.MONTH)+1; 
-		if (month<10) mybegintime+="0"+month+"-";
-		else mybegintime += month+"-";
-		int day = calendar.get(Calendar.DAY_OF_MONTH);
-		if (day<10) mybegintime+="0"+day;
-		else mybegintime+=day;
-//		System.out.println(mybegintime);
-		
-		calendar.add(Calendar.DAY_OF_MONTH, 6);
-		String myendtime = ""+calendar.get(Calendar.YEAR)+"-";
-		month = calendar.get(Calendar.MONTH)+1; 
-		if (month<10) myendtime+="0"+month+"-";
-		else myendtime += month+"-";
-		day = calendar.get(Calendar.DAY_OF_MONTH);
-		if (day<10) myendtime+="0"+day;
-		else myendtime+=day;
-//		System.out.println(myendtime);
-		
-		for (TeamExerciseScheduleShow tess : listtt) {
-    		String strday = tess.begintime.substring(0, 10);
-    		if (strday.compareTo(mybegintime)>=0 && strday.compareTo(myendtime)<=0) {
-				try {
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
-					Date date = dateFormat.parse(strday);
-					calendar.setTime(date); 
-				} catch (ParseException e1) {
-					e1.printStackTrace();
-				}  
-				x  =calendar.get(Calendar.DAY_OF_WEEK);
-		    	xx = dir[x];
-        		mapweek.get(xx).add(tess);
-    		}
-    	}
-		//月课表 同样代码有两份
-		Map<Integer, List<TeamExerciseScheduleShow> > mapmonth = new HashMap<>();
-		for (int i=1; i<=35; i++) mapmonth.put(i, new ArrayList<>());	//35是为了配合前台5行7列
-    	calendar =  Calendar.getInstance();
-    	mybegintime = ""+calendar.get(Calendar.YEAR)+"-";
-    	myendtime = ""+calendar.get(Calendar.YEAR)+"-";
-    	month = calendar.get(Calendar.MONTH)+1; 
-    	if (month<10) mybegintime+="0"+month+"-"; else mybegintime += month+"-";
-    	if (month<10) myendtime+="0"+month+"-"; else myendtime += month+"-";
-    	mybegintime+="01";
-    	myendtime+="31";
-    	
-    	try {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
-			Date date = dateFormat.parse(mybegintime);
-			calendar.setTime(date); 
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		}  
-		x  =calendar.get(Calendar.DAY_OF_WEEK);
-		int num = dir[x];
-    	for (TeamExerciseScheduleShow tess : listtt) {
-    		String strday = tess.begintime.substring(0, 10);
-    		if (strday.compareTo(mybegintime)>=0 && strday.compareTo(myendtime)<=0) {
-    			xx = Integer.parseInt(strday.substring(8, 10));
-        		mapmonth.get(xx).add(tess);
-    		}
-    	}
-    	int aaa = lists.size();
-    	int bbb = listtt.size();
-    	render(lists, listtt, aaa, bbb, mapweek, mapmonth, num);
-    }
-    */
     
-    //本月团操课程
+    //本月(团操)课程
     public static void teamExerciseMonth() {
     	String yearmonth = getCurrentMonth();
     	List<TeamExerciseSchedule> list = TeamExerciseScheduleMgr.getInstance().getAllTeamExerciseScheduleByYearMonth(yearmonth);
@@ -1230,7 +1135,7 @@ public class Application extends Controller {
     	render(mapmonth, num);
     }
     
-    //本周团操课程
+    //本周(团操)课程
     public static void teamExerciseWeek() {
     	String yearmonth = getCurrentMonth();
     	List<TeamExerciseSchedule> list = TeamExerciseScheduleMgr.getInstance().getAllTeamExerciseScheduleByYearMonth(yearmonth);
@@ -1432,7 +1337,7 @@ public class Application extends Controller {
     
     
     /*
-     * ···············--------课程管理1-----------团操排期TeamExerciseSchedule
+     * ···············--------课程管理 1-----------（团操）课程排期 TeamExerciseSchedule
      */
     
     //团操排期
@@ -1607,7 +1512,7 @@ public class Application extends Controller {
     
     
     /*
-     * ···············--------课程管理2-----------特训班PrivateExercise
+     * ···············--------课程管理  2-----------特训班 PrivateExercise
      */
     
     
@@ -2053,11 +1958,12 @@ public class Application extends Controller {
     
     
     /*
-     * ···············--------预约管理-------------1,预约团操和私教BookExercise
+     * ···············--------预约管理-------------特训营预约 和 课程预约 
      */
     
-    //特训营预约管理
+    //特训营预约展示
     public static void BookPrivateExerciseDisplay() {
+    	//获得所有的特训营
     	List<BookExercise> list = BookExerciseMgr.getInstance().getAllActivePrivateBookExercise();
     	for (BookExercise b : list) {
     		if (b.type==0) b.typename="团操";
@@ -2068,44 +1974,18 @@ public class Application extends Controller {
     	render(list, number);
     }
     
-    //团操预约管理（展示）页面
-    public static void BookExerciseSetting() {
-    	List<BookExercise> listBookExercise = BookExerciseMgr.getInstance().getAllActiveBookExercise();
-    	List<Member> listMember = new ArrayList<>();
-    	Map<Integer, TeamExerciseScheduleShow> listTeamExerciseScheduleShow = new HashMap<>();
-    	Map<Integer, PrivateExerciseShow> listPrivateExerciseShow = new HashMap<>();
-    	for (BookExercise be : listBookExercise) {
-    		Member m = MemberMgr.getInstance().findMemberById(be.memberid);
-    		if (m==null) m = new Member();
-    		listMember.add(m);
-    		if (be.type==0) {
-    			TeamExerciseSchedule tes = TeamExerciseScheduleMgr.getInstance().findTeamExerciseScheduleById(be.exerciseid);
-    			if (tes==null) tes = new TeamExerciseSchedule();
-    			TeamExerciseScheduleShow tess = new TeamExerciseScheduleShow(tes);
-    			StoreCity sc = StoreMgr.getInstance().findStoreById(tess.storeid);
-    			if (sc!=null) tess.storename = sc.name;
-//    			Classroom c = ClassroomMgr.getInstance().findClassroomById(tess.classroomid);
-//    			if (c!=null) tess.classroomname = c.name;
-    			Employee e = EmployeeMgr.getInstance().findEmployeeById(tess.employeeid);
-    			if (e!=null) tess.employeename = e.name;
-    			TeamExercise te = TeamExerciseMgr.getInstance().findTeamExerciseById(tess.teamexerciseid);
-    			if (te!=null) tess.teamexercisename = te.name;
-    			listTeamExerciseScheduleShow.put(be.id, tess);
-    		} else if (be.type==1) {
-    			PrivateExercise pe = PrivateExerciseMgr.getInstance().findPrivateExerciseById(be.exerciseid);
-    			if (pe==null) pe = new PrivateExercise();
-    			PrivateExerciseShow pes = new PrivateExerciseShow(pe);
-    			StoreCity sc = StoreMgr.getInstance().findStoreById(pes.storeid);
-    			if (sc!=null) pes.storename = sc.name;
-//    			Classroom c = ClassroomMgr.getInstance().findClassroomById(pes.classroomid);
-//    			if (c!=null) pes.classroomname = c.name; 
-    			Employee e = EmployeeMgr.getInstance().findEmployeeById(pes.employeeid);
-    			if (e!=null) pes.employeename = e.name;
-    			listPrivateExerciseShow.put(be.id, pes);
-    		}
+    //课程（团操）预约展示
+    public static void BookTeamExerciseScheduleDisplay() {
+    	String currentmonth = getCurrentMonth();
+    	//获得仅仅是这个月的预约数据
+    	List<BookExercise> listBookExercise = BookExerciseMgr.getInstance().getAllActiveBookTeamExerciseSchedule(currentmonth);
+    	for (BookExercise b : listBookExercise) {
+    		if (b.type==0) b.typename="团操";
+    		else if (b.type==1) b.typename="特训营";
+    		else b.typename="undefined";
     	}
     	int number = listBookExercise.size();
-    	render(listBookExercise, listMember, listPrivateExerciseShow, listTeamExerciseScheduleShow, number);
+    	render(listBookExercise, number);
     }
     
     //搜索BookExercise预约设置（展示）页面
@@ -2162,14 +2042,6 @@ public class Application extends Controller {
     	render("Application/BookExerciseSetting.html", listBookExercise, listMember, listPrivateExerciseShow, listTeamExerciseScheduleShow, number);
     }
     
-	//删除BookExercise预约
-    public static void deleteBookExercise(int id) {
-    	boolean flag = BookExerciseMgr.getInstance().deleteBookExercise(id);
-    	if (flag) 
-    		BookExerciseSetting();
-    	else 
-    		renderText("删除失败");
-    }
     
     
     /*
@@ -2179,28 +2051,22 @@ public class Application extends Controller {
     
     //PurchaseHistory财务设置（展示）页面
     public static void PurchaseHistorySetting() {
+    	String currentmonth = getCurrentMonth();
     	List<PurchaseHistory> listPurchaseHistory = PurchaseHistoryMgr.getInstance().getAllPurchaseHistory();
-    	List<MemberShow> listMemberShow = new ArrayList<>();
     	double feesum=0.0;
     	for (PurchaseHistory ph : listPurchaseHistory) {
     		feesum+=ph.fee;
-    		if (ph.carttype==1) ph.carttypename="月卡";
-    		else if (ph.carttype==2) ph.carttypename="季卡";
-    		else if (ph.carttype==3) ph.carttypename="半年卡";
-    		else if (ph.carttype==4) ph.carttypename="年卡";
+    		if (ph.cardtype==1) ph.cardtypename="月卡";
+    		else if (ph.cardtype==2) ph.cardtypename="季卡";
+    		else if (ph.cardtype==3) ph.cardtypename="半年卡";
+    		else if (ph.cardtype==4) ph.cardtypename="年卡";
+    		else if (ph.cardtype==5) ph.cardtypename="299新人月卡";
+    		else if (ph.cardtype==6) ph.cardtypename="课程卡成员";
     		if (ph.purchasetype==1) ph.purchasetypename="微信支付";
-    		if (ph.isprivate==1) ph.carttypename="私教课程";
-    		Member m = MemberMgr.getInstance().findMemberById(ph.memberid);
-    		MemberShow ms = null;
-    		if (m==null) {
-    			ms = new MemberShow();
-    		} else {
-    			ms = new MemberShow(m);
-    		}
-    		listMemberShow.add(ms);
+    		if (ph.isprivate==1) ph.cardtypename="私教课程";
     	}
     	int number = listPurchaseHistory.size();
-    	render(listPurchaseHistory, listMemberShow, number, feesum);
+    	render(listPurchaseHistory, number, feesum);
     }
     
     //财务搜索
@@ -2210,12 +2076,12 @@ public class Application extends Controller {
     	double feesum=0.0;
     	for (PurchaseHistory ph : listPurchaseHistory) {
     		feesum+=ph.fee;
-    		if (ph.carttype==1) ph.carttypename="月卡";
-    		else if (ph.carttype==2) ph.carttypename="季卡";
-    		else if (ph.carttype==3) ph.carttypename="半年卡";
-    		else if (ph.carttype==4) ph.carttypename="年卡";
+    		if (ph.cardtype==1) ph.cardtypename="月卡";
+    		else if (ph.cardtype==2) ph.cardtypename="季卡";
+    		else if (ph.cardtype==3) ph.cardtypename="半年卡";
+    		else if (ph.cardtype==4) ph.cardtypename="年卡";
     		if (ph.purchasetype==1) ph.purchasetypename="微信支付";
-    		if (ph.isprivate==1) ph.carttypename="私教课程";
+    		if (ph.isprivate==1) ph.cardtypename="私教课程";
     		Member m = MemberMgr.getInstance().findMemberById(ph.memberid);
     		MemberShow ms = new MemberShow(m);
     		listMemberShow.add(ms);
@@ -2224,17 +2090,6 @@ public class Application extends Controller {
     	render("Application/PurchaseHistorySetting.html", listPurchaseHistory, listMemberShow, number, feesum);
     }
     
-// 后台不需要添加BookExercise，BookExercise在手机端添加
-//    //添加BookExercise页面
-//    public static void addBookExercise() {
-//        render();
-//    }
- 
-//    //添加BookExercise
-//    public static void addBookExerciseToDB() {
-//    	
-//    }
-
 	//删除PurchaseHistory某个付款
     public static void deletePurchaseHistory(int id) {
     	boolean flag = PurchaseHistoryMgr.getInstance().deletePurchaseHistory(id);
@@ -2244,16 +2099,6 @@ public class Application extends Controller {
     		renderText("删除失败");
     }
     
-//    //BookExercise预约详情(修改)页面
-//    public static void BookExerciseDetail(int id) {
-//		render();
-//    }
-   
-// 后台也不需要修改预约BookExercise
-//    //修改预约
-//    public static void updateBookExerciseToDB() {
-//
-//    }
     
     
     
