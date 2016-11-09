@@ -15,41 +15,8 @@
     
 <body>
 
-	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">会员信息</div>
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">未过期的普通会员信息</div>
 	
-	<div style="margin:20px">
-		#{form @MemberApplication.MemberSearch()}
-		<select name="acardtype" class="easyui-combobox" style="height:32px;width:100px;">
-			<option value="10">全部卡种类</option>
-			<option value="1">月卡</option>
-		    <option value="2">季卡</option>
-		    <option value="3">半年卡</option>
-		    <option value="4">年卡</option>
-		    <option value="5">299新人月卡</option>
-		    <option value="0">非会员</option>	<!-- 这里特殊，0是非会员，所以全部种类用了10 -->
-		</select>
-		<select name="amembertype" class="easyui-combobox" style="height:32px;width:100px;">
-			<option value="0">会员种类</option>
-			<option value="1">在期会员</option>
-			<option value="2">过期会员</option>
-		    <!-- <option value="3">特训营学员</option>   -->
-		</select>
-		<select name="asextype" class="easyui-combobox" style="height:32px;width:100px;">
-			<option value="0">性别</option>
-			<option value="1">男</option>
-			<option value="2">女</option>
-		    <option value="3">未知</option>
-		</select>
-		<select name="afitnesstest" class="easyui-combobox" style="height:32px;width:100px;">
-			<option value="是否">体能测试</option>
-			<option value="已测">已测体脂</option>
-			<option value="未测">未测体脂</option>
-		</select>
-		<input name="keyname" class="easyui-textbox" data-options="prompt:'搜姓名、微信名、手机号'" style="height:32px">
-		<input type="submit" style="width:80px;height:32px" value="搜索">        
-		#{/form}
-	</div>
-	 
 	<div style="margin:20px">
         <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
 	        <thead>
@@ -59,10 +26,8 @@
 	                <th data-options="field:'wechatname',width:100">微信名</th>
 	                <th data-options="field:'wechatnumber',width:100">微信号</th>
 	                <th data-options="field:'phone',width:100">电话</th>
-	                <th data-options="field:'fingerprinttype',width:100">指纹录入</th>
 	                <th data-options="field:'comeinpassword',width:100">入场密码</th>
-	                <th data-options="field:'cityname',width:70">所在城市</th>
-	                <!-- <th data-options="field:'offenstorename',width:100">常去门店</th>  -->
+	                <th data-options="field:'storename',width:70">所属门店</th>
 	                <th data-options="field:'fitnesstest',width:80">体能测试</th>
 	                <th data-options="field:'cardtype',width:100">会员种类</th>
 	                <th data-options="field:'memberstatus',width:100">会员状态</th>
@@ -79,19 +44,17 @@
 		            <td>${Member.wechatname}</td>
 		            <td>${Member.wechatnumber}</td>
 		            <td>${Member.phone}</td>          
-		            <td>${Member.fingerprinttype}</td>
 		            <td>${Member.comeinpassword}</td>
-		            <td>${Member.cityname}</td>
-		            <!-- <td>${Member.offenstorename}</td>   -->
+		            <td>${Member.storename}</td>
 		            <td>${Member.fitnesstest}</td>
 		            <td>${Member.cardtypename}</td>
 		            <td>${Member.memberstatus}</td>
 		            <td>${Member.leftcoursenum}</td>
 		            <td>
-		            	<a href="@{Application.MemberDetail(Member.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-		            	<a href="@{Application.modifyMemberDeaddate(Member.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
+		            	<a href="@{MemberApplication.MemberDetail(Member.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{MemberApplication.modifyMemberDeaddate(Member.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
 		            	<!--
-		            	<a href="@{Application.deleteMember(Member.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a> 
+		            	<a href="@{MemberApplication.deleteMember(Member.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a> 
 		            	 -->
 		            </td>
 		        </tr>

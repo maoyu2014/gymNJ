@@ -1,4 +1,4 @@
-package utils;
+package models.member;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,17 +13,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.Announcement;
-import models.City;
+import utils.common.DB;
 import models.ComeInPassword;
-import models.Employee;
-import models.Member;
-import models.MemberFitnessTest;
-import models.MemberStatus;
-import models.Store;
-import models.StoreCity;
+import models.employee.Employee;
 import models.front.InnerPwd;
 import models.front.PwdToHard;
+import models.store.Store;
+import models.useless.Announcement;
+import models.useless.City;
+import models.useless.StoreCity;
 
 
 public class MemberFitnessTestMgr {
@@ -125,29 +123,6 @@ public class MemberFitnessTestMgr {
 		}
 		return flag;
 	}
-	
-	
-//	public void update(Member e) {
-//		Connection conn = DB.getConn();
-//		String sql = "update Member set name = ?, storeid = ?, starttime = ?, endtime = ?, content = ?, employeeid = ?  where id = " +e.id;
-//		PreparedStatement pstmt = DB.getPstmt(conn, sql);
-//		try {
-//			pstmt.setString(1, e.name);
-//			pstmt.setInt(2, e.storeid);
-//			pstmt.setString(3, e.starttime);
-//			pstmt.setString(4, e.endtime);
-//			pstmt.setString(5, e.content);
-//			pstmt.setInt(6, e.employeeid);
-//			pstmt.executeUpdate();
-//		} catch (SQLException eee) {
-//			eee.printStackTrace();
-//		} finally {
-//			DB.close(pstmt);
-//			DB.close(conn);
-//		}
-//	}
-	
-	
 	
 	
 	

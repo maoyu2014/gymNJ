@@ -1,4 +1,4 @@
-package utils;
+package utils.common;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -1,4 +1,4 @@
-package utils;
+package models.store;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,10 +10,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import models.City;
-import models.Classroom;
-import models.Store;
-import models.StoreCity;
+import utils.common.DB;
+import models.useless.City;
 
 
 public class ClassroomMgr {
@@ -38,7 +36,7 @@ public class ClassroomMgr {
 		try {
 			pstmt.setString(1, s.name);
 			pstmt.setInt(2, s.holdnumber);
-			pstmt.setInt(3, s.usage);
+			pstmt.setString(3, s.usage);
 			pstmt.setInt(4, s.storeid);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -61,16 +59,16 @@ public class ClassroomMgr {
 				int id = rs.getInt("id");
 				String name = rs.getString("name");
 				int holdnumber = rs.getInt("holdnumber");
-				int usage = rs.getInt("usage");
+				String usage = rs.getString("usage");
 				Classroom c = new Classroom(id, name, holdnumber, usage, storeid);
 				list.add(c);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return list;
 	}
@@ -105,16 +103,16 @@ public class ClassroomMgr {
 				int id = rs.getInt("id");
 				String name = rs.getString("name");
 				int holdnumber = rs.getInt("holdnumber");
-				int usage = rs.getInt("usage");
+				String usage = rs.getString("usage");
 				int storeid = rs.getInt("storeid");
 				cr = new Classroom(id, name, holdnumber, usage, storeid);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return cr;
 	}
@@ -127,7 +125,7 @@ public class ClassroomMgr {
 		try {
 			pstmt.setString(1, cr.name);
 			pstmt.setInt(2, cr.holdnumber);
-			pstmt.setInt(3, cr.usage);
+			pstmt.setString(3, cr.usage);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -138,130 +136,7 @@ public class ClassroomMgr {
 	}
 	
 	
-	/*
+}	
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	public boolean hasMember(String pengid) {
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		String sql = "select * from member where pengid = '" + pengid + "'";
-		rs = DB.executeQuery(stmt, sql);
-		try {
-			if (rs.next()) {
-				return true;
-			} 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return false;
-	}
-	
-	public boolean hasOtherMember(String pengid, int id) {
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		String sql = "select * from member where pengid = '" + pengid + "'";
-		rs = DB.executeQuery(stmt, sql);
-		try {
-			if (rs.next()) {
-				int tid = rs.getInt("id");
-				if (tid != id)
-					return true;
-			} 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return false;
-	}
-	
-	
-	
-	
-	
-	
-	public List<Member> getMembers(int userid) {
-		List<Member> list = new ArrayList<Member>();
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		try {
-			String sql = "select * from member where associationid=" + userid;
-			rs = DB.executeQuery(stmt, sql);
-			while (rs.next()) {
-				Member m = new Member();
-				m.setId(rs.getInt("id"));
-				m.setAssociationid(rs.getInt("associationid"));
-				m.setPengid(rs.getString("pengid"));
-				m.setName(rs.getString("name"));
-				m.setProvince(rs.getString("province"));
-				m.setCity(rs.getString("city"));
-				m.setLongitude(rs.getString("longitude"));
-				m.setLatitude(rs.getString("latitude"));
-				m.setPhone(rs.getString("phone"));
-				list.add(m);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(conn);
-			DB.close(stmt);
-			DB.close(rs);
-		}
-		return list;
-	}
-	
-	
-	
-	
-	
-	
-	public Member loadById(int id) {
-		Member m = null;
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		try {
-			conn = DB.getConn();
-			stmt = DB.getStmt(conn);
-			String sql = "select * from member where id=" + id;
-			rs = DB.executeQuery(stmt, sql);
-			if (rs.next()) {
-				m = new Member();
-				m.setId(rs.getInt("id"));
-				m.setAssociationid(rs.getInt("associationid"));
-				m.setPengid(rs.getString("pengid"));
-				m.setName(rs.getString("name"));
-				m.setProvince(rs.getString("province"));
-				m.setCity(rs.getString("city"));
-				m.setLongitude(rs.getString("longitude"));
-				m.setLatitude(rs.getString("latitude"));
-				m.setPhone(rs.getString("phone"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return m;
-	}
-	*/
-	
-}

@@ -17,13 +17,8 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加门店</div>
 	
-	#{form @Application.addStoreToDB(), onsubmit:"return check()", enctype:'multipart/form-data'}
+	#{form @StoreApplication.addStoreToDB(), onsubmit:"return check()", enctype:'multipart/form-data'}
 	<div style="margin-left:100px;">
-		
-		<div style="margin:20px;">
-		<span style="font-size:14px;display:inline-block;width:100px">门店城市：</span>
-		<input id="cityid" name="cityid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}',prompt:'请选择一个城市'" style="height:32px">
-		</div>
 		
 		<div style="margin:20px;">
 		<span style="font-size:14px;display:inline-block;width:100px">门店名称：</span>
@@ -68,8 +63,6 @@
 <script>
 function check() {
 	var v;
-	v = $("#cityid").combobox("getValue"); 
-	if (v==null || v=="") { alert("输入不完整！"); return false; }
 	v = $("#name").val(); 
 	if (v==null || v=="") { alert("输入不完整！"); return false; }
 	v = $("#address").val();

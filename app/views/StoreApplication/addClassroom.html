@@ -17,7 +17,7 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加教室</div>
 	
-	#{form @Application.addClassroomToDB(storeid)}
+	#{form @StoreApplication.addClassroomToDB(storeid)}
 	<div style="margin-left:100px;">
 		
 		<div style="margin:20px;">
@@ -32,8 +32,7 @@
 		
 		<div style="margin:20px">
 		<span style="font-size:14px;display:inline-block;width:100px">用途：</span>
-		<input type="radio" name="usage" value="1" required>团操
-		<input type="radio" name="usage" value="2" required>私教
+		<input name="usage" class="easyui-textbox" data-options="" style="height:32px" required>
 		</div>
 		
 		<div style="margin-left:100px;">

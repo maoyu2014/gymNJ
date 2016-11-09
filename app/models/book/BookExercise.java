@@ -1,16 +1,17 @@
-package models;
+package models.book;
 
 //预约课程
 public class BookExercise {
 
 	public int id;
 	public int memberid;
-	public int type;
-	public int exerciseid;
+	public int type;		//0 团操 1 特训营
+	public int exerciseid;	//课程id，切记，id对应teamexerciseschedule表
 	public String booktime;
 	
 	public String membername;
 	public String typename;
+	public String storename;
 	public String exercisename;
 	
 	public BookExercise(int id, int memberid, int type, int exerciseid,	String booktime) {

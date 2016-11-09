@@ -21,13 +21,8 @@
 	<table border="0">
 	<tr>
 	<td>
-		#{form @Application.updateStoreToDB(sc.id), onsubmit:"return check()", enctype:'multipart/form-data'}
+		#{form @StoreApplication.updateStoreToDB(sc.id), onsubmit:"return check()", enctype:'multipart/form-data'}
 		<div style="margin-left:100px;">
-			
-			<div style="margin:5px;">
-			<span style="font-size:14px;display:inline-block;width:100px">门店城市：</span>
-			<input id="cityid" name="cityid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}'" value="${sc?.cityid}" style="height:32px">
-			</div>
 			
 			<div style="margin:5px;">
 			<span style="font-size:14px;display:inline-block;width:100px">门店名称：</span>
@@ -73,7 +68,7 @@
 	<tr>
 	</table>
 		
-	<div style="margin-top:5px;background-color:#e5ffb3;font-size:14px;padding:5px">教室信息<a href="@{Application.addClassroom(sc.id)}" style="font-weight:600;position:absolute;right:20px;">增加教室</a></div>
+	<div style="margin-top:5px;background-color:#e5ffb3;font-size:14px;padding:5px">教室信息<a href="@{StoreApplication.addClassroom(sc.id)}" style="font-weight:600;position:absolute;right:20px;">增加教室</a></div>
 	
 	<div style="margin:20px">
         <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
@@ -90,18 +85,10 @@
 	        	<tr>
 		            <td>${classroom.name}</td>
 		            <td>${classroom.holdnumber}</td>
-		            #{if classroom.usage==1}
-		            <td>团操</td>
-		            #{/if}
-		            #{if classroom.usage==2}
-		            <td>私教</td>
-		            #{/if}
-		            #{if classroom.usage!=1 && classroom.usage!=2}
-		            <td>未设置</td>
-		            #{/if}
+		            <td>${classroom.usage}</td>
 		            <td>
-		            	<a href="@{Application.classroomDetail(classroom.id)}" class="easyui-linkbutton" data-options="" style="">修改</a>
-		            	<a href="@{Application.deleteClassroom(classroom.id, classroom.storeid)}" class="easyui-linkbutton" data-options="" style="">删除</a>
+		            	<a href="@{StoreApplication.classroomDetail(classroom.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{StoreApplication.deleteClassroom(classroom.id, classroom.storeid)}" class="easyui-linkbutton" data-options="" style="">删除</a>
 		            </td>
 		        </tr>
 	        #{/list}
@@ -114,8 +101,6 @@
 <script>
 function check() {
 	var v;
-	v = $("#cityid").combobox("getValue"); 
-	if (v==null || v=="") { alert("输入不完整！"); return false; }
 	v = $("#name").val(); 
 	if (v==null || v=="") { alert("输入不完整！"); return false; }
 	v = $("#address").val();

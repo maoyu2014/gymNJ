@@ -1,4 +1,4 @@
-package utils;
+package models.book;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import models.Announcement;
-import models.BookExercise;
-import models.City;
-import models.Employee;
-import models.Member;
-import models.Store;
-import models.StoreCity;
+import utils.common.DB;
+import models.employee.Employee;
+import models.member.Member;
+import models.store.Store;
+import models.useless.Announcement;
+import models.useless.City;
+import models.useless.StoreCity;
 
 
 public class BookExerciseMgr {
@@ -34,21 +34,23 @@ public class BookExerciseMgr {
 		return em;
 	}
 	
-	public List<BookExercise> getAllActiveBookTeamExerciseSchedule(String currentmonth) {
+	public List<BookExercise> getMonthActiveBookTeamExerciseSchedule(String currentmonth) {
 		List<BookExercise> list = new ArrayList<BookExercise>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select b.id as id, m.name as membername, b.type as type, t.name as exercisename, b.booktime as booktime from BookExercise b, member m, teamexerciseschedule ts, teamexercise t where b.booktime >= '" + currentmonth + "' and b.status = 1 and b.type = 0 and b.memberid = m.id and b.exerciseid = ts.id and ts.teamexerciseid = t.id ";
+			String sql = "select b.id as id, m.name as membername, b.type as type, s.name as storename, t.name as exercisename, b.booktime as booktime from BookExercise b, member m, teamexerciseschedule ts, store s, teamexercise t where b.booktime >= '" + currentmonth + "' and b.status = 1 and b.type = 0 and b.memberid = m.id and b.exerciseid = ts.id and ts.storeid = s.id and ts.teamexerciseid = t.id ";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				String membername = rs.getString("membername");
 				int type = rs.getInt("type");
+				String storename = rs.getString("storename");
 				String exercisename = rs.getString("exercisename");
 				String booktime = rs.getString("booktime");
 				BookExercise an = new BookExercise(id, membername, type, exercisename, booktime);
+				an.storename = storename;
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -61,6 +63,7 @@ public class BookExerciseMgr {
 		return list;
 	}
 	
+	/*
 	public List<BookExercise> getAllActivePrivateBookExercise() {
 		List<BookExercise> list = new ArrayList<BookExercise>();
 		Connection conn = DB.getConn();
@@ -87,6 +90,7 @@ public class BookExerciseMgr {
 		}
 		return list;
 	}
+	*/
 	
 	public List<BookExercise> searchActiveBookExercise(int teamexercisescheduleid, int privateexerciseid, String starttime, String endtime) {
 		List<BookExercise> list = new ArrayList<BookExercise>();
@@ -192,9 +196,9 @@ public class BookExerciseMgr {
 		} catch (SQLException eee) {
 			eee.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return list;
 	}

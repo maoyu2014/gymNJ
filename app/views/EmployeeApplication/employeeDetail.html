@@ -16,15 +16,11 @@
 <body>
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">员工信息详情</div>
-	<!-- 
-	<br/>
-	<div style="background-color:#e5ffb3;font-size:14px;padding:5px">购卡信息</div>
-	 -->
 	 
 	<table border="0">
 	<tr>
 	<td>
-		#{form @Application.updateEmployeeToDB(e.id), onsubmit:"return check()", enctype:'multipart/form-data'}
+		#{form @EmployeeApplication.updateEmployeeToDB(e.id), onsubmit:"return check()", enctype:'multipart/form-data'}
 		<div style="margin-left:100px;">
 			
 			<div style="margin:10px;">
@@ -109,7 +105,7 @@
 			
 			<div style="margin:10px;">
 			<span style="font-size:14px;display:inline-block;width:100px">所属门店：</span>
-			<input id="storeid" name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}'" value="${e.storeid}" style="height:32px">
+			<input id="storeid" name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{StoreApplication.getAllStore()}'" value="${e.storeid}" style="height:32px">
 			</div>
 			
 			<div style="margin:10px">
@@ -130,14 +126,11 @@
 	<tr>
 	</table>
 	
-	<!-- 
-	<br/>
-	<div style="background-color:#e5ffb3;font-size:14px;padding:5px">操课信息</div>
-	 -->
 </body>
 	
 	
 <script>
+/*
 var identity = document.getElementsByName("identity"); 
 for (i=0; i<identity.length; i++){  
 	if (identity[i].checked){  
@@ -191,7 +184,8 @@ $("input[name='identity']").change(function(){
 		}
 	}
 });
-
+*/
+*
 function check() {
 	var v;
 	v = $("#name").val();

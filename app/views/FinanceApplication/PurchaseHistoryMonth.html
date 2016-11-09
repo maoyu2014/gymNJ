@@ -16,16 +16,16 @@
     
 <body>
 
-	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">财务收入</div>
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">本月财务收入</div>
 	
 	<div style="margin-top:20px;margin-left:300px;width:300px;height:120px;border:0px solid;">
-		<div style="background-color:#1a1a1a;height:30%;border:0px solid;font-size:25px;text-align:center;color:white;padding:10px">现金额度</div>
+		<div style="background-color:#1a1a1a;height:30%;border:0px solid;font-size:25px;text-align:center;color:white;padding:10px">本月收入</div>
 		<div style="background-color:#a6a6a6;height:30%;border:0px solid;font-size:30px;text-align:center;padding:10px">￥${feesum.format('000.00')}元</div>
 	</div>
 	
 	<!-- 
 	<div style="margin:20px">
-		#{form @Application.PurchaseHistorySearch()}
+		#{form @FinanceApplication.PurchaseHistoryMonth()}
 		<select name="cardtype" class="easyui-combobox" style="height:32px;width:120px;">
 			<option value="0">全部消费种类</option>
 			<option value="1">月卡</option>
@@ -62,10 +62,7 @@
 	            <td>${purchase.fee}</td>
 	            <td>${purchase.purchasetypename}</td>
 	            <td>
-	            	<a href="@{Application.MemberDetail(purchase.memberid)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-	            	<!-- 
-	            	<a href="@{Application.deletePurchaseHistory(purchase.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
-	            	 -->
+	            	<a href="@{MemberApplication.MemberDetail(purchase.memberid)}" class="easyui-linkbutton" data-options="" style="">会员详情</a>
 	            </td>
 	        </tr>
 	        #{/list}

@@ -1,4 +1,4 @@
-package models;
+package models.finance;
 
 public class PurchaseHistory {
 

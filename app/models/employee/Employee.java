@@ -1,4 +1,4 @@
-package models;
+package models.employee;
 
 public class Employee {
 	
@@ -13,7 +13,7 @@ public class Employee {
 	public String phone;
 	
 	public int ismanager;		//用0和1区别
-	public int isfinance;
+	public int isfinance;		
 	public int iscoach;
 	
 	public int domember;
@@ -29,6 +29,9 @@ public class Employee {
 	public int storeid;
 	public String introduce;
 	public String openid;
+	
+	public String storename;
+	public int comeinpassword;
 	
 	public Employee(int id, String username, String password, String name,
 			String headimage, int sex, String phone, int ismanager,

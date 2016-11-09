@@ -1,4 +1,4 @@
-package utils;
+package models.finance;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import models.Announcement;
-import models.City;
-import models.Employee;
-import models.Member;
-import models.PurchaseHistory;
-import models.Store;
-import models.StoreCity;
+import utils.common.DB;
+import models.employee.Employee;
+import models.member.Member;
+import models.store.Store;
+import models.useless.Announcement;
+import models.useless.City;
+import models.useless.StoreCity;
 
 
 public class PurchaseHistoryMgr {
@@ -34,13 +34,13 @@ public class PurchaseHistoryMgr {
 		return em;
 	}
 	
-	public List<PurchaseHistory> getAllPurchaseHistory() {
+	public List<PurchaseHistory> getMonthPurchaseHistory(String specificMonth) {
 		List<PurchaseHistory> list = new ArrayList<PurchaseHistory>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select ph.id, ph.orderid, ph.memberid, m.name as membername, ph.cardtype, ph.fee, ph.purchasetime, ph.purchasetype, ph.isprivate, ph.bookid  from PurchaseHistory ph, member m where ph.memberid = m.id";
+			String sql = "select ph.*, m.name as membername from PurchaseHistory ph, member m where ph.memberid = m.id and ph.purchasetime >= '" + specificMonth + "'";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
@@ -66,6 +66,26 @@ public class PurchaseHistoryMgr {
 		return list;
 	}
 	
+	public double getAllPurchaseHistoryFee() {
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		double feesum=0;
+		try {
+			String sql = "select sum(fee) as feesum from PurchaseHistory";
+			rs = DB.executeQuery(stmt, sql);
+			if (rs.next()) {
+				feesum = rs.getDouble("feesum");
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return feesum;
+	}
 	
 	public List<PurchaseHistory> searchPurchaseHistory(int cardtype, String starttime, String endtime) {
 		List<PurchaseHistory> list = new ArrayList<PurchaseHistory>();
@@ -148,6 +168,7 @@ public class PurchaseHistoryMgr {
 		}
 		return flag;
 	}
+
 	
 	
 }

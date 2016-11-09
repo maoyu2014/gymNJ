@@ -1,7 +1,7 @@
-package models;
+package models.course;
 
-//这个团操的课程是共享的，切记。
-//真正可以唯一定位一个团操的是TeamExerciseSchedule
+//这个课程是共享的，仅仅表示一个课程。
+//真正可以唯一定位一个课程的是TeamExerciseSchedule
 public class TeamExercise {
 
 	public int id;
@@ -12,6 +12,13 @@ public class TeamExercise {
 	public String parts;
 	public String introduce;
 	public String notice;
+	
+	//展示使用
+	public int one=0;
+	public int two=0;
+	public int three=0;
+	public int four=0;
+	public int five=0;
 	
 	public TeamExercise(int id, String name, String image, Double usedtime,
 			int strength, String parts, String introduce, String notice) {

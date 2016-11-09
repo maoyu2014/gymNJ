@@ -1,4 +1,4 @@
-package utils;
+package models.course;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import models.TeamExerciseSchedule;
+import utils.common.DB;
 
 
 
@@ -219,6 +219,41 @@ public class TeamExerciseScheduleMgr {
 				String endtime = rs.getString("endtime");
 				int consumenum = rs.getInt("consumenum");
 				an = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime, consumenum);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return an;
+	}
+	
+	public TeamExerciseSchedule findTeamExerciseScheduleMoreNameById(int aid) {
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		TeamExerciseSchedule an = null;
+		try {
+			String sql = "select a.*, b.name as teamexercisename, c.name as employeename from TeamExerciseSchedule a, teamexercise b, employee c where a.teamexerciseid = b.id and a.employeeid = c.id and a.id = " + aid;
+			rs = DB.executeQuery(stmt, sql);
+			if (rs.next()) {
+				int id = rs.getInt("id");
+				int storeid = rs.getInt("storeid");
+				int classroomid = rs.getInt("classroomid");
+				int employeeid = rs.getInt("employeeid");
+				int teamexerciseid = rs.getInt("teamexerciseid");
+				
+				int num = rs.getInt("num");
+				int oknum = rs.getInt("oknum");
+				
+				String begintime = rs.getString("begintime");
+				String endtime = rs.getString("endtime");
+				int consumenum = rs.getInt("consumenum");
+				an = new TeamExerciseSchedule(id, storeid, classroomid, employeeid, teamexerciseid, num, oknum, begintime, endtime, consumenum);
+				an.teamexercisename = rs.getString("teamexercisename");
+				an.employeename = rs.getString("employeename");
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();

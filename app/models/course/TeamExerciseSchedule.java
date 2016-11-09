@@ -1,4 +1,4 @@
-package models;
+package models.course;
 
 //这个才是真正唯一定位一个团操的类
 public class TeamExerciseSchedule {

@@ -30,53 +30,46 @@
 		<div data-options="region:'west'" style="width:20%;background-color:#e0ebeb;">
 			<ul id="accordion" class="accordion">
 				<li>
-					<div class="link"><i class="fa fa-globe"></i>会员管理<i class="fa fa-chevron-down"></i></div>
+					<div class="link">会员管理</div>
 					<ul class="submenu">
-						<li><a href="@{Application.MemberSetting()}" target="iframe_a">会员信息</a></li>
-						<li><a href="@{Application.GoodRecommendedMember()}" target="iframe_a">优秀推介人</a></li>
-					</ul>
-				</li>
-				<li>
-					<div class="link"><i class="fa fa-globe"></i>预约管理<i class="fa fa-chevron-down"></i></div>
-					<ul class="submenu">
+						<li><a href="@{MemberApplication.MemberBasic()}" target="iframe_a">普通会员信息</a></li>
+						<li><a href="@{MemberApplication.MemberSpecial()}" target="iframe_a">课程卡成员信息</a></li>
 						<!-- 
-						<li><a href="#">店内人数</a></li>
+						<li><a href="@{MemberApplication.GoodRecommendedMember()}" target="iframe_a">优秀推介人</a></li>
 						 -->
-						<li><a href="@{Application.BookPrivateExerciseDisplay()}" target="iframe_a">特训营预约</a></li>
-						<li><a href="@{Application.BookTeamExerciseScheduleDisplay()}" target="iframe_a">课程预约 <s>(团操预约)</s></a></li>
 					</ul>
 				</li>
 				<li>
-					<div class="link"><i class="fa fa-globe"></i>课程管理<i class="fa fa-chevron-down"></i></div>
+					<div class="link">课程管理</div>
 					<ul class="submenu">
-						<li><a href="@{Application.teamExerciseBasic()}" target="iframe_a">课程 <s>(团操)</s></a></li>
-						<li><a href="@{Application.teamExerciseWeek()}" target="iframe_a">本周课程 <s>(本周团操课程)</s></a></li>
-						<li><a href="@{Application.teamExerciseMonth()}" target="iframe_a">本月课程 <s>(本月团操课程)</s></a></li>
-						<li><a href="@{Application.teamExerciseSchedule()}" target="iframe_a">课程排期 <s>(团操排期)</s></a></li>
-						<li><a href="@{Application.PrivateExerciseSetting()}" target="iframe_a">特训班排期</a></li>
+						<li><a href="@{CourseApplication.teamExerciseBasic()}" target="iframe_a">课程 </a></li>
+						<li><a href="@{CourseApplication.teamExerciseWeek()}" target="iframe_a">本周课程 </a></li>
+						<li><a href="@{CourseApplication.teamExerciseMonth()}" target="iframe_a">本月课程 </a></li>
+						<li><a href="@{CourseApplication.teamExerciseSchedule()}" target="iframe_a">课程排期 </a></li>
 					</ul>
 				</li>
 				<li>
-					<a href="@{Application.fitnessPlanSetting()}" target="iframe_a"><div class="link"><i class="fa fa-globe"></i>健身计划</div></a>
-				</li>
-				<li>
-					<div class="link"><i class="fa fa-globe"></i>营销管理<i class="fa fa-chevron-down"></i></div>
+					<div class="link">预约管理</div>
 					<ul class="submenu">
-						<li><a href="@{Application.announcementSetting()}" target="iframe_a">门店公告</a></li>
-						<li><a href="@{Application.groupbuySetting()}" target="iframe_a">团购活动</a></li>
+						<li><a href="@{BookApplication.BookTeamExerciseScheduleDisplay()}" target="iframe_a">课程预约 </a></li>
 					</ul>
 				</li>
 				<li>
-					<a href="@{Application.PurchaseHistorySetting()}" target="iframe_a"><div class="link"><i class="fa fa-globe"></i>财务管理</div></a>
+					<a href="@{EmployeeApplication.employeeSetting()}" target="iframe_a"><div class="link">员工管理</div></a>
 				</li>
 				<li>
-					<a href="@{Application.employeeSetting()}" target="iframe_a"><div class="link"><i class="fa fa-globe"></i>员工管理</div></a>
+					<a href="@{StoreApplication.storeSetting()}" target="iframe_a"><div class="link">门店管理</div></a>
 				</li>
 				<li>
-					<a href="@{Application.storeSetting()}" target="iframe_a"><div class="link"><i class="fa fa-globe"></i>门店管理</div></a>
+					<div class="link">财务管理</div>
+					<ul class="submenu">
+						<li><a href="@{FinanceApplication.PurchaseHistoryMonth()}" target="iframe_a">本月收入</a></li>
+						<li><a href="@{FinanceApplication.PurchaseHistoryAll()}" target="iframe_a">历史收入</a></li>
+					</ul>
 				</li>
+				<!-- 
 				<li>
-					<div class="link"><i class="fa fa-globe"></i>统计报表<i class="fa fa-chevron-down"></i></div>
+					<div class="link">统计报表</div>
 					<ul class="submenu">
 						<li><a href="#">课程报表</a></li>
 						<li><a href="#">销售报表</a></li>
@@ -84,6 +77,7 @@
 						<li><a href="#">员工报表</a></li>	
 					</ul>
 				</li>
+				 -->
 			</ul>
 		</div>
 		

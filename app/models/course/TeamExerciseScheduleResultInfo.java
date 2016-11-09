@@ -1,4 +1,4 @@
-package models;
+package models.course;
 
 public class TeamExerciseScheduleResultInfo {
 	public int id;

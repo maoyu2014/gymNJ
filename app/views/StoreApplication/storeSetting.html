@@ -15,41 +15,34 @@
     
 <body>
 
-	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">门店设置</div>
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">门店管理</div>
 	
-	<div style="margin:20px">
-		#{form @Application.storeSearch()}
-		<input name="cityid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllCity()}',prompt:'请选择一个城市'" style="height:32px">
-	    <input name="storename" class="easyui-textbox" data-options="prompt:'搜索门店名称关键字'" style="height:32px">
-	    <input type="submit" style="width:80px;height:32px" value="搜索">
-	    <a href="@{Application.addStore()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;position:absolute;right:20px;">增加门店</a>
-		#{/form}
-	</div>
+	<a href="@{StoreApplication.addStore()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;">增加门店</a>
 	
 	<div style="margin:20px">
         <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
 	        <thead>
 	            <tr>
-	                <th data-options="field:'cityname',width:80">城市</th>
 	                <th data-options="field:'name',width:120">门店名称</th>
 	                <th data-options="field:'address',width:120">地址</th>
+	                <th data-options="field:'area',width:80">面积</th>
 	                <th data-options="field:'manager',width:60">店长</th>
 	                <th data-options="field:'phone',width:100">联系方式</th>
 	                <th data-options="field:'operation',width:80">操作</th>
 	            </tr>
 	        </thead>
 	        <tbody>
-	        #{list items:listsc, as:'storecity'}
+	        #{list items:listsc, as:'store'}
 	        	<tr>
-		            <td>${storecity.cityname}</td>
-		            <td>${storecity.name}</td>
-		            <td>${storecity.address}</td>
-		            <td>${storecity.manager}</td>
-		            <td>${storecity.phone}</td>
+		            <td>${store.name}</td>
+		            <td>${store.address}</td>
+		            <td>${store.area}</td>
+		            <td>${store.manager}</td>
+		            <td>${store.phone}</td>
 		            <td>
-		            	<a href="@{Application.storeDetail(storecity.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{StoreApplication.storeDetail(store.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
 		            	<!--  
-		            	<a href="@{Application.deleteStore(storecity.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
+		            	<a href="@{StoreApplication.deleteStore(store.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
 		            	-->
 		            </td>
 		        </tr>

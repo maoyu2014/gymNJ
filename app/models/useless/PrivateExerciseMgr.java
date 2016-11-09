@@ -1,4 +1,4 @@
-package utils;
+package models.useless;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,14 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import models.Announcement;
-import models.City;
-import models.Employee;
-import models.FitnessPlan;
-import models.PrivateExercise;
-import models.Store;
-import models.StoreCity;
-import models.TeamExercise;
+import utils.common.DB;
+import models.employee.Employee;
+import models.store.Store;
 
 
 public class PrivateExerciseMgr {

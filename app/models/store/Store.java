@@ -1,9 +1,9 @@
-package models;
+package models.store;
 
 public class Store {
 	
 	public int id;
-	public int cityid;
+	public int cityid;	//2016年11月弃用
 	public String name;
 	public String address;
 	public double area;

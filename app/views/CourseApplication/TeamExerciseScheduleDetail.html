@@ -16,9 +16,9 @@
     
 <body>
 
-	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">团操排期详情</div>
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">课程排期详情</div>
 	
-	#{form @Application.updateTeamExerciseScheduleToDB(sc.id), onsubmit:"return check()"}
+	#{form @CourseApplication.updateTeamExerciseScheduleToDB(sc.id), onsubmit:"return check()"}
 	<div style="margin-left:100px;">
 		
 		<div style="margin:10px">
@@ -27,28 +27,28 @@
 			editable:false,
 			valueField:'id',
 			textField:'name',
-			url:'@{Application.getAllStore()}',
+			url:'@{StoreApplication.getAllStore()}',
 			onSelect: function(record){
-	            var url = '@{Application.getAllTuanClassroomByStoreId()}?storeid=' + record.id;
+	            var url = '@{StoreApplication.getAllTuanClassroomByStoreId()}?storeid=' + record.id;
 	            $('#classroomidq').combobox('reload', url);
-	            url = '@{Application.getAllCoachByStoreID()}?storeid=' + record.id;
+	            url = '@{EmployeeApplication.getAllCoachByStoreID()}?storeid=' + record.id;
 	            $('#employeeidq').combobox('reload', url);
         	}"  value="${sc.storeid}" style="height:32px">
 		</div>
 		
 		<div style="margin:10px">
 		<span style="font-size:14px;display:inline-block;width:100px">教室：</span>
-		<input id="classroomidq" name="classroomid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{Application.getAllTuanClassroomByStoreId(sc.storeid)}'" value="${sc.classroomid}" style="height:32px">
+		<input id="classroomidq" name="classroomid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{StoreApplication.getAllTuanClassroomByStoreId(sc.storeid)}'" value="${sc.classroomid}" style="height:32px">
 		</div>
 		
 		<div style="margin:10px">
 		<span style="font-size:14px;display:inline-block;width:100px">教练：</span>
-		<input id="employeeidq" name="employeeid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{Application.getAllCoachByStoreID(sc.storeid)}'" value="${sc.employeeid}" style="height:32px">
+		<input id="employeeidq" name="employeeid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{EmployeeApplication.getAllCoachByStoreID(sc.storeid)}'" value="${sc.employeeid}" style="height:32px">
 		</div>
 		
 		<div style="margin:10px">
 		<span style="font-size:14px;display:inline-block;width:100px">课程：</span>
-		<input id="teamexerciseid" name="teamexerciseid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{Application.getAllTeamExercise()}'" value="${sc.teamexerciseid}" style="height:32px">
+		<input id="teamexerciseid" name="teamexerciseid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{CourseApplication.getAllTeamExercise()}'" value="${sc.teamexerciseid}" style="height:32px">
 		</div>
 		
 		<div style="margin:10px;">

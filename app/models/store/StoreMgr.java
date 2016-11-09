@@ -1,4 +1,4 @@
-package utils;
+package models.store;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import models.City;
-import models.Store;
-import models.StoreCity;
+import utils.common.DB;
+import models.useless.City;
+import models.useless.StoreCity;
 
 
 public class StoreMgr {
@@ -51,64 +51,62 @@ public class StoreMgr {
 		}
 	}
 	
-	public StoreCity findStoreById(int storeid) {
+	public Store findStoreById(int storeid) {
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
-		StoreCity sc = null;
+		Store sc = null;
 		try {
 			//加空格啊加空格，sql一定记得各种加空格
-			String sql = "select store.id as id, cityid, store.name as name, city.name as cityname, address, area, photo, manager, phone from store inner join city on store.cityid = city.id where store.id = " + storeid;
+			String sql = "select * from store where store.id = " + storeid;
 			rs = DB.executeQuery(stmt, sql);
 			if (rs.next()) {
 				int id = rs.getInt("id");
 				int cityid = rs.getInt("cityid");
 				String name = rs.getString("name");
-				String cityname = rs.getString("cityname");
 				String address = rs.getString("address");
 				double area = rs.getDouble("area");
 				String photo = rs.getString("photo");
 				String manager = rs.getString("manager");
 				String phone = rs.getString("phone");
-				sc = new StoreCity(id, cityid, name, cityname, address, area, photo, manager, phone);
+				sc = new Store(id, cityid, name, address, area, photo, manager, phone);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return sc;
 	}
 	
-	public List<StoreCity> getAllStore() {
-		List<StoreCity> list = new ArrayList<StoreCity>();
+	public List<Store> getAllStore() {
+		List<Store> list = new ArrayList<>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select store.id as id, cityid, store.name as name, city.name as cityname, address, area, photo, manager, phone from store inner join city on store.cityid = city.id";
+			String sql = "select * from store";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				int cityid = rs.getInt("cityid");
 				String name = rs.getString("name");
-				String cityname = rs.getString("cityname");
 				String address = rs.getString("address");;
 				double area = rs.getDouble("area");
 				String photo = rs.getString("photo");
 				String manager = rs.getString("manager");
 				String phone = rs.getString("phone");	
-				StoreCity m  = new StoreCity(id, cityid, name, cityname, address, area, photo, manager, phone);	
+				Store m  = new Store(id, cityid, name, address, area, photo, manager, phone);	
 				list.add(m);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return list;
 	}
@@ -151,170 +149,5 @@ public class StoreMgr {
 		}
 	}
 	
-	
-	public List<StoreCity> searchStore(int acityid, String storename) {
-		List<StoreCity> list = new ArrayList<StoreCity>();
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		try {
-			String sql = "select store.id as id, cityid, store.name as name, city.name as cityname, address, area, photo, manager, phone from store inner join city on store.cityid = city.id ";
-			boolean flag = false;
-			if (acityid!=0) {
-				if (!flag) {
-					sql += " where cityid = " + acityid;
-					flag = true;
-				} else {
-					sql += " and cityid = " + acityid;
-				}
-			}
-			if (storename!=null && storename.length()>0) {
-				if (!flag) {
-					sql+= " where store.name like '%" + storename + "%'";
-					flag = true;
-				} else {
-					sql+= " and store.name like '%" + storename + "%'";
-				}
-			}
-//			System.out.println(sql);
-			rs = DB.executeQuery(stmt, sql);
-			while (rs.next()) {
-				int id = rs.getInt("id");
-				int cityid = rs.getInt("cityid");
-				String name = rs.getString("name");
-				String cityname = rs.getString("cityname");
-				String address = rs.getString("address");;
-				double area = rs.getDouble("area");
-				String photo = rs.getString("photo");
-				String manager = rs.getString("manager");
-				String phone = rs.getString("phone");	
-				StoreCity m  = new StoreCity(id, cityid, name, cityname, address, area, photo, manager, phone);	
-				list.add(m);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(conn);
-			DB.close(stmt);
-			DB.close(rs);
-		}
-		return list;
-	}
-	/*
-	public boolean hasMember(String pengid) {
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		String sql = "select * from member where pengid = '" + pengid + "'";
-		rs = DB.executeQuery(stmt, sql);
-		try {
-			if (rs.next()) {
-				return true;
-			} 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return false;
-	}
-	
-	public boolean hasOtherMember(String pengid, int id) {
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		String sql = "select * from member where pengid = '" + pengid + "'";
-		rs = DB.executeQuery(stmt, sql);
-		try {
-			if (rs.next()) {
-				int tid = rs.getInt("id");
-				if (tid != id)
-					return true;
-			} 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return false;
-	}
-	
-	
-	
-	
-	
-	
-	public List<Member> getMembers(int userid) {
-		List<Member> list = new ArrayList<Member>();
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		try {
-			String sql = "select * from member where associationid=" + userid;
-			rs = DB.executeQuery(stmt, sql);
-			while (rs.next()) {
-				Member m = new Member();
-				m.setId(rs.getInt("id"));
-				m.setAssociationid(rs.getInt("associationid"));
-				m.setPengid(rs.getString("pengid"));
-				m.setName(rs.getString("name"));
-				m.setProvince(rs.getString("province"));
-				m.setCity(rs.getString("city"));
-				m.setLongitude(rs.getString("longitude"));
-				m.setLatitude(rs.getString("latitude"));
-				m.setPhone(rs.getString("phone"));
-				list.add(m);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(conn);
-			DB.close(stmt);
-			DB.close(rs);
-		}
-		return list;
-	}
-	
-	
-	
-	
-	
-	
-	public Member loadById(int id) {
-		Member m = null;
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		try {
-			conn = DB.getConn();
-			stmt = DB.getStmt(conn);
-			String sql = "select * from member where id=" + id;
-			rs = DB.executeQuery(stmt, sql);
-			if (rs.next()) {
-				m = new Member();
-				m.setId(rs.getInt("id"));
-				m.setAssociationid(rs.getInt("associationid"));
-				m.setPengid(rs.getString("pengid"));
-				m.setName(rs.getString("name"));
-				m.setProvince(rs.getString("province"));
-				m.setCity(rs.getString("city"));
-				m.setLongitude(rs.getString("longitude"));
-				m.setLatitude(rs.getString("latitude"));
-				m.setPhone(rs.getString("phone"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return m;
-	}
-	*/
 	
 }

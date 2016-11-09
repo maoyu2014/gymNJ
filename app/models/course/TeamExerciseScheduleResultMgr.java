@@ -1,4 +1,4 @@
-package utils;
+package models.course;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,14 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.Announcement;
-import models.City;
-import models.Employee;
-import models.Member;
-import models.Store;
-import models.StoreCity;
-import models.TeamExerciseScheduleResultDetail;
-import models.TeamExerciseScheduleResultInfo;
+import utils.common.DB;
+import models.employee.Employee;
+import models.member.Member;
+import models.store.Store;
+import models.useless.Announcement;
+import models.useless.City;
+import models.useless.StoreCity;
 
 
 public class TeamExerciseScheduleResultMgr {

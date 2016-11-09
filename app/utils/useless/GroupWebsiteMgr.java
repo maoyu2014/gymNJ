@@ -1,4 +1,4 @@
-package utils;
+package utils.useless;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,9 +10,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import models.City;
-import models.GroupWebsite;
-import models.Groupbuy;
+import utils.common.DB;
+import models.useless.City;
+import models.useless.GroupWebsite;
+import models.useless.Groupbuy;
 
 
 public class GroupWebsiteMgr {

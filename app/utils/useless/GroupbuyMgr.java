@@ -1,4 +1,4 @@
-package utils;
+package utils.useless;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import models.Announcement;
-import models.City;
-import models.Employee;
-import models.Groupbuy;
-import models.Store;
-import models.StoreCity;
+import utils.common.DB;
+import models.employee.Employee;
+import models.store.Store;
+import models.useless.Announcement;
+import models.useless.City;
+import models.useless.Groupbuy;
+import models.useless.StoreCity;
 
 
 public class GroupbuyMgr {

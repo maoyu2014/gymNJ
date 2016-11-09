@@ -1,4 +1,5 @@
-package models;
+package models.useless;
+
 
 public class GroupbuyShow {
 

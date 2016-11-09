@@ -17,7 +17,7 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加工作人员</div>
 	
-	#{form @Application.addEmployeeToDB(), onsubmit:"return check()", enctype:'multipart/form-data'}
+	#{form @EmployeeApplication.addEmployeeToDB(), onsubmit:"return check()", enctype:'multipart/form-data'}
 	<div style="margin-left:100px;">
 		
 		<div style="margin:10px;">
@@ -75,7 +75,7 @@
 		
 		<div style="margin:10px;">
 		<span style="font-size:14px;display:inline-block;width:100px">所属门店：</span>
-		<input id="storeid" name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{Application.getAllStore()}',prompt:'请选择一个门店'" style="height:32px">
+		<input id="storeid" name="storeid" class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'@{StoreApplication.getAllStore()}',prompt:'请选择一个门店'" style="height:32px">
 		</div>
 		
 		<div style="margin:10px">
@@ -93,6 +93,7 @@
 </body>
 
 <script>
+	/*
 	$("input[name='identity']").click(function(){
 		var identity = document.getElementsByName("identity"); 
 		var authority = document.getElementsByName("authority"); 
@@ -119,6 +120,7 @@
 			}
 		}
 	});
+	*/
 	
 	function check() {
 		var v;

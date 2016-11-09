@@ -1,4 +1,4 @@
-package models;
+package models.member;
 
 public class MemberFitnessTest {
 

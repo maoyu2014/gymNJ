@@ -1,4 +1,4 @@
-package models;
+package models.useless;
 
 //特训课程show，现在不用了，直接用PrivateExercise
 public class PrivateExerciseShow {

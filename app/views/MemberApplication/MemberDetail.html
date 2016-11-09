@@ -56,24 +56,21 @@
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.phone}" style="">
 				</div>
 				
+				<!-- 
 				<div style="margin:5px;">
 				<span style="font-size:14px;display:inline-block;width:100px">指纹录入：</span>
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.fingerprinttype}" style="">
 				</div>
-				
+				-->
+				 
 				<div style="margin:5px;">
 				<span style="font-size:14px;display:inline-block;width:100px">入场密码：</span>
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.comeinpassword}" style="">
 				</div>
 				
 				<div style="margin:5px;">
-				<span style="font-size:14px;display:inline-block;width:100px">所在城市：</span>
-				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.cityname}" style="">
-				</div>
-				
-				<div style="margin:5px;">
-				<span style="font-size:14px;display:inline-block;width:100px">常去门店：</span>
-				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.offenstorename}" style="">
+				<span style="font-size:14px;display:inline-block;width:100px">所属门店：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.storename}" style="">
 				</div>
 				
 				<div style="margin:5px;">
@@ -129,19 +126,19 @@
 				<div style="margin:5px;">
 				<span style="font-size:14px;display:inline-block;width:100px">体能测试：</span>
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.fitnesstest}" style="">
-				<a href="@{Application.MemberFitnessTestEdit(sc.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
+				<a href="@{MemberApplication.MemberFitnessTestEdit(sc.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
 				</div>
 				
 				<div style="margin:5px;">
 				<span style="font-size:14px;display:inline-block;width:100px">会员状态：</span>
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.memberstatus}" style="">
-				<a href="@{Application.MemberStatusEdit(sc.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
+				<a href="@{MemberApplication.MemberStatusEdit(sc.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
 				</div>
 				
 				<div style="margin:5px;">
 				<span style="font-size:14px;display:inline-block;width:100px">剩余课时数：</span>
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.leftcoursenum}" style="">
-				<a href="@{Application.MemberLeftcoursenumEditPage(sc.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
+				<a href="@{MemberApplication.MemberLeftcoursenumEditPage(sc.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
 				</div>
 				
 			</div>
@@ -196,7 +193,7 @@
 			    </table>
 		    </div>
 		    
-			<div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">团操课程</div>
+			<div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">课程信息</div>
 			<div style="margin:10px">
 		        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
 			        <thead>
@@ -207,10 +204,10 @@
 			            </tr>
 			        </thead>
 			        <tbody>
-			        #{list items:listtes, as:'TeamExerciseScheduleShow'}
+			        #{list items:listtes, as:'TeamExerciseSchedule'}
 			        	<tr>
-				            <td>${TeamExerciseScheduleShow.teamexercisename}</td>
-				            <td>${TeamExerciseScheduleShow.employeename}</td>
+				            <td>${TeamExerciseSchedule.teamexercisename}</td>
+				            <td>${TeamExerciseSchedule.employeename}</td>
 				            <td></td>
 				        </tr>
 				    #{/list}
@@ -218,28 +215,7 @@
 			    </table>
 		    </div>
 		    
-			<div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">特训课程</div>
-			<div style="margin:10px">
-		        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
-			        <thead>
-			            <tr>
-			                <th data-options="field:'name',width:150">课程</th>
-			                <th data-options="field:'employeename',width:150">教练</th>
-			                <th data-options="field:'status',width:150">状态</th>
-			            </tr>
-			        </thead>
-			        <tbody>
-			        #{list items:listpe, as:'PrivateExerciseShow'}
-			        	<tr>
-				            <td>${PrivateExerciseShow.name}</td>
-				            <td>${PrivateExerciseShow.employeename}</td>
-				            <td></td>
-				        </tr>
-				    #{/list}
-			        </tbody>
-			    </table>
-		    </div>
-		    
+					    
 		    <div style="background-color:#e5ffb3;font-size:14px;font-weight:600;padding:10px;">体能测试</div>
 			<div style="margin:10px">
 		        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:false">

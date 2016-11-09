@@ -16,12 +16,12 @@
     
 <body>
 
-	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">团操课程详情</div>
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">课程详情</div>
 	
 	<table border="0">
 	<tr>
 	<td>
-	#{form @Application.updateTeamExerciseToDB(sc.id), onsubmit:"return check()", enctype:'multipart/form-data'}
+	#{form @CourseApplication.updateTeamExerciseToDB(sc.id), onsubmit:"return check()", enctype:'multipart/form-data'}
 	<div style="margin-left:100px;">
 		
 		<div style="margin:20px;">

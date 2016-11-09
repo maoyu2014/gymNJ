@@ -1,4 +1,4 @@
-package models;
+package models.member;
 
 //会员
 public class Member {
@@ -14,7 +14,8 @@ public class Member {
 	public String phone;
 	public int fingerprint;	//指纹状态，1已录入 2未录入
 	public int comeinpassword;				//入场密码表，注意这个字段不在构造函数中，因为字段是变化的
-	public int cityid;		//会员属于哪个城市
+	public int cityid;		//会员属于哪个城市，不用了
+	public int storeid;		//会员属于哪个门店，比较重要
 	public int cardtype;	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
 	public String deaddate;	//到期时间
 	
@@ -24,7 +25,7 @@ public class Member {
 	public int distance; 	//距离  1：一公里以内  2：三公里以内  3：三公里以外
 	
 	public String fitnesstest;	//体能测试
-	public String memberstatus;	//会员状态
+	public String memberstatus;	//会员状态: 沉睡会员 活跃会员 工作伙伴 特训成员 课程卡成员
 	
 	//体脂信息
 	public String bmi;			//BMI
@@ -43,6 +44,7 @@ public class Member {
 	public String sexvalue;
 	public String fingerprinttype;
 	public String cityname;
+	public String storename;
 	public String offenstorename;
 	public String cardtypename;
 	public String exercisetimevalue;
@@ -56,7 +58,7 @@ public class Member {
 	
 	public Member(int id, String openid, String name, String wechatname,
 			int sex, double height, String birthday, String phone,
-			int fingerprint, int cityid,
+			String storename,
 			int cardtype, String deaddate, int exercisetime, int exercisegoal, int exercisehz,
 			int distance, String bmi, String muscle, String fat, String water,
 			String protein, int basicrate, int bodyage,
@@ -69,8 +71,7 @@ public class Member {
 		this.height = height;
 		this.birthday = birthday;
 		this.phone = phone;
-		this.fingerprint = fingerprint;
-		this.cityid = cityid;
+		this.storename = storename;
 		this.cardtype = cardtype;
 		this.deaddate = deaddate;
 		this.exercisetime = exercisetime;
@@ -103,7 +104,7 @@ public class Member {
 
 	//会员信息首页用的
 	public Member(int id, String openid, String name, String wechatname,
-			String phone, int fingerprint, String cityname, int cardtype,
+			String phone, String storename, int cardtype,
 			String wechatnumber, String fitnesstest, String memberstatus,
 			int leftcoursenum) {
 		this.id = id;
@@ -111,8 +112,7 @@ public class Member {
 		this.name = name;
 		this.wechatname = wechatname;
 		this.phone = phone;
-		this.fingerprint = fingerprint;
-		this.cityname = cityname;
+		this.storename = storename;
 		this.cardtype = cardtype;
 		this.wechatnumber = wechatnumber;
 		this.fitnesstest = fitnesstest;

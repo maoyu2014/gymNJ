@@ -15,43 +15,39 @@
 
 <body>
 
-<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">团操</div>
+<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">课程</div>
 	
-<div title="团操课程" style="">
-	<div style="margin:20px">
-	    <a href="@{Application.addTeamExercise()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:120px;height:32px;">增加单个团操</a>
-	</div>
-	
-	<div style="margin:20px">
-        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
-	        <thead>
-	            <tr>
-	                <th data-options="field:'name',width:80">课程名称</th>
-	                <th data-options="field:'usedtime',width:80">时长</th>
-	                <th data-options="field:'operation',width:80">操作</th>
-	            </tr>
-	        </thead>
-	        <tbody>
-	        #{list items:lists, as:'TeamExercise'}
-	        	<tr>
-		            <td>${TeamExercise.name}</td>
-		            <td>${TeamExercise.usedtime}</td>
-		            <td>
-		            	<a href="@{Application.teamExerciseDetail(TeamExercise.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-		            	<a href="@{Application.deleteTeamExercise(TeamExercise.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
-		            </td>
-		        </tr>
-	        #{/list}
-	        </tbody>
-	    </table>
-    </div>
-    
-    <div style="margin:20px;font-size:15px;font-weight:600;">
-    	共${number}条记录
-	</div>
-	<div style="margin:20px;font-size:15px;font-weight:600;">
-    	---
-	</div>
+<a href="@{CourseApplication.addTeamExercise()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:120px;height:32px;">增加单个团操</a>
+
+<div style="margin:20px">
+       <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+        <thead>
+            <tr>
+                <th data-options="field:'name',width:80">课程名称</th>
+                <th data-options="field:'usedtime',width:80">时长</th>
+                <th data-options="field:'operation',width:80">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        #{list items:lists, as:'TeamExercise'}
+        	<tr>
+	            <td>${TeamExercise.name}</td>
+	            <td>${TeamExercise.usedtime}</td>
+	            <td>
+	            	<a href="@{CourseApplication.teamExerciseDetail(TeamExercise.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+	            	<a href="@{CourseApplication.deleteTeamExercise(TeamExercise.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
+	            </td>
+	        </tr>
+        #{/list}
+        </tbody>
+    </table>
+   </div>
+   
+   <div style="margin:20px;font-size:15px;font-weight:600;">
+   	共${number}条记录
+</div>
+<div style="margin:20px;font-size:15px;font-weight:600;">
+   	---
 </div>
 	    
 <script type="text/javascript">

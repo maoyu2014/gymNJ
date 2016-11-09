@@ -1,4 +1,4 @@
-package utils;
+package models.employee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import models.City;
-import models.Employee;
-import models.Store;
-import models.StoreCity;
+import utils.common.DB;
+import models.store.Store;
+import models.useless.City;
+import models.useless.StoreCity;
 
 
 public class EmployeeMgr {
@@ -72,7 +72,7 @@ public class EmployeeMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select * from employee";
+			String sql = "select e.*, s.name as storename from employee e, store s where e.storeid=s.id";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
@@ -101,6 +101,7 @@ public class EmployeeMgr {
 				String introduce = rs.getString("introduce");
 				String openid = rs.getString("openid");
 				Employee e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce, openid);
+				e.storename = rs.getString("storename");
 				list.add(e);
 			}
 		} catch (SQLException eee) {
@@ -159,7 +160,7 @@ public class EmployeeMgr {
 		Employee e = null;
 		try {
 			//加空格啊加空格，sql一定记得各种加空格
-			String sql = "select * from employee where id = " + employeeid;
+			String sql = "select e.*, s.name as storename from employee e, store s where e.storeid=s.id and e.id = " + employeeid;
 			rs = DB.executeQuery(stmt, sql);
 			if (rs.next()) {
 				int id = rs.getInt("id");
@@ -188,6 +189,7 @@ public class EmployeeMgr {
 				String introduce = rs.getString("introduce");
 				String openid = rs.getString("openid");
 				e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce, openid);
+				e.storename = rs.getString("storename");
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -263,7 +265,7 @@ public class EmployeeMgr {
 		Employee e = null;
 		try {
 			//加空格啊加空格，sql一定记得各种加空格
-			String sql = "select * from employee where username = '" + ausername + "'";
+			String sql = "select e.*, s.name as storename from employee e, store s where e.storeid=s.id and e.username = '" + ausername + "'";
 			rs = DB.executeQuery(stmt, sql);
 			if (rs.next()) {
 				int id = rs.getInt("id");
@@ -292,6 +294,7 @@ public class EmployeeMgr {
 				String introduce = rs.getString("introduce");
 				String openid = rs.getString("openid");
 				e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce, openid);
+				e.storename = rs.getString("storename");
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -310,7 +313,7 @@ public class EmployeeMgr {
 		ResultSet rs = null;
 		List<Employee> list = new ArrayList<>();
 		try {
-			String sql = "select * from employee where storeid = " + astoreid;
+			String sql = "select e.*, s.name as storename from employee e, store s where e.storeid=s.id and storeid = " + astoreid;
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
@@ -339,6 +342,7 @@ public class EmployeeMgr {
 				String introduce = rs.getString("introduce");
 				String openid = rs.getString("openid");
 				Employee e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce, openid);
+				e.storename = rs.getString("storename");
 				list.add(e);
 			}
 		} catch (SQLException eee) {
@@ -436,7 +440,6 @@ public class EmployeeMgr {
 		}
 		return list;
 	}
-	
 	
 	
 }
