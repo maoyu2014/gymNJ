@@ -17,14 +17,7 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">本月课程预约信息</div>
 	
-	#{form @BookApplication.BookTeamExerciseScheduleDisplay()}
-	<input id="storeid" name="storeid" class="easyui-combobox" data-options="
-		editable:false,
-		valueField:'id',
-		textField:'name',
-		url:'@{StoreApplication.getAllStore()}',
-		prompt:'请选择一个门店'"  
-	style="height:32px">
+	#{form @BookApplication.BookTeamExerciseScheduleDisplayFen(storeid)}
 	<select name="yearmonth" class="easyui-combobox" style="height:32px;width:120px;">
 		<option value="">当前月</option>
 		<option value="2016-03">2016年03月</option>

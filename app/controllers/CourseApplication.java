@@ -544,6 +544,90 @@ public class CourseApplication extends Controller {
     }
     
     
+    /*
+     * ---------------分店系统-------------------
+     */
     
+    //搜索本周课程(原团操)
+    public static void teamExerciseWeekFen(int storeid) {
+    	String yearmonth = YearMonthDay.getCurrentMonth();
+    	List<TeamExerciseSchedule> list = TeamExerciseScheduleMgr.getInstance().searchTeamExerciseSchedule(storeid, 0, yearmonth);
+    	Map<Integer, List<TeamExerciseSchedule> > mapweek = new HashMap<>();
+    	for (int i=1; i<=7; i++) mapweek.put(i, new ArrayList<>());
+    	Calendar calendar =  Calendar.getInstance();
+    	int[] dir = new int[] {0,7,1,2,3,4,5,6};
+    	int x  =calendar.get(Calendar.DAY_OF_WEEK);
+    	int xx = dir[x];
+    	
+    	calendar.add(Calendar.DAY_OF_YEAR, -xx+1);
+		String mybegintime = ""+calendar.get(Calendar.YEAR)+"-";
+		int month = calendar.get(Calendar.MONTH)+1; 
+		if (month<10) mybegintime+="0"+month+"-";
+		else mybegintime += month+"-";
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		if (day<10) mybegintime+="0"+day;
+		else mybegintime+=day;
+		
+		calendar.add(Calendar.DAY_OF_MONTH, 6);
+		String myendtime = ""+calendar.get(Calendar.YEAR)+"-";
+		month = calendar.get(Calendar.MONTH)+1; 
+		if (month<10) myendtime+="0"+month+"-";
+		else myendtime += month+"-";
+		day = calendar.get(Calendar.DAY_OF_MONTH);
+		if (day<10) myendtime+="0"+day;
+		else myendtime+=day;
+		
+		for (TeamExerciseSchedule tess : list) {
+    		String strday = tess.begintime.substring(0, 10);
+    		if (strday.compareTo(mybegintime)>=0 && strday.compareTo(myendtime)<=0) {
+				try {
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+					Date date = dateFormat.parse(strday);
+					calendar.setTime(date); 
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}  
+				x  =calendar.get(Calendar.DAY_OF_WEEK);
+		    	xx = dir[x];
+        		mapweek.get(xx).add(tess);
+    		}
+    	}
+    	render(mapweek);
+    }
+    
+    //搜索本月课程(原团操)
+    public static void teamExerciseMonthFen(int storeid) {
+    	String yearmonth = YearMonthDay.getCurrentMonth();
+    	List<TeamExerciseSchedule> list = TeamExerciseScheduleMgr.getInstance().searchTeamExerciseSchedule(storeid, 0, yearmonth);
+		Map<Integer, List<TeamExerciseSchedule> > mapmonth = new HashMap<>();
+		for (int i=1; i<=35; i++) mapmonth.put(i, new ArrayList<>());	//35是为了配合前台5行7列
+		Calendar calendar =  Calendar.getInstance();
+		int[] dir = new int[] {0,7,1,2,3,4,5,6};
+    	String mybegintime = ""+calendar.get(Calendar.YEAR)+"-";
+    	String myendtime = ""+calendar.get(Calendar.YEAR)+"-";
+    	int month = calendar.get(Calendar.MONTH)+1; 
+    	if (month<10) mybegintime+="0"+month+"-"; else mybegintime += month+"-";
+    	if (month<10) myendtime+="0"+month+"-"; else myendtime += month+"-";
+    	mybegintime+="01";
+    	myendtime+="31";
+    	
+    	try {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+			Date date = dateFormat.parse(mybegintime);
+			calendar.setTime(date); 
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		int x  =calendar.get(Calendar.DAY_OF_WEEK);
+		int num = dir[x];
+    	for (TeamExerciseSchedule tess : list) {
+    		String strday = tess.begintime.substring(0, 10);
+    		if (strday.compareTo(mybegintime)>=0 && strday.compareTo(myendtime)<=0) {
+    			int xx = Integer.parseInt(strday.substring(8, 10));
+        		mapmonth.get(xx).add(tess);
+    		}
+    	}
+    	render(mapmonth, num);
+    }
     
 }

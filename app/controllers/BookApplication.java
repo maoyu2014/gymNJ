@@ -32,39 +32,28 @@ public class BookApplication extends Controller {
         render();
     }
 
-    /*
-    //特训营预约展示
-    public static void BookPrivateExerciseDisplay() {
-    	List<BookExercise> list = BookExerciseMgr.getInstance().getAllActivePrivateBookExercise();
-    	for (BookExercise b : list) {
-    		if (b.type==0) b.typename="团操";
-    		else if (b.type==1) b.typename="特训营";
-    		else b.typename="undefined";
-    	}
-    	int number = list.size();
-    	render(list, number);
-    }
-    */
-    
     //课程预约展示
-    public static void BookTeamExerciseScheduleDisplay() {
-    	String currentmonth = YearMonthDay.getCurrentMonth();
-    	List<BookExercise> listBookExercise = BookExerciseMgr.getInstance().getMonthActiveBookTeamExerciseSchedule(currentmonth);
-//    	for (BookExercise b : listBookExercise) {
-//    		b.typename="团操";
-//    	}
-    	int number = listBookExercise.size();
-    	render(listBookExercise, number);
-    }
-    
-    //课程预约搜索
-    public static void BookTeamExerciseScheduleSearch(int storeid, String yearmonth) {
+    public static void BookTeamExerciseScheduleDisplay(int storeid, String yearmonth) {
     	String currentmonth = YearMonthDay.getCurrentMonth();
     	if (yearmonth==null || yearmonth.length()==0) yearmonth = currentmonth;
     	List<BookExercise> listBookExercise = BookExerciseMgr.getInstance().searchActiveBookExercise(storeid, yearmonth);
     	int number = listBookExercise.size();
-    	render("BookApplication/BookTeamExerciseScheduleDisplay.html", listBookExercise, number);
+    	render(listBookExercise, number);
     }
+    
+    
+    /*
+     * --------------------------分店系统------------
+     */
+    
+    public static void BookTeamExerciseScheduleDisplayFen(int storeid, String yearmonth) {
+    	String currentmonth = YearMonthDay.getCurrentMonth();
+    	if (yearmonth==null || yearmonth.length()==0) yearmonth = currentmonth;
+    	List<BookExercise> listBookExercise = BookExerciseMgr.getInstance().searchActiveBookExercise(storeid, yearmonth);
+    	int number = listBookExercise.size();
+    	render(storeid, listBookExercise, number);
+    }
+    
     
     
 }

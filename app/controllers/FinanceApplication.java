@@ -27,15 +27,15 @@ public class FinanceApplication extends Controller {
     	double feesum=0.0;
     	for (PurchaseHistory ph : listPurchaseHistory) {
     		feesum+=ph.fee;
-    		if (ph.cardtype==1) ph.cardtypename="月卡";
-    		else if (ph.cardtype==2) ph.cardtypename="季卡";
-    		else if (ph.cardtype==3) ph.cardtypename="半年卡";
-    		else if (ph.cardtype==4) ph.cardtypename="年卡";
-    		else if (ph.cardtype==5) ph.cardtypename="299新人月卡";
-    		else if (ph.cardtype==6) ph.cardtypename="课程卡成员";
+    		if (ph.cardtype==1) ph.cardtypename="月卡付费";
+    		else if (ph.cardtype==2) ph.cardtypename="季卡付费";
+    		else if (ph.cardtype==3) ph.cardtypename="半年卡付费";
+    		else if (ph.cardtype==4) ph.cardtypename="年卡付费";
+    		else if (ph.cardtype==5) ph.cardtypename="299新人月卡付费";
+    		else if (ph.cardtype==6) ph.cardtypename="课程卡付费";
     		
     		if (ph.purchasetype==1) ph.purchasetypename="微信支付";
-    		if (ph.isprivate==1) ph.cardtypename="私教课程";
+    		if (ph.isprivate==1) ph.cardtypename="私教课程付费";
     	}
     	int number = listPurchaseHistory.size();
     	render(listPurchaseHistory, number, feesum);
@@ -45,6 +45,31 @@ public class FinanceApplication extends Controller {
     public static void PurchaseHistoryAll() {
     	double feesum = PurchaseHistoryMgr.getInstance().getAllPurchaseHistoryFee();
     	render(feesum);
+    }
+    
+    
+    /*
+     * -----------分店系统----------------
+     */
+    public static void PurchaseHistoryMonthFen(int storeid, String yearmonth) {
+    	String currentmonth = YearMonthDay.getCurrentMonth();
+    	if (yearmonth==null || yearmonth.length()==0) yearmonth = currentmonth;
+    	List<PurchaseHistory> listPurchaseHistory = PurchaseHistoryMgr.getInstance().getMonthPurchaseHistory(storeid, yearmonth);
+    	double feesum=0.0;
+    	for (PurchaseHistory ph : listPurchaseHistory) {
+    		feesum+=ph.fee;
+    		if (ph.cardtype==1) ph.cardtypename="月卡付费";
+    		else if (ph.cardtype==2) ph.cardtypename="季卡付费";
+    		else if (ph.cardtype==3) ph.cardtypename="半年卡付费";
+    		else if (ph.cardtype==4) ph.cardtypename="年卡付费";
+    		else if (ph.cardtype==5) ph.cardtypename="299新人月卡付费";
+    		else if (ph.cardtype==6) ph.cardtypename="课程卡付费";
+    		
+    		if (ph.purchasetype==1) ph.purchasetypename="微信支付";
+    		if (ph.isprivate==1) ph.cardtypename="私教课程付费";
+    	}
+    	int number = listPurchaseHistory.size();
+    	render(listPurchaseHistory, number, feesum);
     }
     
 }

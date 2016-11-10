@@ -107,21 +107,21 @@ public class MemberMgr {
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
-		String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and a.deaddate > '" + todaytime + "' and (a.memberstatus is NULL or a.memberstatus != '课程卡成员') ";
+		String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and (a.memberstatus is NULL or a.memberstatus != '课程卡成员') ";
 		try {
 			if (storeid!=0) {
 				sql += " and a.storeid = " + storeid;
 			}
-			acardtype=10;
 			if (acardtype!=10) {		//注意这里是10表示所有会员，因为非会员是0
 				sql += " and a.cardtype = " + acardtype;
 			}
-			amembertype=0;
 			if (amembertype!=0) {
-				if (amembertype==1)		//在期会员
+				if (amembertype==1) {		//在期会员
 					sql += " and a.deaddate > '" + todaytime + "'";
-				else if (amembertype==2) // 过期会员
+				}
+				else if (amembertype==2) {			// 过期会员
 					sql += " and a.deaddate < '" + todaytime + "' and a.cardtype>0";
+				}
 			}
 			asextype=0;
 			if (asextype!=0) {
@@ -165,21 +165,21 @@ public class MemberMgr {
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
-		String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and a.deaddate > '" + todaytime + "' and a.memberstatus = '课程卡成员' ";
+		String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and a.memberstatus = '课程卡成员' ";
 		try {
 			if (storeid!=0) {
 				sql += " and a.storeid = " + storeid;
 			}
-			acardtype=10;
 			if (acardtype!=10) {		//注意这里是10表示所有会员，因为非会员是0
 				sql += " and a.cardtype = " + acardtype;
 			}
-			amembertype=0;
 			if (amembertype!=0) {
-				if (amembertype==1)		//在期会员
+				if (amembertype==1) {		//在期会员
 					sql += " and a.deaddate > '" + todaytime + "'";
-				else if (amembertype==2) // 过期会员
+				}
+				else if (amembertype==2) {			// 过期会员
 					sql += " and a.deaddate < '" + todaytime + "' and a.cardtype>0";
+				}
 			}
 			asextype=0;
 			if (asextype!=0) {

@@ -15,16 +15,9 @@
     
 <body>
 
-	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">未过期的课程卡会员信息</div>
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">未过期的普通会员信息</div>
 	
-	#{form @MemberApplication.MemberSpecialSearch()}
-	<input id="storeid" name="storeid" class="easyui-combobox" data-options="
-		editable:false,
-		valueField:'id',
-		textField:'name',
-		url:'@{StoreApplication.getAllStore()}',
-		prompt:'请选择一个门店'"  
-	style="height:32px">
+	#{form @MemberApplication.MemberBasicSearchFen(storeid)}
 	<select name="acardtype" class="easyui-combobox" style="height:32px;width:100px;">
 		<option value="10">会员卡类型</option>
 		<option value="1">月卡</option>

@@ -73,7 +73,7 @@
 		            <td>${employee.comeinpassword}</td>
 		            <td>
 		            	<a href="@{EmployeeApplication.employeeDetail(employee.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
-		            	#{if employee.username != "admin"}
+		            	#{if employee.ismanager == 0}
 		            	<a href="@{EmployeeApplication.deleteEmployee(employee.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
 		            	#{/if}
 		            </td>

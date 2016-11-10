@@ -59,7 +59,8 @@ public class Application extends Controller {
     
     //分店首页
     public static void indexFen() {
-    	render();
+    	int storeid = (int) parseSession().get("storeid");
+    	render(storeid);
     }
     
     //首页图片
@@ -92,10 +93,12 @@ public class Application extends Controller {
     		Employee e = EmployeeMgr.getInstance().findEmployeeByUsername(username);
     		if (e.password.equals(md5password)) {
     			session.put("user", e.toString());
-    			if (e.username.equals("admin")) {
+    			if (e.username.equals("admin") && e.ismanager==1) {
     				index();
-    			} else {
+    			} else if (e.ismanager==1) {
     				indexFen();
+    			} else {
+    				renderText("只有店长才能登陆哦!");
     			}
     		} else {
     			renderJSON("用户名或者密码错误！");

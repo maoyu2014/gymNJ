@@ -34,63 +34,6 @@ public class BookExerciseMgr {
 		return em;
 	}
 	
-	public List<BookExercise> getMonthActiveBookTeamExerciseSchedule(String currentmonth) {
-		List<BookExercise> list = new ArrayList<BookExercise>();
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		try {
-			String sql = "select b.id as id, m.name as membername, b.type as type, s.name as storename, t.name as exercisename, b.booktime as booktime from BookExercise b, member m, teamexerciseschedule ts, store s, teamexercise t where b.booktime >= '" + currentmonth + "' and b.status = 1 and b.type = 0 and b.memberid = m.id and b.exerciseid = ts.id and ts.storeid = s.id and ts.teamexerciseid = t.id ";
-			rs = DB.executeQuery(stmt, sql);
-			while (rs.next()) {
-				int id = rs.getInt("id");
-				String membername = rs.getString("membername");
-				int type = rs.getInt("type");
-				String storename = rs.getString("storename");
-				String exercisename = rs.getString("exercisename");
-				String booktime = rs.getString("booktime");
-				BookExercise an = new BookExercise(id, membername, type, exercisename, booktime);
-				an.storename = storename;
-				list.add(an);
-			}
-		} catch (SQLException eee) {
-			eee.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return list;
-	}
-	
-	/*
-	public List<BookExercise> getAllActivePrivateBookExercise() {
-		List<BookExercise> list = new ArrayList<BookExercise>();
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		try {
-			String sql = "select b.id as id, m.name as membername, b.type as type, p.name as exercisename, b.booktime as booktime from BookExercise b, member m, privateexercise p where b.status = 1 and b.type = 1 and b.memberid = m.id and b.exerciseid = p.id ";
-			rs = DB.executeQuery(stmt, sql);
-			while (rs.next()) {
-				int id = rs.getInt("id");
-				String membername = rs.getString("membername");
-				int type = rs.getInt("type");
-				String exercisename = rs.getString("exercisename");
-				String booktime = rs.getString("booktime");
-				BookExercise an = new BookExercise(id, membername, type, exercisename, booktime);
-				list.add(an);
-			}
-		} catch (SQLException eee) {
-			eee.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return list;
-	}
-	*/
 	
 	public List<BookExercise> searchActiveBookExercise(int storeid, String yearmonth) {
 		List<BookExercise> list = new ArrayList<BookExercise>();

@@ -32,27 +32,27 @@
 				<li>
 					<div class="link">分店会员管理</div>
 					<ul class="submenu">
-						<li><a href="@{MemberApplication.MemberBasic()}" target="iframe_a">分店普通会员信息</a></li>
-						<li><a href="@{MemberApplication.MemberSpecial()}" target="iframe_a">分店课程卡成员信息</a></li>
+						<li><a href="@{MemberApplication.MemberBasicFen(storeid)}" target="iframe_a">分店普通会员信息</a></li>
+						<li><a href="@{MemberApplication.MemberSpecialFen(storeid)}" target="iframe_a">分店课程卡成员信息</a></li>
 					</ul>
 				</li>
 				<li>
 					<div class="link">分店课程管理</div>
 					<ul class="submenu">
-						<li><a href="@{CourseApplication.teamExerciseWeek()}" target="iframe_a">分店本周课程 </a></li>
-						<li><a href="@{CourseApplication.teamExerciseMonth()}" target="iframe_a">分店本月课程 </a></li>
+						<li><a href="@{CourseApplication.teamExerciseWeekFen(storeid)}" target="iframe_a">分店本周课程 </a></li>
+						<li><a href="@{CourseApplication.teamExerciseMonthFen(storeid)}" target="iframe_a">分店本月课程 </a></li>
 					</ul>
 				</li>
 				<li>
 					<div class="link">分店预约管理</div>
 					<ul class="submenu">
-						<li><a href="@{BookApplication.BookTeamExerciseScheduleDisplay()}" target="iframe_a">分店课程预约 </a></li>
+						<li><a href="@{BookApplication.BookTeamExerciseScheduleDisplayFen(storeid)}" target="iframe_a">分店课程预约 </a></li>
 					</ul>
 				</li>
 				<li>
 					<div class="link">分店财务管理</div>
 					<ul class="submenu">
-						<li><a href="@{FinanceApplication.PurchaseHistoryMonth()}" target="iframe_a">分店本月收入</a></li>
+						<li><a href="@{FinanceApplication.PurchaseHistoryMonthFen(storeid)}" target="iframe_a">分店本月收入</a></li>
 					</ul>
 				</li>
 			</ul>
