@@ -4,6 +4,7 @@
 
 # Home page
 GET     /                                       Application.index
+GET     /homefen                                Application.indexFen
 GET     /pwdList/getPwdInfoList                 Application.getPwdInfoList
 GET     /devCheckSysTm/getCheckTm               Application.getCheckTm
 GET     /userInOutInfoSndToServer               Application.userInOutInfoSndToServer

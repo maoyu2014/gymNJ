@@ -66,6 +66,30 @@ public class MemberApplication extends Controller {
     	render(list, number);
     }
     
+    //搜索普通会员
+    public static void MemberBasicSearch(int storeid, int acardtype, int amembertype, int asextype, String afitnesstest, String keyname) {
+    	String todaytime = YearMonthDay.getCurrentTimeSecond();
+    	List<Member> list = MemberMgr.getInstance().searchNormalMember(todaytime, storeid, acardtype, amembertype, asextype, afitnesstest, keyname);
+    	for (Member ps : list) {
+    		if (ps.cardtype==0) ps.cardtypename="非会员";
+    		else if (ps.cardtype==1) ps.cardtypename="月卡";
+    		else if (ps.cardtype==2) ps.cardtypename="季卡";
+    		else if (ps.cardtype==3) ps.cardtypename="半年卡";
+    		else if (ps.cardtype==4) ps.cardtypename="年卡";
+    		else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
+    		else if (ps.cardtype==6) ps.cardtypename="课程卡成员";
+    		// 入场密码
+    		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(ps.id);
+    		if (cp!=null) {
+    			Calendar calendar = Calendar.getInstance();  
+    			int hour = calendar.get(Calendar.HOUR_OF_DAY);
+    			ps.comeinpassword  = cp.arr[hour];
+    		}
+    	}
+    	int number = list.size();
+    	render("MemberApplication/MemberBasic.html", list, number);
+    }
+    
     //花钱购买课程卡Member展示页面
     public static void MemberSpecial() {
     	String todaytime = YearMonthDay.getCurrentTimeSecond();
@@ -90,14 +114,11 @@ public class MemberApplication extends Controller {
     	render(list, number);
     }
     
-    /*
-    //搜索会员
-    public static void MemberSearch(int acityid, int acardtype, int amembertype, int asextype, String afitnesstest, String keyname) {
+    //搜索花钱购买课程卡会员
+    public static void MemberSpecialSearch(int storeid, int acardtype, int amembertype, int asextype, String afitnesstest, String keyname) {
     	String todaytime = YearMonthDay.getCurrentTimeSecond();
-    	List<Member> list = MemberMgr.getInstance().searchMember(todaytime, acityid, acardtype, amembertype, asextype, afitnesstest, keyname);
+    	List<Member> list = MemberMgr.getInstance().searchSpecialMember(todaytime, storeid, acardtype, amembertype, asextype, afitnesstest, keyname);
     	for (Member ps : list) {
-    		if (ps.fingerprint==1) ps.fingerprinttype="已录入";
-    		else ps.fingerprinttype="未录入";
     		if (ps.cardtype==0) ps.cardtypename="非会员";
     		else if (ps.cardtype==1) ps.cardtypename="月卡";
     		else if (ps.cardtype==2) ps.cardtypename="季卡";
@@ -114,9 +135,8 @@ public class MemberApplication extends Controller {
     		}
     	}
     	int number = list.size();
-    	render("MemberApplication/MemberSetting.html", list, number);
+    	render("MemberApplication/MemberSpecial.html", list, number);
     }
-    */
     
     //Member详情(修改)页面
     public static void MemberDetail(int id) {

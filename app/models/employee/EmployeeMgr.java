@@ -355,51 +355,15 @@ public class EmployeeMgr {
 		return list;
 	}
 	
-	public List<Employee> searchEmployee(int astoreid, int classtype, String employeename) {
+	public List<Employee> searchEmployee(int Astoreid) {
 		List<Employee> list = new ArrayList<Employee>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select * from employee ";
-			boolean flag = false;
-			if (astoreid!=0) {
-				if (!flag) {
-					sql += " where storeid = " + astoreid;
-					flag = true;
-				} else {
-					sql += " and storeid = " + astoreid;
-				}
-			}
-			if (classtype==1) {
-				if (!flag) {
-					sql+= " where ismanager = 1";
-					flag = true;
-				} else {
-					sql+= " and ismanager = 1";
-				}
-			} else if (classtype==2) {
-				if (!flag) {
-					sql+= " where isfinance = 1";
-					flag = true;
-				} else {
-					sql+= " and isfinance = 1";
-				}
-			} else if (classtype==3) {
-				if (!flag) {
-					sql+= " where iscoach = 1";
-					flag = true;
-				} else {
-					sql+= " and iscoach = 1";
-				}
-			}
-			if (employeename!=null && employeename.length()>0) {
-				if (!flag) {
-					sql+=" where name like '%" + employeename + "%'";
-					flag = true;
-				} else {
-					sql+=" and name like '%" + employeename + "%'";
-				}
+			String sql = "select e.*, s.name as storename from employee e, store s where e.storeid=s.id ";
+			if (Astoreid!=0) {
+				sql += " and e.storeid = " + Astoreid;
 			}
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
@@ -429,6 +393,7 @@ public class EmployeeMgr {
 				String introduce = rs.getString("introduce");
 				String openid = rs.getString("openid");
 				Employee e = new Employee(id,username, password, name, headimage, sex, phone, ismanager, isfinance, iscoach, domember, doappointment, docourse, doplan, domarkte, dofinance, doemployee, dostore, dostatistics, storeid, introduce, openid);
+				e.storename = rs.getString("storename");
 				list.add(e);
 			}
 		} catch (SQLException eee) {

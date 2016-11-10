@@ -17,8 +17,19 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">员工设置</div>
 	
+	#{form @EmployeeApplication.employeeSearch()}
+	<input id="storeid" name="storeid" class="easyui-combobox" data-options="
+			editable:false,
+			valueField:'id',
+			textField:'name',
+			url:'@{StoreApplication.getAllStore()}',
+			prompt:'请选择一个门店'"
+			style="height:32px">
+	<input type="submit" style="width:80px;height:32px" value="搜索">
+    #{/form}
+    
 	<a href="@{EmployeeApplication.addEmployee()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;">增加人员</a>
-	 
+	
 	<div style="margin:20px">
         <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
 	        <thead>
@@ -62,7 +73,9 @@
 		            <td>${employee.comeinpassword}</td>
 		            <td>
 		            	<a href="@{EmployeeApplication.employeeDetail(employee.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	#{if employee.username != "admin"}
 		            	<a href="@{EmployeeApplication.deleteEmployee(employee.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
+		            	#{/if}
 		            </td>
 		        </tr>
 	        #{/list}

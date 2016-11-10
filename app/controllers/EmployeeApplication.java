@@ -45,6 +45,22 @@ public class EmployeeApplication extends Controller {
         render(list, number);
     }
     
+    //员工搜索功能
+    public static void employeeSearch(int storeid) {
+    	List<Employee> list = EmployeeMgr.getInstance().searchEmployee(storeid);
+    	for (Employee em : list) {
+    		// 入场密码
+    		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(em.id);
+    		if (cp!=null) {
+    			Calendar calendar = Calendar.getInstance();  
+    			int hour = calendar.get(Calendar.HOUR_OF_DAY);
+    			em.comeinpassword  = cp.arr[hour];
+    		}
+    	}
+    	int number = list.size();
+        render("EmployeeApplication/employeeSetting.html", list, number);
+    }
+    
     //添加员工页面
     public static void addEmployee() {
         render();

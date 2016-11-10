@@ -102,30 +102,32 @@ public class MemberMgr {
 		return list;
 	}
 	
-	//暂时不用，后期用需要再改
-	public List<Member> searchMember(String todaytime, int acityid, int acardtype, int amembertype, int asextype, String afitnesstest, String keyname) {
+	public List<Member> searchNormalMember(String todaytime, int storeid, int acardtype, int amembertype, int asextype, String afitnesstest, String keyname) {
 		List<Member> list = new ArrayList<Member>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
+		String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and a.deaddate > '" + todaytime + "' and (a.memberstatus is NULL or a.memberstatus != '课程卡成员') ";
 		try {
-			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, a.fingerprint, b.name as cityname, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, city b "
-					+ "where a.cityid=b.id ";
-			if (acityid!=0) {
-				sql += " and a.cityid = " + acityid;
+			if (storeid!=0) {
+				sql += " and a.storeid = " + storeid;
 			}
+			acardtype=10;
 			if (acardtype!=10) {		//注意这里是10表示所有会员，因为非会员是0
 				sql += " and a.cardtype = " + acardtype;
 			}
+			amembertype=0;
 			if (amembertype!=0) {
 				if (amembertype==1)		//在期会员
 					sql += " and a.deaddate > '" + todaytime + "'";
 				else if (amembertype==2) // 过期会员
 					sql += " and a.deaddate < '" + todaytime + "' and a.cardtype>0";
 			}
+			asextype=0;
 			if (asextype!=0) {
 				sql += " and a.sex = " + asextype;
 			}
+			afitnesstest="是否";
 			if (!afitnesstest.equals("是否")) {
 				sql += " and a.fitnesstest = '" + afitnesstest + "'";
 			}
@@ -138,10 +140,68 @@ public class MemberMgr {
 				String openid = rs.getString("openid");			//微信唯一标识
 				String name = rs.getString("name");
 				String wechatname = rs.getString("wechatname");
+				String wechatnumber = rs.getString("wechatnumber");
 				String phone = rs.getString("phone");
 				String storename = rs.getString("storename");
 				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
+				String fitnesstest = rs.getString("fitnesstest");
+				String memberstatus = rs.getString("memberstatus");
+				int leftcoursenum = rs.getInt("leftcoursenum");
+				Member an = new Member(id, openid, name, wechatname, phone, storename, cardtype, wechatnumber, fitnesstest, memberstatus, leftcoursenum);
+				list.add(an);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return list;
+	}
+	
+	public List<Member> searchSpecialMember(String todaytime, int storeid, int acardtype, int amembertype, int asextype, String afitnesstest, String keyname) {
+		List<Member> list = new ArrayList<Member>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and a.deaddate > '" + todaytime + "' and a.memberstatus = '课程卡成员' ";
+		try {
+			if (storeid!=0) {
+				sql += " and a.storeid = " + storeid;
+			}
+			acardtype=10;
+			if (acardtype!=10) {		//注意这里是10表示所有会员，因为非会员是0
+				sql += " and a.cardtype = " + acardtype;
+			}
+			amembertype=0;
+			if (amembertype!=0) {
+				if (amembertype==1)		//在期会员
+					sql += " and a.deaddate > '" + todaytime + "'";
+				else if (amembertype==2) // 过期会员
+					sql += " and a.deaddate < '" + todaytime + "' and a.cardtype>0";
+			}
+			asextype=0;
+			if (asextype!=0) {
+				sql += " and a.sex = " + asextype;
+			}
+			afitnesstest="是否";
+			if (!afitnesstest.equals("是否")) {
+				sql += " and a.fitnesstest = '" + afitnesstest + "'";
+			}
+			if (keyname!=null && keyname.length()>0) {
+				sql+=" and ( a.name like '%" + keyname + "%' or a.wechatname like '%" + keyname + "%' or a.phone like '%" + keyname + "%' ) ";
+			}
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String openid = rs.getString("openid");			//微信唯一标识
+				String name = rs.getString("name");
+				String wechatname = rs.getString("wechatname");
 				String wechatnumber = rs.getString("wechatnumber");
+				String phone = rs.getString("phone");
+				String storename = rs.getString("storename");
+				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
 				String fitnesstest = rs.getString("fitnesstest");
 				String memberstatus = rs.getString("memberstatus");
 				int leftcoursenum = rs.getInt("leftcoursenum");

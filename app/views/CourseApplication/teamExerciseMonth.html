@@ -23,49 +23,59 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">课程月课表</div>
 	
-		<div title="本月团操课表" style="">
-			<div style="margin:20px">
-		        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true">
-			        <thead>
-			            <tr>
-			                <th data-options="field:'monday',width:80">星期${(num-1)%7+1}</th>
-			                <th data-options="field:'tuesday',width:80">星期${(++num-1)%7+1}</th>
-			                <th data-options="field:'wednesday',width:80">星期${(++num-1)%7+1}</th>
-			                <th data-options="field:'thirsday',width:80">星期${(++num-1)%7+1}</th>
-			                <th data-options="field:'friday',width:80">星期${(++num-1)%7+1}</th>
-			                <th data-options="field:'saturday',width:80">星期${(++num-1)%7+1}</th>
-			                <th data-options="field:'sunday',width:80">星期${(++num-1)%7+1}</th>
-			            </tr>
-			        </thead>
-			        <tbody>
-			        	%{ int kkk = 0; }%
-			        	%{ for (int i=1; i<=5; i++) { }%
-			        	<tr>
-			        		%{ for (int j=1; j<=7; j++) { }%
-			        			<td>
-			        			%{ ++kkk; }%
-			        			#{if kkk<=31}
-			        				<span style="color:#00bfff">${kkk}号</span><br/><br/>
-			        			#{/if}
-		        				#{list items:mapmonth.get(kkk), as:'TeamExerciseSchedule'}
-					            	时间：${TeamExerciseSchedule.begintime.substring(11,16)} -至-
-					            	${TeamExerciseSchedule.endtime.substring(11,16)}<br/>
-					            	门店：${TeamExerciseSchedule.storename}<br/>
-					            	教练：${TeamExerciseSchedule.employeename}<br/>
-					            	课程：${TeamExerciseSchedule.teamexercisename}<br/><br/>
-					            #{/list}
-			        			</td>
-			        		%{ } }%
-			        	</tr>
-			        	%{ } }%
-			      	</tbody>
-			    </table>
-			</div>
-			<div style="margin:20px;font-size:15px;font-weight:600;">
-		    	---
-			</div>
-		</div>
+	#{form @CourseApplication.teamExerciseMonthSearch()}
+	<input id="storeid" name="storeid" class="easyui-combobox" data-options="
+		editable:false,
+		valueField:'id',
+		textField:'name',
+		url:'@{StoreApplication.getAllStore()}',
+		prompt:'请选择一个门店'"  
+	style="height:32px">
+	<input type="submit" style="width:80px;height:32px" value="搜索">    
+	#{/form}
+	
+	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'monday',width:80">星期${(num-1)%7+1}</th>
+	                <th data-options="field:'tuesday',width:80">星期${(++num-1)%7+1}</th>
+	                <th data-options="field:'wednesday',width:80">星期${(++num-1)%7+1}</th>
+	                <th data-options="field:'thirsday',width:80">星期${(++num-1)%7+1}</th>
+	                <th data-options="field:'friday',width:80">星期${(++num-1)%7+1}</th>
+	                <th data-options="field:'saturday',width:80">星期${(++num-1)%7+1}</th>
+	                <th data-options="field:'sunday',width:80">星期${(++num-1)%7+1}</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        	%{ int kkk = 0; }%
+	        	%{ for (int i=1; i<=5; i++) { }%
+	        	<tr>
+	        		%{ for (int j=1; j<=7; j++) { }%
+	        			<td>
+	        			%{ ++kkk; }%
+	        			#{if kkk<=31}
+	        				<span style="color:#00bfff">${kkk}号</span><br/><br/>
+	        			#{/if}
+        				#{list items:mapmonth.get(kkk), as:'TeamExerciseSchedule'}
+			            	时间：${TeamExerciseSchedule.begintime.substring(11,16)} -至-
+			            	${TeamExerciseSchedule.endtime.substring(11,16)}<br/>
+			            	门店：${TeamExerciseSchedule.storename}<br/>
+			            	教练：${TeamExerciseSchedule.employeename}<br/>
+			            	课程：${TeamExerciseSchedule.teamexercisename}<br/><br/>
+			            #{/list}
+	        			</td>
+	        		%{ } }%
+	        	</tr>
+	        	%{ } }%
+	      	</tbody>
+	    </table>
+	</div>
+	<div style="margin:20px;font-size:15px;font-weight:600;">
+    	---
+	</div>
 		
+</body>
   
 <script type="text/javascript">
 function confirmdelete(){
@@ -78,5 +88,4 @@ function confirmdelete(){
 }
 </script>
     
-</body>
 </html>

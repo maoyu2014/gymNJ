@@ -20,9 +20,10 @@ public class FinanceApplication extends Controller {
     }
 
     //当月财务展示页面
-    public static void PurchaseHistoryMonth() {
+    public static void PurchaseHistoryMonth(int storeid, String yearmonth) {
     	String currentmonth = YearMonthDay.getCurrentMonth();
-    	List<PurchaseHistory> listPurchaseHistory = PurchaseHistoryMgr.getInstance().getMonthPurchaseHistory(currentmonth);
+    	if (yearmonth==null || yearmonth.length()==0) yearmonth = currentmonth;
+    	List<PurchaseHistory> listPurchaseHistory = PurchaseHistoryMgr.getInstance().getMonthPurchaseHistory(storeid, yearmonth);
     	double feesum=0.0;
     	for (PurchaseHistory ph : listPurchaseHistory) {
     		feesum+=ph.fee;
@@ -32,6 +33,7 @@ public class FinanceApplication extends Controller {
     		else if (ph.cardtype==4) ph.cardtypename="年卡";
     		else if (ph.cardtype==5) ph.cardtypename="299新人月卡";
     		else if (ph.cardtype==6) ph.cardtypename="课程卡成员";
+    		
     		if (ph.purchasetype==1) ph.purchasetypename="微信支付";
     		if (ph.isprivate==1) ph.cardtypename="私教课程";
     	}

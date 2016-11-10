@@ -17,6 +17,18 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">未过期的普通会员信息</div>
 	
+	#{form @MemberApplication.MemberBasicSearch()}
+	<input id="storeid" name="storeid" class="easyui-combobox" data-options="
+		editable:false,
+		valueField:'id',
+		textField:'name',
+		url:'@{StoreApplication.getAllStore()}',
+		prompt:'请选择一个门店'"  
+	style="height:32px">
+	<input name="keyname" class="easyui-textbox" data-options="prompt:'搜姓名、微信名、手机号'" style="height:32px">
+	<input type="submit" style="width:80px;height:32px" value="搜索">        
+	#{/form}
+		
 	<div style="margin:20px">
         <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
 	        <thead>
@@ -65,7 +77,7 @@
     </div>
     
     <div style="margin:20px;font-size:15px;font-weight:600;">
-    	共${number-1}条记录
+    	共${number}条记录
 	</div>
 	
 </body>

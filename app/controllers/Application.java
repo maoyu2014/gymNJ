@@ -52,9 +52,14 @@ import models.useless.PrivateExerciseMgr;
 
 public class Application extends Controller {
 
-	//首页
+	//总店首页
     public static void index() {
         render();
+    }
+    
+    //分店首页
+    public static void indexFen() {
+    	render();
     }
     
     //首页图片
@@ -87,7 +92,11 @@ public class Application extends Controller {
     		Employee e = EmployeeMgr.getInstance().findEmployeeByUsername(username);
     		if (e.password.equals(md5password)) {
     			session.put("user", e.toString());
-    			index();
+    			if (e.username.equals("admin")) {
+    				index();
+    			} else {
+    				indexFen();
+    			}
     		} else {
     			renderJSON("用户名或者密码错误！");
     		}

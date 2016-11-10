@@ -20,7 +20,7 @@
     
     <body class="easyui-layout">
     	<div data-options="region:'north'" style="height:10%;background-color:#e0ebeb;">
-			<h2 style="text-align:center;margin-top:10px;font-size:40px;"><a href="@{Application.index()}">喵呜智能健身（总管理系统）</a><span style="position:absolute;right:20px;font-size:15px;"><a href="@{Application.login()}"></a> | <a href="@{Application.logout()}">登出</a></span></h2>
+			<h2 style="text-align:center;margin-top:10px;font-size:40px;"><a href="@{Application.indexFen()}">喵呜智能健身（分店系统）</a><span style="position:absolute;right:20px;font-size:15px;"><a href="@{Application.login()}"></a> | <a href="@{Application.logout()}">登出</a></span></h2>
 		</div>
 		
 	    <div data-options="region:'south'" style="height:5%;background-color:#e0ebeb;">
@@ -30,54 +30,31 @@
 		<div data-options="region:'west'" style="width:20%;background-color:#e0ebeb;">
 			<ul id="accordion" class="accordion">
 				<li>
-					<div class="link">会员管理</div>
+					<div class="link">分店会员管理</div>
 					<ul class="submenu">
-						<li><a href="@{MemberApplication.MemberBasic()}" target="iframe_a">普通会员信息</a></li>
-						<li><a href="@{MemberApplication.MemberSpecial()}" target="iframe_a">课程卡成员信息</a></li>
-						<!-- 
-						<li><a href="@{MemberApplication.GoodRecommendedMember()}" target="iframe_a">优秀推介人</a></li>
-						 -->
+						<li><a href="@{MemberApplication.MemberBasic()}" target="iframe_a">分店普通会员信息</a></li>
+						<li><a href="@{MemberApplication.MemberSpecial()}" target="iframe_a">分店课程卡成员信息</a></li>
 					</ul>
 				</li>
 				<li>
-					<div class="link">课程管理</div>
+					<div class="link">分店课程管理</div>
 					<ul class="submenu">
-						<li><a href="@{CourseApplication.teamExerciseBasic()}" target="iframe_a">课程 </a></li>
-						<li><a href="@{CourseApplication.teamExerciseWeek()}" target="iframe_a">本周课程 </a></li>
-						<li><a href="@{CourseApplication.teamExerciseMonth()}" target="iframe_a">本月课程 </a></li>
-						<li><a href="@{CourseApplication.teamExerciseSchedule()}" target="iframe_a">课程排期 </a></li>
+						<li><a href="@{CourseApplication.teamExerciseWeek()}" target="iframe_a">分店本周课程 </a></li>
+						<li><a href="@{CourseApplication.teamExerciseMonth()}" target="iframe_a">分店本月课程 </a></li>
 					</ul>
 				</li>
 				<li>
-					<div class="link">预约管理</div>
+					<div class="link">分店预约管理</div>
 					<ul class="submenu">
-						<li><a href="@{BookApplication.BookTeamExerciseScheduleDisplay()}" target="iframe_a">课程预约 </a></li>
+						<li><a href="@{BookApplication.BookTeamExerciseScheduleDisplay()}" target="iframe_a">分店课程预约 </a></li>
 					</ul>
 				</li>
 				<li>
-					<a href="@{EmployeeApplication.employeeSetting()}" target="iframe_a"><div class="link">员工管理</div></a>
-				</li>
-				<li>
-					<a href="@{StoreApplication.storeSetting()}" target="iframe_a"><div class="link">门店管理</div></a>
-				</li>
-				<li>
-					<div class="link">财务管理</div>
+					<div class="link">分店财务管理</div>
 					<ul class="submenu">
-						<li><a href="@{FinanceApplication.PurchaseHistoryMonth()}" target="iframe_a">本月收入</a></li>
-						<li><a href="@{FinanceApplication.PurchaseHistoryAll()}" target="iframe_a">历史收入</a></li>
+						<li><a href="@{FinanceApplication.PurchaseHistoryMonth()}" target="iframe_a">分店本月收入</a></li>
 					</ul>
 				</li>
-				<!-- 
-				<li>
-					<div class="link">统计报表</div>
-					<ul class="submenu">
-						<li><a href="#">课程报表</a></li>
-						<li><a href="#">销售报表</a></li>
-						<li><a href="#">会员报表</a></li>
-						<li><a href="#">员工报表</a></li>	
-					</ul>
-				</li>
-				 -->
 			</ul>
 		</div>
 		

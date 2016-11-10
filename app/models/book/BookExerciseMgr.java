@@ -92,42 +92,38 @@ public class BookExerciseMgr {
 	}
 	*/
 	
-	public List<BookExercise> searchActiveBookExercise(int teamexercisescheduleid, int privateexerciseid, String starttime, String endtime) {
+	public List<BookExercise> searchActiveBookExercise(int storeid, String yearmonth) {
 		List<BookExercise> list = new ArrayList<BookExercise>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select * from BookExercise where status = 1 ";
-			if (teamexercisescheduleid!=0) {
-				sql += " and type = 0 and exerciseid = " + teamexercisescheduleid;
+			String sql = "select b.id as id, m.name as membername, b.type as type, s.name as storename, t.name as exercisename, b.booktime as booktime from BookExercise b, member m, teamexerciseschedule ts, store s, teamexercise t where b.booktime >= '" + yearmonth + "' and b.status = 1 and b.type = 0 and b.memberid = m.id and b.exerciseid = ts.id and ts.storeid = s.id and ts.teamexerciseid = t.id ";
+			if (storeid!=0) {
+				sql += " and ts.storeid = " + storeid;
 			}
-			if (privateexerciseid!=0) {
-				sql += " and type = 1 and exerciseid = " + privateexerciseid;
-			}
-			if (starttime!=null && starttime.length()>0) {
-				sql += " and booktime >= '" + starttime + "'";
-			}
-			if (endtime!=null && endtime.length()>0) {
-				endtime+=" 23:59:59";
-				sql += " and booktime <= '" + endtime + "'";
+			if (yearmonth!=null && yearmonth.length()>0) {
+				String endtime = yearmonth + "-32";
+				sql += " and b.booktime <= '" + endtime + "'";
 			}
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				int memberid = rs.getInt("memberid");
+				String membername = rs.getString("membername");
 				int type = rs.getInt("type");
-				int exerciseid = rs.getInt("exerciseid");
+				String storename = rs.getString("storename");
+				String exercisename = rs.getString("exercisename");
 				String booktime = rs.getString("booktime");
-				BookExercise an = new BookExercise(id, memberid, type, exerciseid, booktime);
+				BookExercise an = new BookExercise(id, membername, type, exercisename, booktime);
+				an.storename = storename;
 				list.add(an);
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
 		} finally {
-			DB.close(conn);
-			DB.close(stmt);
 			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return list;
 	}

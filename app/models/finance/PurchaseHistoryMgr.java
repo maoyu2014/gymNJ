@@ -34,13 +34,21 @@ public class PurchaseHistoryMgr {
 		return em;
 	}
 	
-	public List<PurchaseHistory> getMonthPurchaseHistory(String specificMonth) {
+	public List<PurchaseHistory> getMonthPurchaseHistory(int storeid, String yearmonth) {
 		List<PurchaseHistory> list = new ArrayList<PurchaseHistory>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select ph.*, m.name as membername from PurchaseHistory ph, member m where ph.memberid = m.id and ph.purchasetime >= '" + specificMonth + "'";
+			String sql = "select ph.*, m.name as membername, s.name as storename from PurchaseHistory ph, member m, store s where ph.memberid = m.id and m.storeid = s.id and ph.purchasetime >= '" + yearmonth + "' ";
+			if (storeid!=0) {
+				sql += " and s.id = " + storeid;
+			}
+			if (yearmonth!=null && yearmonth.length()>0) {
+				String endtime = yearmonth + "-32";
+				sql += " and ph.purchasetime <= '" + endtime + "'";
+			}
+			sql += " order by ph.purchasetime desc";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
@@ -54,6 +62,7 @@ public class PurchaseHistoryMgr {
 				int isprivate = rs.getInt("isprivate");	//0表示购买会员，1表示购买私教课付费
 				int bookid = rs.getInt("bookid");
 				PurchaseHistory an = new PurchaseHistory(id, orderid, memberid, membername, cardtype, fee, purchasetime, purchasetype, isprivate, bookid);
+				an.storename = rs.getString("storename");
 				list.add(an);
 			}
 		} catch (SQLException eee) {

@@ -18,6 +18,8 @@ public class PurchaseHistory {
 	public String cardtypename;
 	public String purchasetypename;
 	
+	public String storename;
+	
 	public PurchaseHistory(int id, String orderid, int memberid, int cardtype,
 			double fee, String purchasetime, int purchasetype, int isprivate) {
 		this.id = id;

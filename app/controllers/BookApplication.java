@@ -57,6 +57,14 @@ public class BookApplication extends Controller {
     	render(listBookExercise, number);
     }
     
+    //课程预约搜索
+    public static void BookTeamExerciseScheduleSearch(int storeid, String yearmonth) {
+    	String currentmonth = YearMonthDay.getCurrentMonth();
+    	if (yearmonth==null || yearmonth.length()==0) yearmonth = currentmonth;
+    	List<BookExercise> listBookExercise = BookExerciseMgr.getInstance().searchActiveBookExercise(storeid, yearmonth);
+    	int number = listBookExercise.size();
+    	render("BookApplication/BookTeamExerciseScheduleDisplay.html", listBookExercise, number);
+    }
     
     
 }
