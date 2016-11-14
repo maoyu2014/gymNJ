@@ -110,7 +110,7 @@ public class MemberMgr {
 		String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and (a.memberstatus is NULL or a.memberstatus != '课程卡成员') ";
 		try {
 			if (storeid!=0) {
-				sql += " and a.storeid = " + storeid;
+				sql += " and ( a.storeid = " + storeid + " or a.storeid = 28 ) ";
 			}
 			if (acardtype!=10) {		//注意这里是10表示所有会员，因为非会员是0
 				sql += " and a.cardtype = " + acardtype;
@@ -168,7 +168,7 @@ public class MemberMgr {
 		String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and a.memberstatus = '课程卡成员' ";
 		try {
 			if (storeid!=0) {
-				sql += " and a.storeid = " + storeid;
+				sql += " and ( a.storeid = " + storeid + " or a.storeid = 28 ) ";
 			}
 			if (acardtype!=10) {		//注意这里是10表示所有会员，因为非会员是0
 				sql += " and a.cardtype = " + acardtype;
@@ -431,7 +431,21 @@ public class MemberMgr {
 			DB.close(pstmt);
 			DB.close(conn);
 		}
-		
+	}
+	
+	public void updateMemberStoreid(int memberid, int storeid) {
+		Connection conn = DB.getConn();
+		String sql = "update Member set storeid = ?  where id = " + memberid;
+		PreparedStatement pstmt = DB.getPstmt(conn, sql);
+		try {
+			pstmt.setInt(1, storeid);
+			pstmt.executeUpdate();
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
 	}
 	
 }

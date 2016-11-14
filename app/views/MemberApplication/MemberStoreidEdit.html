@@ -18,18 +18,24 @@
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">会员剩余课程数量修改</div>
 	
 	<div style="margin:20px">
-		#{form @MemberApplication.MemberLeftcoursenumEditToDB(memberid)}
+		#{form @MemberApplication.addMemberStoreidToDB(memberid)}
 		姓名：
 		<input name="edittime" class="easyui-textbox" data-options="readonly:true" style="" value="${sc.name}"><br/><br/>
 		
 		电话：
 		<input name="phone" class="easyui-textbox" data-options="readonly:true" style="" value="${sc.phone}"><br/><br/>
 		
-		旧的剩余课程数量：
-		<input name="leftcoursenum" class="easyui-textbox" data-options="readonly:true" style="" value="${sc.leftcoursenum}"><br/><br/>
+		原来所属门店：
+		<input name="oldstorename" class="easyui-textbox" data-options="readonly:true" style="" value="${sc.storename}"><br/><br/>
 		
-		新的课程数量是：
-		<input name="aleftcoursenum" class="easyui-textbox"><br/><br/>
+		新的所属门店：
+		<input id="storeid" name="storeid" class="easyui-combobox" data-options="
+		editable:false,
+		valueField:'id',
+		textField:'name',
+		url:'@{StoreApplication.getAllStore()}',
+		prompt:'请选择一个门店'"  
+		style="height:32px"><br/><br/>
 		
 		<input type="submit" style="width:80px;height:32px" value="更新">  
 		#{/form}

@@ -266,7 +266,7 @@ public class MemberApplication extends Controller {
     
     public static void MemberLeftcoursenumEditToDB(int memberid, int aleftcoursenum) {
     	MemberMgr.getInstance().updateMemberLeftcoursenum(memberid, aleftcoursenum);
-    	MemberLeftcoursenumEditPage(memberid);
+    	MemberDetail(memberid);
     }
     
     //修改会员状态
@@ -280,7 +280,7 @@ public class MemberApplication extends Controller {
     	MemberStatus m = new MemberStatus(memberid, memberstatus, edittime, reason);
     	MemberStatusMgr.getInstance().save(m);
     	MemberMgr.getInstance().updateMemberStatus(memberid, memberstatus);
-    	MemberStatusEdit(memberid);
+    	MemberDetail(memberid);
     }
     
     //修改会员体能测试
@@ -300,6 +300,18 @@ public class MemberApplication extends Controller {
     	MemberFitnessTest mft = new MemberFitnessTest(memberid, fitnesstest, xiongwei, yaowei, tunwei, shangtunwei, datuiwei, xiaotuiwei, pullup, pushup, plank, sitandreach, squatandrise, situp, heartrateone, heartratetwo, heartratethree);
     	MemberFitnessTestMgr.getInstance().save(mft);
     	MemberMgr.getInstance().updateMemberFitnessTest(memberid, fitnesstest);
+    	MemberDetail(memberid);
+    }
+    
+    //修改会员的所属门店
+    public static void MemberStoreidEdit(int id) {
+    	Member sc = MemberMgr.getInstance().findMemberById(id);
+    	int memberid = id;
+    	render(sc, memberid);
+    }
+    
+    public static void addMemberStoreidToDB(int memberid, int storeid) {
+    	MemberMgr.getInstance().updateMemberStoreid(memberid, storeid);
     	MemberDetail(memberid);
     }
     
