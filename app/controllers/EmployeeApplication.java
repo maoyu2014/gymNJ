@@ -222,6 +222,8 @@ public class EmployeeApplication extends Controller {
     	employeeSetting();
     }
     
+    /*
+     * 新的系统教练属于所有门店
     //返回属于某个店铺的所有教练
     public static void getAllCoachByStoreID(int storeid) {
     	List<Employee> list = EmployeeMgr.getInstance().getAllEmployeeByStoreID(storeid);
@@ -231,7 +233,18 @@ public class EmployeeApplication extends Controller {
     	}
     	renderJSON(lists);
     }
+    */
     
+    //返回所有教练
+    public static void getAllCoach(int storeid) {
+    	storeid = 25;
+    	List<Employee> list = EmployeeMgr.getInstance().getAllEmployeeByStoreID(storeid);
+    	List<Employee> lists = new ArrayList<>();
+    	for (Employee e: list) {
+    		if (e.iscoach==1) lists.add(e);
+    	}
+    	renderJSON(lists);
+    }
     
     
 }

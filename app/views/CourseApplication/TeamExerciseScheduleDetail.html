@@ -31,8 +31,6 @@
 			onSelect: function(record){
 	            var url = '@{StoreApplication.getAllTuanClassroomByStoreId()}?storeid=' + record.id;
 	            $('#classroomidq').combobox('reload', url);
-	            url = '@{EmployeeApplication.getAllCoachByStoreID()}?storeid=' + record.id;
-	            $('#employeeidq').combobox('reload', url);
         	}"  value="${sc.storeid}" style="height:32px">
 		</div>
 		
@@ -43,7 +41,7 @@
 		
 		<div style="margin:10px">
 		<span style="font-size:14px;display:inline-block;width:100px">教练：</span>
-		<input id="employeeidq" name="employeeid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{EmployeeApplication.getAllCoachByStoreID(sc.storeid)}'" value="${sc.employeeid}" style="height:32px">
+		<input id="employeeidq" name="employeeid" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name',url:'@{EmployeeApplication.getAllCoach()}'" value="${sc.employeeid}" style="height:32px">
 		</div>
 		
 		<div style="margin:10px">
