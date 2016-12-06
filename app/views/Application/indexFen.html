@@ -30,29 +30,30 @@
 		<div data-options="region:'west'" style="width:20%;background-color:#e0ebeb;">
 			<ul id="accordion" class="accordion">
 				<li>
-					<div class="link">分店会员管理</div>
+					<div class="link">分店-会员管理</div>
 					<ul class="submenu">
-						<li><a href="@{MemberApplication.MemberBasicFen(storeid)}" target="iframe_a">分店普通会员信息</a></li>
-						<li><a href="@{MemberApplication.MemberSpecialFen(storeid)}" target="iframe_a">分店课程卡成员信息</a></li>
+						<li><a href="@{MemberApplication.MemberFindPageFen(storeid)}" target="iframe_a">分店-会员搜索</a></li>
+						<li><a href="@{MemberApplication.MemberBasicFen(storeid)}" target="iframe_a">分店-普通会员信息</a></li>
+						<li><a href="@{MemberApplication.MemberSpecialFen(storeid)}" target="iframe_a">分店-课程卡成员信息</a></li>
 					</ul>
 				</li>
 				<li>
-					<div class="link">分店课程管理</div>
+					<div class="link">分店-课程管理</div>
 					<ul class="submenu">
-						<li><a href="@{CourseApplication.teamExerciseWeekFen(storeid)}" target="iframe_a">分店本周课程 </a></li>
-						<li><a href="@{CourseApplication.teamExerciseMonthFen(storeid)}" target="iframe_a">分店本月课程 </a></li>
+						<li><a href="@{CourseApplication.teamExerciseWeekFen(storeid)}" target="iframe_a">分店-本周课程 </a></li>
+						<li><a href="@{CourseApplication.teamExerciseMonthFen(storeid)}" target="iframe_a">分店-本月课程 </a></li>
 					</ul>
 				</li>
 				<li>
-					<div class="link">分店预约管理</div>
+					<div class="link">分店-预约管理</div>
 					<ul class="submenu">
-						<li><a href="@{BookApplication.BookTeamExerciseScheduleDisplayFen(storeid)}" target="iframe_a">分店课程预约 </a></li>
+						<li><a href="@{BookApplication.BookTeamExerciseScheduleDisplayFen(storeid)}" target="iframe_a">分店-课程预约 </a></li>
 					</ul>
 				</li>
 				<li>
-					<div class="link">分店财务管理</div>
+					<div class="link">分店-财务管理</div>
 					<ul class="submenu">
-						<li><a href="@{FinanceApplication.PurchaseHistoryMonthFen(storeid)}" target="iframe_a">分店本月收入</a></li>
+						<li><a href="@{FinanceApplication.PurchaseHistoryMonthFen(storeid)}" target="iframe_a">分店-本月收入</a></li>
 					</ul>
 				</li>
 			</ul>

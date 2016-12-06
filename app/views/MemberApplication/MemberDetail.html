@@ -77,6 +77,7 @@
 				<div style="margin:5px;">
 				<span style="font-size:14px;display:inline-block;width:100px">会员种类：</span>
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.cardtypename}" style="">
+				<a href="@{MemberApplication.MemberCardtypeEdit(sc.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
 				</div>
 				
 				<div style="margin:5px;">
@@ -124,22 +125,31 @@
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.bodyage}" style="">
 				</div>
 				
+				<!-- 
 				<div style="margin:5px;">
 				<span style="font-size:14px;display:inline-block;width:100px">体能测试：</span>
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.fitnesstest}" style="">
 				<a href="@{MemberApplication.MemberFitnessTestEdit(sc.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
 				</div>
 				
+				
 				<div style="margin:5px;">
 				<span style="font-size:14px;display:inline-block;width:100px">会员状态：</span>
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.memberstatus}" style="">
 				<a href="@{MemberApplication.MemberStatusEdit(sc.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
 				</div>
+				 -->
 				
 				<div style="margin:5px;">
 				<span style="font-size:14px;display:inline-block;width:100px">剩余课时数：</span>
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.leftcoursenum}" style="">
 				<a href="@{MemberApplication.MemberLeftcoursenumEditPage(sc.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
+				</div>
+				
+				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">45天特训营购买次数：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.buycount}" style="">
+				<a href="@{MemberApplication.MemberBuycountEditPage(sc.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
 				</div>
 				
 			</div>

@@ -53,6 +53,7 @@ public class Member {
 	public String distancevalue;
 		
 	public int leftcoursenum;
+	public int buycount;
 	
 	public Member() {}
 	

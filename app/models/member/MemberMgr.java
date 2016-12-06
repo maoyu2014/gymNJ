@@ -35,14 +35,13 @@ public class MemberMgr {
 		return em;
 	}
 	
-	
-	public List<Member> getAllActiveNormalMember(String todaytime) {
+	public List<Member> findMemberByNameOrPhone(String keyname) {
 		List<Member> list = new ArrayList<Member>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and a.deaddate > '" + todaytime + "' and (a.memberstatus is NULL or a.memberstatus != '课程卡成员')";
+			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.wechatnumber, a.sex, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and ( a.name like '%" + keyname + "%' or a.wechatname like '%" + keyname + "%' or a.phone like '%" + keyname + "%' ) ";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
@@ -57,6 +56,7 @@ public class MemberMgr {
 				String memberstatus = rs.getString("memberstatus");
 				int leftcoursenum = rs.getInt("leftcoursenum");
 				Member an = new Member(id, openid, name, wechatname, phone, storename, cardtype, wechatnumber, fitnesstest, memberstatus, leftcoursenum);
+				an.sex = rs.getInt("sex");
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -69,48 +69,15 @@ public class MemberMgr {
 		return list;
 	}
 	
-	public List<Member> getAllActiveSpecialMember(String todaytime) {
+	public List<Member> searchMember(String todaytime, int storeid, int acardtype, int amembertype, int asextype, String afitnesstest, String keyname) {
 		List<Member> list = new ArrayList<Member>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
-		try {
-			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and a.deaddate > '" + todaytime + "' and a.memberstatus = '课程卡成员'";
-			rs = DB.executeQuery(stmt, sql);
-			while (rs.next()) {
-				int id = rs.getInt("id");
-				String openid = rs.getString("openid");			//微信唯一标识
-				String name = rs.getString("name");
-				String wechatname = rs.getString("wechatname");
-				String wechatnumber = rs.getString("wechatnumber");
-				String phone = rs.getString("phone");
-				String storename = rs.getString("storename");
-				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
-				String fitnesstest = rs.getString("fitnesstest");
-				String memberstatus = rs.getString("memberstatus");
-				int leftcoursenum = rs.getInt("leftcoursenum");
-				Member an = new Member(id, openid, name, wechatname, phone, storename, cardtype, wechatnumber, fitnesstest, memberstatus, leftcoursenum);
-				list.add(an);
-			}
-		} catch (SQLException eee) {
-			eee.printStackTrace();
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return list;
-	}
-	
-	public List<Member> searchNormalMember(String todaytime, int storeid, int acardtype, int amembertype, int asextype, String afitnesstest, String keyname) {
-		List<Member> list = new ArrayList<Member>();
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStmt(conn);
-		ResultSet rs = null;
-		String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and (a.memberstatus is NULL or a.memberstatus != '课程卡成员') ";
+		String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.wechatnumber, a.sex, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id ";
 		try {
 			if (storeid!=0) {
-				sql += " and ( a.storeid = " + storeid + " or a.storeid = 28 ) ";
+				sql += " and a.storeid = " + storeid;
 			}
 			if (acardtype!=10) {		//注意这里是10表示所有会员，因为非会员是0
 				sql += " and a.cardtype = " + acardtype;
@@ -123,7 +90,6 @@ public class MemberMgr {
 					sql += " and a.deaddate < '" + todaytime + "' and a.cardtype>0";
 				}
 			}
-			asextype=0;
 			if (asextype!=0) {
 				sql += " and a.sex = " + asextype;
 			}
@@ -137,17 +103,18 @@ public class MemberMgr {
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				String openid = rs.getString("openid");			//微信唯一标识
+				String openid = rs.getString("openid");	
 				String name = rs.getString("name");
 				String wechatname = rs.getString("wechatname");
 				String wechatnumber = rs.getString("wechatnumber");
 				String phone = rs.getString("phone");
 				String storename = rs.getString("storename");
-				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
+				int cardtype = rs.getInt("cardtype");	
 				String fitnesstest = rs.getString("fitnesstest");
 				String memberstatus = rs.getString("memberstatus");
 				int leftcoursenum = rs.getInt("leftcoursenum");
 				Member an = new Member(id, openid, name, wechatname, phone, storename, cardtype, wechatnumber, fitnesstest, memberstatus, leftcoursenum);
+				an.sex = rs.getInt("sex");
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -160,37 +127,15 @@ public class MemberMgr {
 		return list;
 	}
 	
-	public List<Member> searchSpecialMember(String todaytime, int storeid, int acardtype, int amembertype, int asextype, String afitnesstest, String keyname) {
+	public List<Member> getAllActiveNormalMember(String todaytime, int storeid) {
 		List<Member> list = new ArrayList<Member>();
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
-		String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and a.memberstatus = '课程卡成员' ";
 		try {
+			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.sex, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and a.deaddate > '" + todaytime + "' and a.cardtype != 6 and a.cardtype > 0 ";
 			if (storeid!=0) {
-				sql += " and ( a.storeid = " + storeid + " or a.storeid = 28 ) ";
-			}
-			if (acardtype!=10) {		//注意这里是10表示所有会员，因为非会员是0
-				sql += " and a.cardtype = " + acardtype;
-			}
-			if (amembertype!=0) {
-				if (amembertype==1) {		//在期会员
-					sql += " and a.deaddate > '" + todaytime + "'";
-				}
-				else if (amembertype==2) {			// 过期会员
-					sql += " and a.deaddate < '" + todaytime + "' and a.cardtype>0";
-				}
-			}
-			asextype=0;
-			if (asextype!=0) {
-				sql += " and a.sex = " + asextype;
-			}
-			afitnesstest="是否";
-			if (!afitnesstest.equals("是否")) {
-				sql += " and a.fitnesstest = '" + afitnesstest + "'";
-			}
-			if (keyname!=null && keyname.length()>0) {
-				sql+=" and ( a.name like '%" + keyname + "%' or a.wechatname like '%" + keyname + "%' or a.phone like '%" + keyname + "%' ) ";
+				sql += " and a.storeid = " + storeid;
 			}
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
@@ -206,6 +151,7 @@ public class MemberMgr {
 				String memberstatus = rs.getString("memberstatus");
 				int leftcoursenum = rs.getInt("leftcoursenum");
 				Member an = new Member(id, openid, name, wechatname, phone, storename, cardtype, wechatnumber, fitnesstest, memberstatus, leftcoursenum);
+				an.sex = rs.getInt("sex");
 				list.add(an);
 			}
 		} catch (SQLException eee) {
@@ -217,6 +163,44 @@ public class MemberMgr {
 		}
 		return list;
 	}
+	
+	public List<Member> getAllActiveSpecialMember(String todaytime, int storeid) {
+		List<Member> list = new ArrayList<Member>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		try {
+			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.cardtype, a.sex, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and a.deaddate > '" + todaytime + "' and a.cardtype = 6 ";
+			if (storeid!=0) {
+				sql += " and a.storeid = " + storeid;
+			}
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String openid = rs.getString("openid");			//微信唯一标识
+				String name = rs.getString("name");
+				String wechatname = rs.getString("wechatname");
+				String wechatnumber = rs.getString("wechatnumber");
+				String phone = rs.getString("phone");
+				String storename = rs.getString("storename");
+				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
+				String fitnesstest = rs.getString("fitnesstest");
+				String memberstatus = rs.getString("memberstatus");
+				int leftcoursenum = rs.getInt("leftcoursenum");
+				Member an = new Member(id, openid, name, wechatname, phone, storename, cardtype, wechatnumber, fitnesstest, memberstatus, leftcoursenum);
+				an.sex = rs.getInt("sex");
+				list.add(an);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return list;
+	}
+	
 	
 	public boolean deleteMember(int id) {
 		boolean flag = false;
@@ -279,6 +263,7 @@ public class MemberMgr {
 				int bodyage = rs.getInt("bodyage");		//身体年龄
 				int leftcoursenum = rs.getInt("leftcoursenum");
 				an = new Member(id, openid, name, wechatname, sex, height, birthday, phone, storename, cardtype, deaddate, exercisetime, exercisegoal, exercisehz, distance, bmi, muscle, fat, water, protein, basicrate, bodyage, wechatnumber, fitnesstest, memberstatus, innerfat, leftcoursenum);
+				an.buycount = rs.getInt("buycount");
 			}
 		} catch (SQLException eee) {
 			eee.printStackTrace();
@@ -433,12 +418,42 @@ public class MemberMgr {
 		}
 	}
 	
+	public void updateMemberBuycount(int memberid, int newbuycount) {
+		Connection conn = DB.getConn();
+		String sql = "update Member set buycount = ?  where id = " + memberid;
+		PreparedStatement pstmt = DB.getPstmt(conn, sql);
+		try {
+			pstmt.setInt(1, newbuycount);
+			pstmt.executeUpdate();
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+	}
+	
 	public void updateMemberStoreid(int memberid, int storeid) {
 		Connection conn = DB.getConn();
 		String sql = "update Member set storeid = ?  where id = " + memberid;
 		PreparedStatement pstmt = DB.getPstmt(conn, sql);
 		try {
 			pstmt.setInt(1, storeid);
+			pstmt.executeUpdate();
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+	}
+	
+	public void updateMemberCardtype(int memberid, int newcardtype) {
+		Connection conn = DB.getConn();
+		String sql = "update Member set cardtype = ?  where id = " + memberid;
+		PreparedStatement pstmt = DB.getPstmt(conn, sql);
+		try {
+			pstmt.setInt(1, newcardtype);
 			pstmt.executeUpdate();
 		} catch (SQLException eee) {
 			eee.printStackTrace();

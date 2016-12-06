@@ -15,25 +15,7 @@
 
 <body>
 
-	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">未过期的特训卡会员信息</div>
-	
-	#{form @MemberApplication.MemberSpecialSearchFen(storeid)}
-	<select name="acardtype" class="easyui-combobox" style="height:32px;width:100px;">
-		<option value="10">会员卡类型</option>
-		<option value="1">月卡</option>
-	    <option value="2">季卡</option>
-	    <option value="3">半年卡</option>
-	    <option value="4">年卡</option>
-	    <option value="0">非会员(不存在过期与否)</option>	<!-- 这里特殊，0是非会员，所以全部种类用了10 -->
-	</select>
-	<select name="amembertype" class="easyui-combobox" style="height:32px;width:100px;">
-		<option value="0">是否过期</option>
-		<option value="1">在期会员</option>
-		<option value="2">过期会员</option>
-	</select>
-	<input name="keyname" class="easyui-textbox" data-options="prompt:'搜姓名、微信名、手机号'" style="height:32px">
-	<input type="submit" style="width:80px;height:32px" value="搜索">        
-	#{/form}
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">课程卡成员信息</div>
 	
 	<div style="margin:20px">
         <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
@@ -44,6 +26,7 @@
 	                <th data-options="field:'wechatname',width:100">微信名</th>
 	                <th data-options="field:'wechatnumber',width:100">微信号</th>
 	                <th data-options="field:'phone',width:100">电话</th>
+	                <th data-options="field:'sex',width:35">性别</th>
 	                <th data-options="field:'comeinpassword',width:100">入场密码</th>
 	                <th data-options="field:'storename',width:70">所属门店</th>
 	                <th data-options="field:'fitnesstest',width:80">体能测试</th>
@@ -61,7 +44,8 @@
 		            <td>${Member.id}</td>
 		            <td>${Member.wechatname}</td>
 		            <td>${Member.wechatnumber}</td>
-		            <td>${Member.phone}</td>          
+		            <td>${Member.phone}</td>    
+		            <td>${Member.sexvalue}</td>              
 		            <td>${Member.comeinpassword}</td>
 		            <td>${Member.storename}</td>
 		            <td>${Member.fitnesstest}</td>

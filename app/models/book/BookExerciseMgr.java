@@ -41,7 +41,7 @@ public class BookExerciseMgr {
 		Statement stmt = DB.getStmt(conn);
 		ResultSet rs = null;
 		try {
-			String sql = "select b.id as id, m.name as membername, b.type as type, s.name as storename, t.name as exercisename, b.booktime as booktime from BookExercise b, member m, teamexerciseschedule ts, store s, teamexercise t where b.booktime >= '" + yearmonth + "' and b.status = 1 and b.type = 0 and b.memberid = m.id and b.exerciseid = ts.id and ts.storeid = s.id and ts.teamexerciseid = t.id ";
+			String sql = "select b.id as id, m.name as membername, b.type as type, s.name as storename, t.name as exercisename, ts.begintime as begintime, b.booktime as booktime from BookExercise b, member m, teamexerciseschedule ts, store s, teamexercise t where b.booktime >= '" + yearmonth + "' and b.status = 1 and b.type = 0 and b.memberid = m.id and b.exerciseid = ts.id and ts.storeid = s.id and ts.teamexerciseid = t.id ";
 			if (storeid!=0) {
 				sql += " and ts.storeid = " + storeid;
 			}
@@ -49,6 +49,7 @@ public class BookExerciseMgr {
 				String endtime = yearmonth + "-32";
 				sql += " and b.booktime <= '" + endtime + "'";
 			}
+			sql += " order by booktime desc";
 			rs = DB.executeQuery(stmt, sql);
 			while (rs.next()) {
 				int id = rs.getInt("id");
@@ -58,6 +59,7 @@ public class BookExerciseMgr {
 				String exercisename = rs.getString("exercisename");
 				String booktime = rs.getString("booktime");
 				BookExercise an = new BookExercise(id, membername, type, exercisename, booktime);
+				an.begintime = rs.getString("begintime");
 				an.storename = storename;
 				list.add(an);
 			}

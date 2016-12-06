@@ -60,6 +60,7 @@
 	                <th data-options="field:'membername',width:80">会员名</th>
 	                <th data-options="field:'storename',width:120">门店名称</th>
 	                <th data-options="field:'exercisename',width:120">课程名称</th>
+	                <th data-options="field:'begintime',width:120">开课时间</th>
 	                <th data-options="field:'booktime',width:120">预约时间</th>
 	            </tr>
 	        </thead>
@@ -69,6 +70,7 @@
 		            <td>${book.membername}</td>
 		            <td>${book.storename}</td>
 		            <td>${book.exercisename}</td>
+		            <td>${book.begintime}</td>
 		            <td>${book.booktime}</td>
 		        </tr>
 	        #{/list}

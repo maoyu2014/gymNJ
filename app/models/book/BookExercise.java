@@ -14,6 +14,8 @@ public class BookExercise {
 	public String storename;
 	public String exercisename;
 	
+	public String begintime;
+	
 	public BookExercise(int id, int memberid, int type, int exerciseid,	String booktime) {
 		this.id = id;
 		this.memberid = memberid;
