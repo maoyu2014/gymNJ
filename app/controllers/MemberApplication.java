@@ -86,6 +86,15 @@ public class MemberApplication extends Controller {
     	render("MemberApplication/MemberBasic.html", list, number);
     }
     
+    //所有非会员
+    public static void NonMemberSearch(int storeid, int acardtype, int amembertype, int asextype, String afitnesstest, String keyname) {
+    	String todaytime = YearMonthDay.getCurrentTimeSecond();
+    	List<Member> list = MemberMgr.getInstance().searchMember(todaytime, 0, 0, 0, 0, afitnesstest, keyname);
+    	processMemberAttribute(list);
+    	int number = list.size();
+    	render("MemberApplication/MemberBasic.html", list, number);
+    }
+    
     
     //普通会员展示页面
     public static void MemberBasic() {

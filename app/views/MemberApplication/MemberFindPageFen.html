@@ -17,16 +17,16 @@
 
 	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">搜索会员</div>
 	
+	<br/>
+	<br/>
+	
 	#{form @MemberApplication.MemberFindFromDB()}
-	<br/>
-	<br/>
 	<input name="keyname" class="easyui-textbox" data-options="prompt:'仅根据 姓名、微信名、手机号 三样快速定位搜索'" style="width:500px;height:32px">
 	<input type="submit" style="width:80px;height:32px" value="搜索">        
 	#{/form}
 	
 	<br/>
 	<br/>
-	<br/>		
 	
 	#{form @MemberApplication.MemberSearch()}
 	<!-- <input name="storeid" class="easyui-textbox" data-options="readonly:true" style="height:32px" value="${storeid}">  -->
@@ -46,7 +46,6 @@
 	    <option value="4">年卡</option>
 	    <option value="5">299新人月卡</option>
 		<option value="6">课程卡成员</option>
-	    <option value="0">非会员(不存在过期与否)</option>	<!-- 这里特殊，0是非会员，所以全部种类用了10 -->
 	</select>
 	<select name="amembertype" class="easyui-combobox" style="height:32px;width:100px;">
 		<!-- <option value="0">是否过期</option>  -->
@@ -59,13 +58,15 @@
 	    <option value="2">女</option>
 	</select>
 	<input name="keyname" class="easyui-textbox" data-options="prompt:'搜姓名、微信名、手机号'" style="height:32px">
-	
-	
-	
 	<input type="submit" style="width:80px;height:32px" value="搜索">        
 	#{/form}
 	
+	<br/>
+	<br/>	
 	
+	#{form @MemberApplication.NonMemberSearch()}
+	<input type="submit" style="width:80px;height:32px" value="所有非会员">        
+	#{/form}
 	
 	
 </body>
