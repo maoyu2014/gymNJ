@@ -91,7 +91,9 @@ public class CompanyApplication extends Controller {
     	List<Member> list = MemberMgr.getInstance().getMemberBelongCompany(todaytime, companyid);
     	processMemberAttribute(list);
     	int number = list.size();
-    	render(number, list);
+    	Company cc = CompanyMgr.getInstance().getCompanyByID(companyid);
+    	String companyname = cc.name;
+    	render(number, list, companyname);
     }
     
     public static int processMemberAttribute(List<Member> list) {
