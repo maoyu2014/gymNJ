@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+    
+<body>
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">添加企业</div>
+	
+	#{form @CompanyApplication.addCompanyToDB(), onsubmit:"return check()", enctype:'multipart/form-data'}
+	<div style="margin-left:100px;">
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">企业名称：</span>
+		<input id="name" name="name" class="easyui-textbox" data-options="" style="height:32px;width:400px">
+		</div>
+		
+		<div style="margin:20px;">
+		<span style="font-size:14px;display:inline-block;width:100px">企业地址：</span>
+		<input id="address" name="address" class="easyui-textbox" data-options="" style="height:32px;width:400px">
+		</div>
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">企业负责人：</span>
+		<input id="manager" name="manager" class="easyui-textbox" data-options="" style="height:32px;width:400px">
+		</div>
+		
+		<div style="margin:20px">
+		<span style="font-size:14px;display:inline-block;width:100px">联系方式：</span>
+		<input id="phone" name="phone" class="easyui-textbox" data-options="" style="height:32px;width:400px">
+		</div>
+		
+		<div style="margin-left:100px;">
+		<input type="submit" style="width:80px;height:32px">
+		</div>
+		
+	</div>
+	#{/form}
+	
+</body>
+
+
+<script>
+function check() {
+	var v;
+	v = $("#name").val(); 
+	if (v==null || v=="") { alert("输入不完整！"); return false; }
+	return true;
+}
+</script>
+
+
+</html>

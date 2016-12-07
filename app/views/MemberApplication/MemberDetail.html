@@ -81,6 +81,12 @@
 				</div>
 				
 				<div style="margin:5px;">
+				<span style="font-size:14px;display:inline-block;width:100px">所属企业：</span>
+				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.companyname}" style="">
+				<a href="@{MemberApplication.MemberCompanyidEdit(sc.id)}" class="easyui-linkbutton" data-options="" style="">编辑</a>
+				</div>
+				
+				<div style="margin:5px;">
 				<span style="font-size:14px;display:inline-block;width:100px">健身目标：</span>
 				<input name="" class="easyui-textbox" data-options="readonly:true" value="${sc.exercisegoalvalue}" style="">
 				</div>

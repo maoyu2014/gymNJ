@@ -15,7 +15,7 @@
     
 <body>
 
-	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">普通会员信息</div>
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">企业所有的会员</div>
 	
 	<div style="margin:20px;font-size:15px;font-weight:600;">
     	共${number}条记录
@@ -33,7 +33,9 @@
 	                <th data-options="field:'sex',width:35">性别</th>
 	                <th data-options="field:'comeinpassword',width:100">入场密码</th>
 	                <th data-options="field:'storename',width:70">所属门店</th>
+	                <!-- <th data-options="field:'fitnesstest',width:80">体能测试</th> -->
 	                <th data-options="field:'cardtype',width:100">会员种类</th>
+	                <!-- <th data-options="field:'memberstatus',width:100">会员状态</th> -->
 	                <th data-options="field:'leftcoursenum',width:60">剩余课时</th>
 	                <th data-options="field:'operation',width:100">操作</th>
 	            </tr>
@@ -46,11 +48,13 @@
 		            <td>${Member.id}</td>
 		            <td>${Member.wechatname}</td>
 		            <td>${Member.wechatnumber}</td>
-		            <td>${Member.phone}</td>       
-		            <td>${Member.sexvalue}</td>           
+		            <td>${Member.phone}</td>
+		            <td>${Member.sexvalue}</td>               
 		            <td>${Member.comeinpassword}</td>
 		            <td>${Member.storename}</td>
+		            <!-- <td>${Member.fitnesstest}</td> -->
 		            <td>${Member.cardtypename}</td>
+		            <!-- <td>${Member.memberstatus}</td> -->
 		            <td>${Member.leftcoursenum}</td>
 		            <td>
 		            	<a href="@{MemberApplication.MemberDetail(Member.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
@@ -66,7 +70,7 @@
 	    </table>
     </div>
     
-	
+
 </body>
 
 <script>

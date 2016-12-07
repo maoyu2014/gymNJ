@@ -20,7 +20,7 @@
     
     <body class="easyui-layout">
     	<div data-options="region:'north'" style="height:10%;background-color:#e0ebeb;">
-			<h2 style="text-align:center;margin-top:10px;font-size:40px;"><a href="@{Application.indexFen()}">喵呜智能健身（分店系统）</a><span style="position:absolute;right:20px;font-size:15px;"><a href="@{Application.login()}"></a> | <a href="@{Application.logout()}">登出</a></span></h2>
+			<h2 style="text-align:center;margin-top:10px;font-size:40px;"><a href="@{Application.indexFen()}">喵呜智能健身（${storename}）</a><span style="position:absolute;right:20px;font-size:15px;"><a href="@{Application.login()}"></a> | <a href="@{Application.logout()}">登出</a></span></h2>
 		</div>
 		
 	    <div data-options="region:'south'" style="height:5%;background-color:#e0ebeb;">
@@ -35,6 +35,12 @@
 						<li><a href="@{MemberApplication.MemberFindPageFen(storeid)}" target="iframe_a">分店-会员搜索</a></li>
 						<li><a href="@{MemberApplication.MemberBasicFen(storeid)}" target="iframe_a">分店-普通会员信息</a></li>
 						<li><a href="@{MemberApplication.MemberSpecialFen(storeid)}" target="iframe_a">分店-课程卡成员信息</a></li>
+					</ul>
+				</li>
+				<li>
+					<div class="link">分店-企业管理</div>
+					<ul class="submenu">
+						<li><a href="@{CompanyApplication.companyIndex()}" target="iframe_a">分店-企业管理 </a></li>
 					</ul>
 				</li>
 				<li>

@@ -42,6 +42,28 @@ public class MemberApplication extends Controller {
         render();
     }
 
+    public static int processMemberAttribute(List<Member> list) {
+    	for (Member ps : list) {
+    		if (ps.cardtype==0) ps.cardtypename="非会员";
+    		else if (ps.cardtype==1) ps.cardtypename="月卡";
+    		else if (ps.cardtype==2) ps.cardtypename="季卡";
+    		else if (ps.cardtype==3) ps.cardtypename="半年卡";
+    		else if (ps.cardtype==4) ps.cardtypename="年卡";
+    		else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
+    		else if (ps.cardtype==6) ps.cardtypename="课程卡成员";
+    		if (ps.sex==1) ps.sexvalue="男"; 
+    		else ps.sexvalue="女";
+    		// 入场密码
+    		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(ps.id);
+    		if (cp!=null) {
+    			Calendar calendar = Calendar.getInstance();  
+    			int hour = calendar.get(Calendar.HOUR_OF_DAY);
+    			ps.comeinpassword  = cp.arr[hour];
+    		}
+    	}
+    	return 1;
+    }
+    
     //搜索页面
     public static void MemberFindPage() {
     	render();
@@ -50,24 +72,7 @@ public class MemberApplication extends Controller {
     //会员关键字搜索
     public static void MemberFindFromDB(String keyname) {
     	List<Member> list = MemberMgr.getInstance().findMemberByNameOrPhone(keyname);
-    	for (Member ps : list) {
-    		if (ps.cardtype==0) ps.cardtypename="非会员";
-    		else if (ps.cardtype==1) ps.cardtypename="月卡";
-    		else if (ps.cardtype==2) ps.cardtypename="季卡";
-    		else if (ps.cardtype==3) ps.cardtypename="半年卡";
-    		else if (ps.cardtype==4) ps.cardtypename="年卡";
-    		else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
-    		else if (ps.cardtype==6) ps.cardtypename="课程卡成员";
-    		if (ps.sex==1) ps.sexvalue="男"; 
-    		else ps.sexvalue="女";
-    		// 入场密码
-    		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(ps.id);
-    		if (cp!=null) {
-    			Calendar calendar = Calendar.getInstance();  
-    			int hour = calendar.get(Calendar.HOUR_OF_DAY);
-    			ps.comeinpassword  = cp.arr[hour];
-    		}
-    	}
+    	processMemberAttribute(list);
     	int number = list.size();
     	render("MemberApplication/MemberBasic.html", list, number);
     }
@@ -76,52 +81,17 @@ public class MemberApplication extends Controller {
     public static void MemberSearch(int storeid, int acardtype, int amembertype, int asextype, String afitnesstest, String keyname) {
     	String todaytime = YearMonthDay.getCurrentTimeSecond();
     	List<Member> list = MemberMgr.getInstance().searchMember(todaytime, storeid, acardtype, amembertype, asextype, afitnesstest, keyname);
-    	for (Member ps : list) {
-    		if (ps.cardtype==0) ps.cardtypename="非会员";
-    		else if (ps.cardtype==1) ps.cardtypename="月卡";
-    		else if (ps.cardtype==2) ps.cardtypename="季卡";
-    		else if (ps.cardtype==3) ps.cardtypename="半年卡";
-    		else if (ps.cardtype==4) ps.cardtypename="年卡";
-    		else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
-    		else if (ps.cardtype==6) ps.cardtypename="课程卡成员";
-    		if (ps.sex==1) ps.sexvalue="男"; 
-    		else ps.sexvalue="女";
-    		// 入场密码
-    		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(ps.id);
-    		if (cp!=null) {
-    			Calendar calendar = Calendar.getInstance();  
-    			int hour = calendar.get(Calendar.HOUR_OF_DAY);
-    			ps.comeinpassword  = cp.arr[hour];
-    		}
-    	}
+    	processMemberAttribute(list);
     	int number = list.size();
     	render("MemberApplication/MemberBasic.html", list, number);
     }
-    
     
     
     //普通会员展示页面
     public static void MemberBasic() {
     	String todaytime = YearMonthDay.getCurrentTimeSecond();
     	List<Member> list = MemberMgr.getInstance().getAllActiveNormalMember(todaytime, 0);
-    	for (Member ps : list) {
-    		if (ps.cardtype==0) ps.cardtypename="非会员";
-    		else if (ps.cardtype==1) ps.cardtypename="月卡";
-    		else if (ps.cardtype==2) ps.cardtypename="季卡";
-    		else if (ps.cardtype==3) ps.cardtypename="半年卡";
-    		else if (ps.cardtype==4) ps.cardtypename="年卡";
-    		else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
-    		else if (ps.cardtype==6) ps.cardtypename="课程卡成员";
-    		if (ps.sex==1) ps.sexvalue="男"; 
-    		else ps.sexvalue="女";
-    		// 入场密码
-    		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(ps.id);
-    		if (cp!=null) {
-    			Calendar calendar = Calendar.getInstance();  
-    			int hour = calendar.get(Calendar.HOUR_OF_DAY);
-    			ps.comeinpassword  = cp.arr[hour];
-    		}
-    	}
+    	processMemberAttribute(list);
     	int number = list.size();
     	render(list, number);
     }
@@ -130,24 +100,7 @@ public class MemberApplication extends Controller {
     public static void MemberSpecial() {
     	String todaytime = YearMonthDay.getCurrentTimeSecond();
     	List<Member> list = MemberMgr.getInstance().getAllActiveSpecialMember(todaytime, 0);
-    	for (Member ps : list) {
-    		if (ps.cardtype==0) ps.cardtypename="非会员";
-    		else if (ps.cardtype==1) ps.cardtypename="月卡";
-    		else if (ps.cardtype==2) ps.cardtypename="季卡";
-    		else if (ps.cardtype==3) ps.cardtypename="半年卡";
-    		else if (ps.cardtype==4) ps.cardtypename="年卡";
-    		else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
-    		else if (ps.cardtype==6) ps.cardtypename="课程卡成员";
-    		if (ps.sex==1) ps.sexvalue="男"; 
-    		else ps.sexvalue="女";
-    		// 入场密码
-    		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(ps.id);
-    		if (cp!=null) {
-    			Calendar calendar = Calendar.getInstance();  
-    			int hour = calendar.get(Calendar.HOUR_OF_DAY);
-    			ps.comeinpassword  = cp.arr[hour];
-    		}
-    	}
+    	processMemberAttribute(list);
     	int number = list.size();
     	render(list, number);
     }
@@ -344,6 +297,18 @@ public class MemberApplication extends Controller {
     	MemberDetail(memberid);
     }
     
+    //修改会员企业
+    public static void MemberCompanyidEdit(int id) {
+    	Member sc = MemberMgr.getInstance().findMemberById(id);
+    	int memberid = id;
+    	render(sc, memberid);
+    }
+    
+    public static void addMemberCompanyidToDB(int memberid, int companyid) {
+    	MemberMgr.getInstance().updateMemberCompanyid(memberid, companyid);
+    	MemberDetail(memberid);
+    }
+    
     //修改会员种类
     public static void MemberCardtypeEdit(int id) {
     	Member ps = MemberMgr.getInstance().findMemberById(id);
@@ -388,24 +353,7 @@ public class MemberApplication extends Controller {
     public static void MemberBasicFen(int storeid) {
     	String todaytime = YearMonthDay.getCurrentTimeSecond();
     	List<Member> list = MemberMgr.getInstance().getAllActiveNormalMember(todaytime, storeid);
-    	for (Member ps : list) {
-    		if (ps.cardtype==0) ps.cardtypename="非会员";
-    		else if (ps.cardtype==1) ps.cardtypename="月卡";
-    		else if (ps.cardtype==2) ps.cardtypename="季卡";
-    		else if (ps.cardtype==3) ps.cardtypename="半年卡";
-    		else if (ps.cardtype==4) ps.cardtypename="年卡";
-    		else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
-    		else if (ps.cardtype==6) ps.cardtypename="课程卡成员";
-    		if (ps.sex==1) ps.sexvalue="男"; 
-    		else ps.sexvalue="女";
-    		// 入场密码
-    		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(ps.id);
-    		if (cp!=null) {
-    			Calendar calendar = Calendar.getInstance();  
-    			int hour = calendar.get(Calendar.HOUR_OF_DAY);
-    			ps.comeinpassword  = cp.arr[hour];
-    		}
-    	}
+    	processMemberAttribute(list);
     	int number = list.size();
     	render("MemberApplication/MemberBasicFen.html", storeid, list, number);
     }
@@ -414,24 +362,7 @@ public class MemberApplication extends Controller {
     public static void MemberSpecialFen(int storeid) {
     	String todaytime = YearMonthDay.getCurrentTimeSecond();
     	List<Member> list = MemberMgr.getInstance().getAllActiveSpecialMember(todaytime, storeid);
-    	for (Member ps : list) {
-    		if (ps.cardtype==0) ps.cardtypename="非会员";
-    		else if (ps.cardtype==1) ps.cardtypename="月卡";
-    		else if (ps.cardtype==2) ps.cardtypename="季卡";
-    		else if (ps.cardtype==3) ps.cardtypename="半年卡";
-    		else if (ps.cardtype==4) ps.cardtypename="年卡";
-    		else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
-    		else if (ps.cardtype==6) ps.cardtypename="课程卡成员";
-    		if (ps.sex==1) ps.sexvalue="男"; 
-    		else ps.sexvalue="女";
-    		// 入场密码
-    		ComeInPassword cp = ComeInPasswordMgr.getInstance().findComeInPasswordByMemberId(ps.id);
-    		if (cp!=null) {
-    			Calendar calendar = Calendar.getInstance();  
-    			int hour = calendar.get(Calendar.HOUR_OF_DAY);
-    			ps.comeinpassword  = cp.arr[hour];
-    		}
-    	}
+    	processMemberAttribute(list);
     	int number = list.size();
     	render("MemberApplication/MemberBasicFen.html", storeid, list, number);
     }

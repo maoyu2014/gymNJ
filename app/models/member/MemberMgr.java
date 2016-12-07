@@ -79,7 +79,7 @@ public class MemberMgr {
 			if (storeid!=0) {
 				sql += " and a.storeid = " + storeid;
 			}
-			if (acardtype!=10) {		//注意这里是10表示所有会员，因为非会员是0
+			if (acardtype!=10) {		//注意这里是10表示所有会员种类，因为非会员是0
 				sql += " and a.cardtype = " + acardtype;
 			}
 			if (amembertype!=0) {
@@ -225,8 +225,7 @@ public class MemberMgr {
 		ResultSet rs = null;
 		Member an = null;
 		try {
-			//加空格啊加空格，sql一定记得各种加空格
-			String sql = "select m.*, s.name as storename from Member m, store s where m.storeid = s.id and m.id = " + aid;
+			String sql = "select m.*, s.name as storename, c.name as companyname from Member m left join company c on m.companyid = c.id, store s where m.storeid = s.id  and m.id = " + aid;
 			rs = DB.executeQuery(stmt, sql);
 			if (rs.next()) {
 				int id = rs.getInt("id");
@@ -264,9 +263,11 @@ public class MemberMgr {
 				int leftcoursenum = rs.getInt("leftcoursenum");
 				an = new Member(id, openid, name, wechatname, sex, height, birthday, phone, storename, cardtype, deaddate, exercisetime, exercisegoal, exercisehz, distance, bmi, muscle, fat, water, protein, basicrate, bodyage, wechatnumber, fitnesstest, memberstatus, innerfat, leftcoursenum);
 				an.buycount = rs.getInt("buycount");
+				an.companyname = rs.getString("companyname");
 			}
-		} catch (SQLException eee) {
-			eee.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Membermgr.java findMemberById是出错");
 		} finally {
 			DB.close(rs);
 			DB.close(stmt);
@@ -448,6 +449,22 @@ public class MemberMgr {
 		}
 	}
 	
+	public void updateMemberCompanyid(int memberid, int companyid) {
+		Connection conn = DB.getConn();
+		String sql = "update Member set companyid = ?  where id = " + memberid;
+		PreparedStatement pstmt = DB.getPstmt(conn, sql);
+		try {
+			pstmt.setInt(1, companyid);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("MemberMgr.java 修改会员所属企业时出错");
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+	}
+	
 	public void updateMemberCardtype(int memberid, int newcardtype) {
 		Connection conn = DB.getConn();
 		String sql = "update Member set cardtype = ?  where id = " + memberid;
@@ -462,5 +479,41 @@ public class MemberMgr {
 			DB.close(conn);
 		}
 	}
+	
+	public List<Member> getMemberBelongCompany(String todaytime, int companyid) {
+		List<Member> list = new ArrayList<Member>();
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStmt(conn);
+		ResultSet rs = null;
+		try {
+			String sql = "select a.id, a.openid, a.name, a.wechatname, a.phone, b.name as storename, a.sex, a.cardtype, a.wechatnumber, a.fitnesstest, a.memberstatus, a.leftcoursenum from Member a, store b where a.storeid = b.id and a.deaddate > '" + todaytime + "' and a.companyid = " + companyid;
+			rs = DB.executeQuery(stmt, sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String openid = rs.getString("openid");			//微信唯一标识
+				String name = rs.getString("name");
+				String wechatname = rs.getString("wechatname");
+				String wechatnumber = rs.getString("wechatnumber");
+				String phone = rs.getString("phone");
+				String storename = rs.getString("storename");
+				int cardtype = rs.getInt("cardtype");	//会员卡种类，进来默认是0非会员  1月卡，2季卡，3半年卡，4年卡
+				String fitnesstest = rs.getString("fitnesstest");
+				String memberstatus = rs.getString("memberstatus");
+				int leftcoursenum = rs.getInt("leftcoursenum");
+				Member an = new Member(id, openid, name, wechatname, phone, storename, cardtype, wechatnumber, fitnesstest, memberstatus, leftcoursenum);
+				an.sex = rs.getInt("sex");
+				list.add(an);
+			}
+		} catch (SQLException eee) {
+			eee.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return list;
+	}
+	
+	
 	
 }

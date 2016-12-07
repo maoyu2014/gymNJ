@@ -60,7 +60,10 @@ public class Application extends Controller {
     //分店首页
     public static void indexFen() {
     	int storeid = (int) parseSession().get("storeid");
-    	render(storeid);
+    	String storename = "分店系统";
+    	if (storeid==24) storename = "江宁万达店";
+    	else if (storeid==27) storename = "兴智科技园店";
+    	render(storeid, storename);
     }
     
     //首页图片

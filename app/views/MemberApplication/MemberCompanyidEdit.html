@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+    
+<body>
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">会员所属企业修改</div>
+	
+	<div style="margin:20px">
+		#{form @MemberApplication.addMemberCompanyidToDB(memberid)}
+		姓名：
+		<input name="edittime" class="easyui-textbox" data-options="readonly:true" style="" value="${sc.name}"><br/><br/>
+		
+		电话：
+		<input name="phone" class="easyui-textbox" data-options="readonly:true" style="" value="${sc.phone}"><br/><br/>
+		
+		原来所属企业：
+		<input name="oldstorename" class="easyui-textbox" data-options="readonly:true" style="" value="${sc.companyname}"><br/><br/>
+		
+		新的所属企业：
+		<input id="companyid" name="companyid" class="easyui-combobox" data-options="
+		editable:false,
+		valueField:'id',
+		textField:'name',
+		url:'@{CompanyApplication.getAllCompanyCombo()}',
+		prompt:'输入或者选择企业'"  
+		style="height:32px"><br/><br/>
+		
+		<input type="submit" style="width:80px;height:32px" value="更新">  
+		#{/form}
+	</div>
+	
+	
+    
+</body>
+
+
+</html>

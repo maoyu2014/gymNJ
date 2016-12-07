@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/default/easyui.css'}">
+		<link rel="stylesheet" type="text/css" href="@{'/public/jquery-easyui-1.4.4/themes/icon.css'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        
+        <script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/jquery.easyui.min.js'}"></script>
+		<script type="text/javascript" src="@{'/public/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js'}"></script>
+</head>
+    
+<body>
+
+	<div style="background-color:#e5ffb3;font-size:15px;font-weight:600;padding:15px;">企业管理</div>
+	
+	<a href="@{CompanyApplication.addCompanyPage()}" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px;height:32px;">增加企业</a>
+	
+	<div style="margin:20px;font-size:15px;font-weight:600;">
+    	共${number}条记录
+	</div>
+	
+	<div style="margin:20px">
+        <table class="easyui-datagrid" data-options="fitColumns:true,singleSelect:true,striped:true,rownumbers:true">
+	        <thead>
+	            <tr>
+	                <th data-options="field:'name',width:120">企业名称</th>
+	                <th data-options="field:'address',width:120">企业地址</th>
+	                <th data-options="field:'manager',width:60">企业负责人</th>
+	                <th data-options="field:'phone',width:100">联系方式</th>
+	                <th data-options="field:'operation',width:80">操作</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        #{list items:listsc, as:'company'}
+	        	<tr>
+		            <td>${company.name}</td>
+		            <td>${company.address}</td>
+		            <td>${company.manager}</td>
+		            <td>${company.phone}</td>
+		            <td>
+		            	<a href="@{CompanyApplication.companyDetailPage(company.id)}" class="easyui-linkbutton" data-options="" style="">详情</a>
+		            	<a href="@{CompanyApplication.hasMemberPage(company.id)}" class="easyui-linkbutton" data-options="" style="">包含会员</a>
+		            	<!--  
+		            	<a href="@{CompanyApplication.deleteCompany(company.id)}" class="easyui-linkbutton" data-options="" style="" onClick="return confirmdelete()">删除</a>
+		            	-->
+		            </td>
+		        </tr>
+	        #{/list}
+	        </tbody>
+	    </table>
+    </div>
+    
+
+</body>
+
+<script>
+function confirmdelete(){
+	var gnl=confirm("信息一旦删除就没有了，你真的确定要删除吗?"); 
+	if (gnl==true){ 
+		return true; 
+	} else {
+		return false;
+	}
+}
+</script>
+
+</html>

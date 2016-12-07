@@ -54,6 +54,8 @@ public class Member {
 		
 	public int leftcoursenum;
 	public int buycount;
+	public int companyid;
+	public String companyname;
 	
 	public Member() {}
 	
