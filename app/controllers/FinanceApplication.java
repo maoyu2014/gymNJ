@@ -19,6 +19,18 @@ public class FinanceApplication extends Controller {
         render();
     }
 
+    public static int processOnePurchaseAttribute(PurchaseHistory ph) {
+    	if (ph.cardtype==1) ph.cardtypename="月卡付费";
+		else if (ph.cardtype==2) ph.cardtypename="季卡付费";
+		else if (ph.cardtype==3) ph.cardtypename="半年卡付费";
+		else if (ph.cardtype==4) ph.cardtypename="年卡付费";
+		else if (ph.cardtype==5) ph.cardtypename="299新人月卡付费";
+		else if (ph.cardtype==6) ph.cardtypename="课程卡付费";
+		else if (ph.cardtype==7) ph.cardtypename="2年卡付费";
+		else if (ph.cardtype==8) ph.cardtypename="代金券付费";
+    	return 1;
+    }
+    
     //当月财务展示页面
     public static void PurchaseHistoryMonth(int storeid, String yearmonth) {
     	String currentmonth = YearMonthDay.getCurrentMonth();
@@ -27,12 +39,7 @@ public class FinanceApplication extends Controller {
     	double feesum=0.0;
     	for (PurchaseHistory ph : listPurchaseHistory) {
     		feesum+=ph.fee;
-    		if (ph.cardtype==1) ph.cardtypename="月卡付费";
-    		else if (ph.cardtype==2) ph.cardtypename="季卡付费";
-    		else if (ph.cardtype==3) ph.cardtypename="半年卡付费";
-    		else if (ph.cardtype==4) ph.cardtypename="年卡付费";
-    		else if (ph.cardtype==5) ph.cardtypename="299新人月卡付费";
-    		else if (ph.cardtype==6) ph.cardtypename="课程卡付费";
+    		processOnePurchaseAttribute(ph);
     		
     		if (ph.purchasetype==1) ph.purchasetypename="微信支付";
     		if (ph.isprivate==1) ph.cardtypename="私教课程付费";
@@ -58,12 +65,7 @@ public class FinanceApplication extends Controller {
     	double feesum=0.0;
     	for (PurchaseHistory ph : listPurchaseHistory) {
     		feesum+=ph.fee;
-    		if (ph.cardtype==1) ph.cardtypename="月卡付费";
-    		else if (ph.cardtype==2) ph.cardtypename="季卡付费";
-    		else if (ph.cardtype==3) ph.cardtypename="半年卡付费";
-    		else if (ph.cardtype==4) ph.cardtypename="年卡付费";
-    		else if (ph.cardtype==5) ph.cardtypename="299新人月卡付费";
-    		else if (ph.cardtype==6) ph.cardtypename="课程卡付费";
+    		processOnePurchaseAttribute(ph);
     		
     		if (ph.purchasetype==1) ph.purchasetypename="微信支付";
     		if (ph.isprivate==1) ph.cardtypename="私教课程付费";

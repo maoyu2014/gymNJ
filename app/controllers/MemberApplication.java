@@ -51,6 +51,8 @@ public class MemberApplication extends Controller {
     		else if (ps.cardtype==4) ps.cardtypename="年卡";
     		else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
     		else if (ps.cardtype==6) ps.cardtypename="课程卡成员";
+    		else if (ps.cardtype==7) ps.cardtypename="2年卡成员";
+    		else if (ps.cardtype==8) ps.cardtypename="代金券成员";
     		if (ps.sex==1) ps.sexvalue="男"; 
     		else ps.sexvalue="女";
     		// 入场密码
@@ -61,6 +63,19 @@ public class MemberApplication extends Controller {
     			ps.comeinpassword  = cp.arr[hour];
     		}
     	}
+    	return 1;
+    }
+    
+    public static int processOneMemberAttribute(Member ps) {
+    	if (ps.cardtype==0) ps.cardtypename="非会员";
+    	else if (ps.cardtype==1) ps.cardtypename="月卡";
+    	else if (ps.cardtype==2) ps.cardtypename="季卡";
+    	else if (ps.cardtype==3) ps.cardtypename="半年卡";
+    	else if (ps.cardtype==4) ps.cardtypename="年卡";
+    	else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
+    	else if (ps.cardtype==6) ps.cardtypename="课程卡成员";
+    	else if (ps.cardtype==7) ps.cardtypename="2年卡成员";
+    	else if (ps.cardtype==8) ps.cardtypename="代金券成员";
     	return 1;
     }
     
@@ -123,13 +138,7 @@ public class MemberApplication extends Controller {
     	}
 		if (sc.fingerprint==1) sc.fingerprinttype="已录入";
 		else sc.fingerprinttype="未录入";
-		if (sc.cardtype==0) sc.cardtypename="非会员";
-		else if (sc.cardtype==1) sc.cardtypename="月卡";
-		else if (sc.cardtype==2) sc.cardtypename="季卡";
-		else if (sc.cardtype==3) sc.cardtypename="半年卡";
-		else if (sc.cardtype==4) sc.cardtypename="年卡";
-		else if (sc.cardtype==5) sc.cardtypename="299新人月卡";
-		else if (sc.cardtype==6) sc.cardtypename="课程卡成员";
+		processOneMemberAttribute(sc);
 		if (sc.sex==1) sc.sexvalue="男"; 
 		else sc.sexvalue="女";
 		if (sc.exercisetime==1) sc.exercisetimevalue="早上";
@@ -180,13 +189,7 @@ public class MemberApplication extends Controller {
 	public static void modifyMemberDeaddate(int aid) {
 		Member m = MemberMgr.getInstance().findMemberById(aid);
 		String cardtypename = "undefined";
-		if (m.cardtype==0) cardtypename="非会员";
-		else if (m.cardtype==1) cardtypename="月卡";
-		else if (m.cardtype==2) cardtypename="季卡";
-		else if (m.cardtype==3) cardtypename="半年卡";
-		else if (m.cardtype==4) cardtypename="年卡";
-		else if (m.cardtype==5) cardtypename="299新人月卡";
-		else if (m.cardtype==6) cardtypename="课程卡成员";
+		processOneMemberAttribute(m);
 		List<DeadtimeLog> list = DeadtimeLogMgr.getInstance().findDeadtimeLogByMemberId(aid);
 		render(m, cardtypename, list);
 	}
@@ -321,13 +324,7 @@ public class MemberApplication extends Controller {
     //修改会员种类
     public static void MemberCardtypeEdit(int id) {
     	Member ps = MemberMgr.getInstance().findMemberById(id);
-    	if (ps.cardtype==0) ps.cardtypename="非会员";
-		else if (ps.cardtype==1) ps.cardtypename="月卡";
-		else if (ps.cardtype==2) ps.cardtypename="季卡";
-		else if (ps.cardtype==3) ps.cardtypename="半年卡";
-		else if (ps.cardtype==4) ps.cardtypename="年卡";
-		else if (ps.cardtype==5) ps.cardtypename="299新人月卡";
-		else if (ps.cardtype==6) ps.cardtypename="课程卡成员";
+    	processOneMemberAttribute(ps);
     	int memberid = id;
     	render(ps, memberid);
     }
